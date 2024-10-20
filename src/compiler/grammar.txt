@@ -1,0 +1,41 @@
+IDK1 : x
+x: FLOOR_INIT | y
+y: FLOOR_ALLOC_LIST STATEMENT_LIST | STATEMENT_LIST
+
+FLOOR_INIT      : floor size INT
+FLOOR_ALLOC_LIST: FLOOR_ALLOC FLOOR_ALLOC_LIST | FLOOR_ALLOC
+FLOOR_ALLOC     : floor set FLOOR_OFFSET [ VALUE_LIST ]
+FLOOR_OFFSET    : INT
+
+STATEMENT_LIST  : STATEMENT STATEMENT_LIST | STATEMENT
+STATEMENT       :
+
+MATH_OP         : READ_REF +/- READ_REF
+LET             : let ID
+ASSIGN          : WRITE_REF = READ_REF | WRITE_REF =
+
+BLOCK: { STATEMENT_LIST }
+
+IF  : if CONDITION BLOCK ELSE | BLOCK
+ELSE: else BLOCK
+
+WHILE: while CONDITION BLOCK
+
+CONDITION: READ_REF == i | READ_REF != i | READ_REF < READ_REF | READ_REF <= READ_REF | READ_REF > READ_REF | READ_REF >= READ_REF | true
+i: READ_REF | 0
+
+READABLE        : MATH_OP | READ_REF
+REF             : READ_REF | WRITE_REF
+READ_REF        : INBOX | HAND | ID
+WRITE_REF       : OUTBOX | HAND | ID
+INBOX           : inbox
+OUTBOX          : outbox
+HAND            : hand
+ID              : [a-zA-z]+
+
+VALUE_LIST      : VALUE , VALUE | VALUE
+VALUE           : LETTER | INT
+LETTER          : [A-Z]
+INT             : POS_INT | NEG_INT
+NEG_INT         : -[1-9][0-9]*
+POS_INT         : [1-9][0-9]* | 0

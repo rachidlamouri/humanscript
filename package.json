@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "compile": "ts-node ./src/index.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
