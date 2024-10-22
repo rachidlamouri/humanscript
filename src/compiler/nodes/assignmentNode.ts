@@ -1,9 +1,6 @@
-import {
-  Inbox,
-  Outbox,
-  ReadableReference,
-  WriteableReference,
-} from '../primitiveTypes';
+import { WriteableReference, ReadableReference } from '../types/compoundTypes';
+import { FloorSlot } from '../types/floorSlot';
+import { Inbox, Outbox } from '../types/primitiveTypes';
 import { Compiled } from './node';
 import { StatementNode } from './statementNode';
 
@@ -20,6 +17,10 @@ export class AssignmentNode extends StatementNode {
 
     if (this.readable === Inbox) {
       result.push('INBOX');
+    }
+
+    if (this.readable instanceof FloorSlot) {
+      result.push(`COPYFROM ${this.readable.index}`);
     }
 
     if (this.writeable === Outbox) {

@@ -1,18 +1,13 @@
 import P from 'parsimmon';
 import { AssignmentNode } from './nodes/assignmentNode';
 import { createLanguage, parserDebugger } from '../utils/parserUtils';
-import {
-  Inbox,
-  INBOX_CODE,
-  Outbox,
-  OUTBOX_CODE,
-  ReadableReference,
-  WriteableReference,
-} from './primitiveTypes';
+import { Inbox, INBOX_CODE, Outbox, OUTBOX_CODE } from './types/primitiveTypes';
 import { CompilerContext, Node } from './nodes/node';
 import { assertIsArray } from '../utils/assertIsArray';
 import { StatementNode } from './nodes/statementNode';
 import { WhileLoopNode } from './nodes/whileLoopNode';
+import { FloorSlot } from './types/floorSlot';
+import { ReadableReference, WriteableReference } from './types/compoundTypes';
 
 type NestedStatementNodeList = [StatementNode, unknown];
 
@@ -29,6 +24,8 @@ type Language = {
   writeable: WriteableReference;
   inbox: typeof Inbox;
   outbox: typeof Outbox;
+  floorSlot: FloorSlot;
+  positiveInteger: number;
 };
 
 function assertIsStatementNode(value: unknown): asserts value is StatementNode {
@@ -138,6 +135,7 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.alt<Language['readable']>(
       // -
       l.inbox,
+      l.floorSlot,
     );
   },
   writeable: (l) => {
@@ -151,6 +149,23 @@ const language = createLanguage<Language>(parserDebugger, {
   },
   outbox: () => {
     return P.string(OUTBOX_CODE).result(Outbox);
+  },
+  floorSlot: (l) => {
+    return P.seq(
+      //-
+      P.string('floor'),
+      P.string('['),
+      l.positiveInteger,
+      P.string(']'),
+    ).map((result) => {
+      return new FloorSlot(result[2]);
+    });
+  },
+  positiveInteger: () => {
+    return P.regex(/[1-9][0-9]*|0/).map((result) => {
+      const value = Number.parseInt(result, 10);
+      return value;
+    });
   },
 });
 

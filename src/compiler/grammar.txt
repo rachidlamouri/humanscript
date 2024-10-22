@@ -26,11 +26,12 @@ i: READ_REF | 0
 
 READABLE        : MATH_OP | READ_REF
 REF             : READ_REF | WRITE_REF
-READ_REF        : INBOX | HAND | ID
+READ_REF        : INBOX | HAND | ID | FLOOR_SLOT
 WRITE_REF       : OUTBOX | HAND | ID
 INBOX           : inbox
 OUTBOX          : outbox
 HAND            : hand
+FLOOR_SLOT      : floor [ POS_INT ]
 ID              : [a-zA-z]+
 
 VALUE_LIST      : VALUE , VALUE | VALUE
