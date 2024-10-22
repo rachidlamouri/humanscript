@@ -1,0 +1,6 @@
+-- WHILE NODE --
+A:
+  -- AssignmentNode --
+  INBOX
+  OUTBOX
+  JUMP A

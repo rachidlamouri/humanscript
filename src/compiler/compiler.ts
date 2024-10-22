@@ -169,11 +169,11 @@ const language = createLanguage<Language>(parserDebugger, {
   },
 });
 
-export const compile = (code: string): void => {
+export const compile = (code: string): string => {
   const root = language.program.tryParse(code);
 
   const context = new CompilerContext();
   const result = root.flatMap((node) => node.compile(context)).join('\n');
 
-  console.log(result);
+  return result;
 };
