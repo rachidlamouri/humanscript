@@ -15,7 +15,7 @@ export class WhileLoopNode extends StatementNode {
 
     const result = [
       // -
-      '-- WHILE NODE --',
+      this.compiledDebugName,
       `${jumpLabel}:`,
       ...compiledBlock.map((line) => `  ${line}`),
       `  JUMP ${jumpLabel}`,

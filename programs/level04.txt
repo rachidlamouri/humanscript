@@ -1,0 +1,7 @@
+let tmp
+
+while true {
+  tmp = inbox
+  outbox = inbox
+  outbox = tmp
+}

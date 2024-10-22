@@ -1,6 +1,6 @@
--- WHILE NODE --
+-- WhileLoopNode --
 A:
-  -- AssignmentNode --
+  -- AssignmentStatementNode --
   INBOX
   OUTBOX
   JUMP A

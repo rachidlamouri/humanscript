@@ -1,13 +1,20 @@
 import P from 'parsimmon';
-import { AssignmentNode } from './nodes/assignmentNode';
+import { AssignmentStatementNode } from './nodes/assignmentNode';
 import { createLanguage, parserDebugger } from '../utils/parserUtils';
-import { Inbox, INBOX_CODE, Outbox, OUTBOX_CODE } from './types/primitiveTypes';
+import {
+  Identifier,
+  Inbox,
+  INBOX_CODE,
+  Outbox,
+  OUTBOX_CODE,
+} from './types/primitiveTypes';
 import { CompilerContext, Node } from './nodes/node';
 import { assertIsArray } from '../utils/assertIsArray';
 import { StatementNode } from './nodes/statementNode';
 import { WhileLoopNode } from './nodes/whileLoopNode';
 import { FloorSlot } from './types/floorSlot';
 import { ReadableReference, WriteableReference } from './types/compoundTypes';
+import { LetStatementNode } from './nodes/letStatementNode';
 
 type NestedStatementNodeList = [StatementNode, unknown];
 
@@ -19,12 +26,14 @@ type Language = {
   block: StatementNode[];
   while: WhileLoopNode;
   condition: unknown;
-  assignment: AssignmentNode;
+  letStatement: LetStatementNode;
+  assignmentStatement: AssignmentStatementNode;
   readable: ReadableReference;
   writeable: WriteableReference;
   inbox: typeof Inbox;
   outbox: typeof Outbox;
   floorSlot: FloorSlot;
+  identifier: Identifier;
   positiveInteger: number;
 };
 
@@ -87,8 +96,9 @@ const language = createLanguage<Language>(parserDebugger, {
   statement: (l) => {
     return P.alt<Language['statement']>(
       // -
+      l.letStatement,
       l.while,
-      l.assignment,
+      l.assignmentStatement,
     );
   },
   while: (l) => {
@@ -117,7 +127,17 @@ const language = createLanguage<Language>(parserDebugger, {
       return result[2];
     });
   },
-  assignment: (l) => {
+  letStatement: (l) => {
+    return P.seq(
+      // -
+      P.string('let'),
+      P.whitespace,
+      l.identifier,
+    ).map((result) => {
+      return new LetStatementNode(result[2]);
+    });
+  },
+  assignmentStatement: (l) => {
     return P.seq(
       // -
       l.writeable,
@@ -128,7 +148,7 @@ const language = createLanguage<Language>(parserDebugger, {
     ).map((result) => {
       const writeable = result[0];
       const readable = result[4];
-      return new AssignmentNode(writeable, readable);
+      return new AssignmentStatementNode(writeable, readable);
     });
   },
   readable: (l) => {
@@ -136,12 +156,14 @@ const language = createLanguage<Language>(parserDebugger, {
       // -
       l.inbox,
       l.floorSlot,
+      l.identifier,
     );
   },
   writeable: (l) => {
     return P.alt<Language['writeable']>(
       // -
       l.outbox,
+      l.identifier,
     );
   },
   inbox: () => {
@@ -160,6 +182,9 @@ const language = createLanguage<Language>(parserDebugger, {
     ).map((result) => {
       return new FloorSlot(result[2]);
     });
+  },
+  identifier: () => {
+    return P.regex(/[a-zA-z]+/);
   },
   positiveInteger: () => {
     return P.regex(/[1-9][0-9]*|0/).map((result) => {

@@ -11,3 +11,5 @@ const outputCode = compile(inputCode);
 const outputFilePath = inputFilePath + 'c';
 
 fs.writeFileSync(outputFilePath, outputCode);
+
+console.log(`Compiled: ${outputFilePath}`);

@@ -1,0 +1,13 @@
+-- LetStatementNode --
+-- WhileLoopNode --
+A:
+  -- AssignmentStatementNode --
+  INBOX
+  COPYTO 0
+  -- AssignmentStatementNode --
+  INBOX
+  OUTBOX
+  -- AssignmentStatementNode --
+  COPYFROM 0
+  OUTBOX
+  JUMP A

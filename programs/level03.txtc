@@ -1,9 +1,9 @@
--- AssignmentNode --
+-- AssignmentStatementNode --
 COPYFROM 4
 OUTBOX
--- AssignmentNode --
+-- AssignmentStatementNode --
 COPYFROM 0
 OUTBOX
--- AssignmentNode --
+-- AssignmentStatementNode --
 COPYFROM 3
 OUTBOX

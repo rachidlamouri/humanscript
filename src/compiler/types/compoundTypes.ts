@@ -1,6 +1,4 @@
-import { Identifier } from 'typescript';
-import { AssignmentNode } from '../nodes/assignmentNode';
-import { Inbox, Hand, Outbox } from './primitiveTypes';
+import { Inbox, Hand, Outbox, Identifier } from './primitiveTypes';
 import { FloorSlot } from './floorSlot';
 
 export type ReadableReference =
@@ -10,5 +8,3 @@ export type ReadableReference =
   | FloorSlot;
 
 export type WriteableReference = typeof Outbox | typeof Hand | Identifier;
-
-export type Statement = AssignmentNode;
