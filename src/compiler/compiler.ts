@@ -1,13 +1,13 @@
 import P from 'parsimmon';
-import { AssignmentStatementNode } from './nodes/assignmentNode';
+import { AssignmentStatementNode } from './nodes/statement-node/assignmentStatementNode';
 import { createLanguage, parserDebugger } from '../utils/parserUtils';
 import { Node } from './nodes/node';
 import { assertIsArray } from '../utils/assertIsArray';
-import { StatementNode } from './nodes/statementNode';
-import { WhileLoopNode } from './nodes/whileLoopNode';
+import { StatementNode } from './nodes/statement-node/statementNode';
+import { WhileStatementNode } from './nodes/statement-node/whileStatementNode';
 import { FloorSlot } from './types/floorSlot';
-import { LetStatementNode } from './nodes/letStatementNode';
-import { AdditionNode } from './nodes/AdditionNode';
+import { LetStatementNode } from './nodes/statement-node/letStatementNode';
+import { AdditionExpressionNode } from './nodes/expression-node/AdditionExpressionNode';
 import { ReadableReference } from './types/readableReference';
 import { Inbox } from './types/inbox';
 import { Outbox } from './types/outbox';
@@ -21,23 +21,31 @@ type NestedStatementNodeList = [StatementNode, unknown];
 
 type Language = {
   program: Node[];
+
   floorInit: FloorInitNode;
+
   statementList: StatementNode[];
   recursiveStatementList: NestedStatementNodeList;
+
   statement: StatementNode;
-  block: StatementNode[];
-  while: WhileLoopNode;
-  condition: unknown;
-  additionExpression: AdditionNode;
-  readableExpression: ReadableExpression;
   letStatement: LetStatementNode;
+  whileStatement: WhileStatementNode;
   assignmentStatement: AssignmentStatementNode;
+
+  condition: unknown;
+  block: StatementNode[];
+
+  readableExpression: ReadableExpression;
+  additionExpression: AdditionExpressionNode;
+
   readableReference: ReadableReference;
-  writeable: WriteableReference;
+  writeableReference: WriteableReference;
+
   inbox: Inbox;
   outbox: Outbox;
   floorSlot: FloorSlot;
   identifier: Identifier;
+
   positiveInteger: number;
 };
 
@@ -71,6 +79,7 @@ const language = createLanguage<Language>(parserDebugger, {
       return statementList;
     });
   },
+
   floorInit: (l) => {
     return P.seq(
       // -
@@ -119,15 +128,26 @@ const language = createLanguage<Language>(parserDebugger, {
       }),
     );
   },
+
   statement: (l) => {
     return P.alt<Language['statement']>(
       // -
       l.letStatement,
-      l.while,
+      l.whileStatement,
       l.assignmentStatement,
     );
   },
-  while: (l) => {
+  letStatement: (l) => {
+    return P.seq(
+      // -
+      P.string('let'),
+      P.whitespace,
+      l.identifier,
+    ).map((result) => {
+      return new LetStatementNode(result[2]);
+    });
+  },
+  whileStatement: (l) => {
     return P.seq(
       // -
       P.string('while'),
@@ -136,9 +156,24 @@ const language = createLanguage<Language>(parserDebugger, {
       P.whitespace,
       l.block,
     ).map((result) => {
-      return new WhileLoopNode(result[4]);
+      return new WhileStatementNode(result[4]);
     });
   },
+  assignmentStatement: (l) => {
+    return P.seq(
+      // -
+      l.writeableReference,
+      P.whitespace,
+      P.string('='),
+      P.whitespace,
+      l.readableExpression,
+    ).map((result) => {
+      const writeable = result[0];
+      const readable = result[4];
+      return new AssignmentStatementNode(writeable, readable);
+    });
+  },
+
   condition: () => {
     return P.string('true');
   },
@@ -153,6 +188,7 @@ const language = createLanguage<Language>(parserDebugger, {
       return result[2];
     });
   },
+
   readableExpression: (l) => {
     return P.alt<Language['readableExpression']>(
       // -
@@ -169,33 +205,10 @@ const language = createLanguage<Language>(parserDebugger, {
       P.optWhitespace,
       l.readableReference,
     ).map((result) => {
-      return new AdditionNode(result[0], result[4]);
+      return new AdditionExpressionNode(result[0], result[4]);
     });
   },
-  letStatement: (l) => {
-    return P.seq(
-      // -
-      P.string('let'),
-      P.whitespace,
-      l.identifier,
-    ).map((result) => {
-      return new LetStatementNode(result[2]);
-    });
-  },
-  assignmentStatement: (l) => {
-    return P.seq(
-      // -
-      l.writeable,
-      P.whitespace,
-      P.string('='),
-      P.whitespace,
-      l.readableExpression,
-    ).map((result) => {
-      const writeable = result[0];
-      const readable = result[4];
-      return new AssignmentStatementNode(writeable, readable);
-    });
-  },
+
   readableReference: (l) => {
     return P.alt<Language['readableReference']>(
       // -
@@ -204,13 +217,14 @@ const language = createLanguage<Language>(parserDebugger, {
       l.identifier,
     );
   },
-  writeable: (l) => {
-    return P.alt<Language['writeable']>(
+  writeableReference: (l) => {
+    return P.alt<Language['writeableReference']>(
       // -
       l.outbox,
       l.identifier,
     );
   },
+
   inbox: () => {
     return P.string('inbox').map(() => {
       return new Inbox();
@@ -237,6 +251,7 @@ const language = createLanguage<Language>(parserDebugger, {
       return new Identifier(result);
     });
   },
+
   positiveInteger: () => {
     return P.regex(/[1-9][0-9]*|0/).map((result) => {
       const value = Number.parseInt(result, 10);

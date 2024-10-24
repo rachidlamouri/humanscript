@@ -1,5 +1,6 @@
+-- FloorInitNode --
 -- LetStatementNode --
--- WhileLoopNode --
+-- WhileStatementNode --
 A:
   -- AssignmentStatementNode --
   INBOX

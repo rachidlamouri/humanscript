@@ -1,8 +1,8 @@
-import { CompilerContext } from '../compilerContext';
-import { Compiled } from '../types/compilable';
+import { CompilerContext } from '../../compilerContext';
+import { Compiled } from '../../types/compilable';
 import { StatementNode } from './statementNode';
 
-export class WhileLoopNode extends StatementNode {
+export class WhileStatementNode extends StatementNode {
   constructor(public block: StatementNode[]) {
     super();
   }

@@ -1,10 +1,10 @@
-import { CompilerContext } from '../compilerContext';
-import { Compiled } from '../types/compilable';
-import { ReadableExpression } from '../types/readableExpression';
-import { ReadableReference } from '../types/readableReference';
-import { Node } from './node';
+import { CompilerContext } from '../../compilerContext';
+import { Compiled } from '../../types/compilable';
+import { ReadableExpression } from '../../types/readableExpression';
+import { ReadableReference } from '../../types/readableReference';
+import { Node } from '../node';
 
-export class AdditionNode extends Node implements ReadableExpression {
+export class AdditionExpressionNode extends Node implements ReadableExpression {
   constructor(
     public left: ReadableReference,
     public right: ReadableReference,

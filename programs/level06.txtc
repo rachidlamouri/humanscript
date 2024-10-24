@@ -1,7 +1,8 @@
--- WhileLoopNode --
+-- FloorInitNode --
+-- WhileStatementNode --
 A:
   -- AssignmentStatementNode --
-  -- AdditionNode --
+  -- AdditionExpressionNode --
   INBOX
   COPYTO 0
   INBOX
