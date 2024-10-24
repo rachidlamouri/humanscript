@@ -1,6 +1,7 @@
 import { ReadableExpression } from '../types/readableExpression';
 import { WriteableReference } from '../types/writeableReference';
-import { Compiled, CompilerContext } from './node';
+import { Compiled } from './node';
+import { CompilerContext } from '../compilerContext';
 import { StatementNode } from './statementNode';
 
 export class AssignmentStatementNode extends StatementNode {

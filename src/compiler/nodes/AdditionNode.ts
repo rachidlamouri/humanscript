@@ -1,6 +1,7 @@
+import { CompilerContext } from '../compilerContext';
 import { ReadableExpression } from '../types/readableExpression';
 import { ReadableReference } from '../types/readableReference';
-import { Compiled, CompilerContext, Node } from './node';
+import { Compiled, Node } from './node';
 
 export class AdditionNode extends Node implements ReadableExpression {
   constructor(

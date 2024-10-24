@@ -1,7 +1,7 @@
 import P from 'parsimmon';
 import { AssignmentStatementNode } from './nodes/assignmentNode';
 import { createLanguage, parserDebugger } from '../utils/parserUtils';
-import { CompilerContext, Node } from './nodes/node';
+import { Node } from './nodes/node';
 import { assertIsArray } from '../utils/assertIsArray';
 import { StatementNode } from './nodes/statementNode';
 import { WhileLoopNode } from './nodes/whileLoopNode';
@@ -15,6 +15,7 @@ import { WriteableReference } from './types/writeableReference';
 import { Identifier } from './types/identifier';
 import { FloorInitNode } from './nodes/FloorInitNode';
 import { ReadableExpression } from './types/readableExpression';
+import { CompilerContext } from './compilerContext';
 
 type NestedStatementNodeList = [StatementNode, unknown];
 

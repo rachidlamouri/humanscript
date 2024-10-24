@@ -1,5 +1,6 @@
 import { Merge } from 'type-fest';
-import { Compiled, CompilerContext } from '../nodes/node';
+import { Compiled } from '../nodes/node';
+import { CompilerContext } from '../compilerContext';
 import { ReadableExpression } from './readableExpression';
 
 export type ReadableReference = Merge<

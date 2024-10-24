@@ -1,4 +1,5 @@
-import { Compiled, CompilerContext, Node } from './node';
+import { CompilerContext } from '../compilerContext';
+import { Compiled, Node } from './node';
 
 export class FloorInitNode extends Node {
   constructor(public size: number) {

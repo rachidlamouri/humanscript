@@ -1,4 +1,5 @@
-import { Compiled, CompilerContext } from '../nodes/node';
+import { Compiled } from '../nodes/node';
+import { CompilerContext } from '../compilerContext';
 
 export type WriteableReference = {
   compileWrite(context: CompilerContext): Compiled;
