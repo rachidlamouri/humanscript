@@ -1,0 +1,5 @@
+floor size 3
+
+while true {
+  outbox = inbox + inbox
+}

@@ -1,4 +1,4 @@
-import { Identifier } from '../types/primitiveTypes';
+import { Identifier } from '../types/identifier';
 import { CompilerContext, Compiled } from './node';
 import { StatementNode } from './statementNode';
 
@@ -8,7 +8,7 @@ export class LetStatementNode extends StatementNode {
   }
 
   compile(context: CompilerContext): Compiled {
-    context.bindIdentifier(this.identifier);
+    context.bindFloorIndexKey(this.identifier.name);
     return [this.compiledDebugName];
   }
 }

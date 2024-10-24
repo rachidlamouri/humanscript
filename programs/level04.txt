@@ -1,3 +1,5 @@
+floor size 3
+
 let tmp
 
 while true {

@@ -1,13 +1,9 @@
 import { CompilerContext, Compiled } from '../nodes/node';
 import { ReadableReference } from './readableReference';
 
-export type FloorIndex = number;
-
-export class FloorSlot implements ReadableReference {
-  constructor(public index: FloorIndex) {}
-
+export class Inbox implements ReadableReference {
   compileRead(_context: CompilerContext): Compiled {
-    return [`COPYFROM ${this.index}`];
+    return ['INBOX'];
   }
 
   compileExpression(context: CompilerContext): Compiled {
