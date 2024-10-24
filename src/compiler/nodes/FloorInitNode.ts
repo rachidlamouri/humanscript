@@ -8,7 +8,7 @@ export class FloorInitNode extends Node {
   }
 
   compile(context: CompilerContext): Compiled {
-    context.setFloorSize(this.size);
+    context.initFloor(this.size);
     return [this.compiledDebugName];
   }
 }

@@ -5,9 +5,12 @@ FLOOR_INIT      : floor size INT
 STATEMENT_LIST  : STATEMENT STATEMENT_LIST | STATEMENT
 
 STATEMENT       : LET | WHILE | ASSIGN
-LET             : let ID
+LET             : let ID OPT_FLOOR_SLOT
 WHILE           : while CONDITION BLOCK
 ASSIGN          : WRITE_REF = READ_EXP
+
+OPT_FLOOR_SLOT  : FLOOR_SLOT | ε
+FLOOR_SLOT      : floor [ POS_INT ]
 
 CONDITION       : true
 BLOCK           : { STATEMENT_LIST }
@@ -15,12 +18,11 @@ BLOCK           : { STATEMENT_LIST }
 READ_EXP        : ADD_EXP | READ_REF
 ADD_EXP         : READ_REF +/- READ_REF
 
-READ_REF        : INBOX | ID | FLOOR_SLOT
-WRITE_REF       : OUTBOX | HAND | ID
+READ_REF        : INBOX | ID
+WRITE_REF       : OUTBOX | ID
 
 INBOX           : inbox
 OUTBOX          : outbox
-FLOOR_SLOT      : floor [ POS_INT ]
 ID              : [a-zA-z]+
 
 VALUE_LIST      : VALUE , VALUE | VALUE

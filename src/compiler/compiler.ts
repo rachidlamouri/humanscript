@@ -1,11 +1,10 @@
 import P from 'parsimmon';
 import { AssignmentStatementNode } from './nodes/statement-node/assignmentStatementNode';
-import { createLanguage, parserDebugger } from '../utils/parserUtils';
+import { createLanguage, parserDebugger, ul } from '../utils/parserUtils';
 import { Node } from './nodes/node';
 import { assertIsArray } from '../utils/assertIsArray';
 import { StatementNode } from './nodes/statement-node/statementNode';
 import { WhileStatementNode } from './nodes/statement-node/whileStatementNode';
-import { FloorSlot } from './types/floorSlot';
 import { LetStatementNode } from './nodes/statement-node/letStatementNode';
 import { AdditionExpressionNode } from './nodes/expression-node/AdditionExpressionNode';
 import { ReadableReference } from './types/readableReference';
@@ -15,7 +14,7 @@ import { WriteableReference } from './types/writeableReference';
 import { Identifier } from './types/identifier';
 import { FloorInitNode } from './nodes/FloorInitNode';
 import { ReadableExpression } from './types/readableExpression';
-import { CompilerContext } from './compilerContext';
+import { CompilerContext, FloorIndex } from './compilerContext';
 
 type NestedStatementNodeList = [StatementNode, unknown];
 
@@ -32,6 +31,9 @@ type Language = {
   whileStatement: WhileStatementNode;
   assignmentStatement: AssignmentStatementNode;
 
+  optionalFloorSlot: FloorIndex | null;
+  floorSlot: FloorIndex;
+
   condition: unknown;
   block: StatementNode[];
 
@@ -43,7 +45,6 @@ type Language = {
 
   inbox: Inbox;
   outbox: Outbox;
-  floorSlot: FloorSlot;
   identifier: Identifier;
 
   positiveInteger: number;
@@ -143,8 +144,9 @@ const language = createLanguage<Language>(parserDebugger, {
       P.string('let'),
       P.whitespace,
       l.identifier,
+      l.optionalFloorSlot,
     ).map((result) => {
-      return new LetStatementNode(result[2]);
+      return new LetStatementNode(result[2], result[3]);
     });
   },
   whileStatement: (l) => {
@@ -171,6 +173,31 @@ const language = createLanguage<Language>(parserDebugger, {
       const writeable = result[0];
       const readable = result[4];
       return new AssignmentStatementNode(writeable, readable);
+    });
+  },
+
+  optionalFloorSlot: (l) => {
+    return P.alt<Language['optionalFloorSlot']>(
+      // -
+      P.seq(
+        // -
+        P.whitespace,
+        l.floorSlot,
+      ).map((result) => {
+        return result[1];
+      }),
+      ul.ε,
+    );
+  },
+  floorSlot: (l) => {
+    return P.seq(
+      //-
+      P.string('floor'),
+      P.string('['),
+      l.positiveInteger,
+      P.string(']'),
+    ).map((result) => {
+      return result[2];
     });
   },
 
@@ -213,7 +240,6 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.alt<Language['readableReference']>(
       // -
       l.inbox,
-      l.floorSlot,
       l.identifier,
     );
   },
@@ -233,17 +259,6 @@ const language = createLanguage<Language>(parserDebugger, {
   outbox: () => {
     return P.string('outbox').map(() => {
       return new Outbox();
-    });
-  },
-  floorSlot: (l) => {
-    return P.seq(
-      //-
-      P.string('floor'),
-      P.string('['),
-      l.positiveInteger,
-      P.string(']'),
-    ).map((result) => {
-      return new FloorSlot(result[2]);
     });
   },
   identifier: () => {

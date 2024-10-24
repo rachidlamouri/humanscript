@@ -1,42 +1,82 @@
-import { FloorIndex } from './types/floorSlot';
 import { Identifier } from './types/identifier';
 
-const MATH_TEMP_KEY = Symbol('math-temp-key');
+export type FloorIndex = number;
 
-type FloorIndexKey = Identifier['name'] | typeof MATH_TEMP_KEY;
+const RESERVED_REGISTER_KEY = Symbol('reserved-register-key');
+
+type FloorIndexKey = Identifier['name'] | typeof RESERVED_REGISTER_KEY;
 
 const A_CHAR_CODE = 65;
 
+class FloorSlot {
+  isBound = false;
+
+  constructor(public index: number) {}
+
+  bind() {
+    this.isBound = true;
+  }
+}
+
 export class CompilerContext {
-  floorSize = 0;
+  floor: FloorSlot[] = [];
+  floorSlotByIndex = new Map<FloorIndex, FloorSlot>();
   floorIndexByKey = new Map<FloorIndexKey, FloorIndex>();
-  boundCount = 0;
+
   jumpCount = 0;
 
-  setFloorSize(floorSize: number): void {
-    this.floorSize = floorSize;
+  get floorSize() {
+    return this.floor.length;
   }
 
-  bindMathTempKey(): FloorIndex {
-    const existingIndex = this.floorIndexByKey.get(MATH_TEMP_KEY);
+  initFloor(floorSize: number): void {
+    Array.from({ length: floorSize }).forEach((_, index) => {
+      const slot = new FloorSlot(index);
+      this.floor.push(slot);
+      this.floorSlotByIndex.set(index, slot);
+    });
+  }
+
+  bindReservedRegisterKey(): FloorIndex {
+    const existingIndex = this.floorIndexByKey.get(RESERVED_REGISTER_KEY);
 
     if (existingIndex !== undefined) {
       return existingIndex;
     }
 
-    this.bindFloorIndexKey(MATH_TEMP_KEY);
-    const index = this.getFloorIndex(MATH_TEMP_KEY);
+    this.bindFloorSlot(RESERVED_REGISTER_KEY, null);
+    const index = this.getFloorIndex(RESERVED_REGISTER_KEY);
 
     return index;
   }
 
-  bindFloorIndexKey(identifier: FloorIndexKey): void {
-    if (this.boundCount === this.floorSize) {
-      throw new Error(`Not enough floor to bind ${identifier.toString()}`);
+  bindFloorSlot(key: FloorIndexKey, index: FloorIndex | null): void {
+    let slot: FloorSlot;
+
+    if (index === null) {
+      const nextUnboundSlot = this.floor.find((slot) => !slot.isBound);
+
+      if (nextUnboundSlot === undefined) {
+        throw new Error(
+          `Not enough floor to bind ${typeof key} key "${key.toString()}"`,
+        );
+      }
+
+      slot = nextUnboundSlot;
+    } else {
+      const slotAtIndex = this.floorSlotByIndex.get(index);
+
+      if (slotAtIndex === undefined) {
+        throw new Error(
+          `Invalid index "${index}" for floor size ${this.floorSize}`,
+        );
+      }
+
+      slot = slotAtIndex;
     }
 
-    this.floorIndexByKey.set(identifier, this.boundCount);
-    this.boundCount += 1;
+    slot.bind();
+    this.floorIndexByKey.set(key, slot.index);
   }
 
   getFloorIndex(key: FloorIndexKey): FloorIndex {

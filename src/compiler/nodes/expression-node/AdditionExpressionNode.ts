@@ -13,14 +13,14 @@ export class AdditionExpressionNode extends Node implements ReadableExpression {
   }
 
   compile(context: CompilerContext): Compiled {
-    const mathTempIndex = context.bindMathTempKey();
+    const register = context.bindReservedRegisterKey();
 
     const result = [
       this.compiledDebugName,
       ...this.left.compileRead(context),
-      `COPYTO ${mathTempIndex}`,
+      `COPYTO ${register}`,
       ...this.right.compileRead(context),
-      `ADD ${mathTempIndex}`,
+      `ADD ${register}`,
     ];
 
     return result;
