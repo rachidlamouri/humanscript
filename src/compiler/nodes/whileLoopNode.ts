@@ -1,5 +1,5 @@
-import { Compiled } from './node';
 import { CompilerContext } from '../compilerContext';
+import { Compiled } from '../types/compilable';
 import { StatementNode } from './statementNode';
 
 export class WhileLoopNode extends StatementNode {

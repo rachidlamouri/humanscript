@@ -1,5 +1,6 @@
 import { CompilerContext } from '../compilerContext';
-import { Compiled, Node } from './node';
+import { Compiled } from '../types/compilable';
+import { Node } from './node';
 
 export class FloorInitNode extends Node {
   constructor(public size: number) {
@@ -8,6 +9,6 @@ export class FloorInitNode extends Node {
 
   compile(context: CompilerContext): Compiled {
     context.setFloorSize(this.size);
-    return [];
+    return [this.compiledDebugName];
   }
 }

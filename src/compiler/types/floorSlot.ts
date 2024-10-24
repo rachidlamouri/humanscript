@@ -1,5 +1,5 @@
-import { Compiled } from '../nodes/node';
 import { CompilerContext } from '../compilerContext';
+import { Compiled } from './compilable';
 import { ReadableReference } from './readableReference';
 
 export type FloorIndex = number;

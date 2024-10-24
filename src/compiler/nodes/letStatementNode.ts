@@ -1,6 +1,6 @@
 import { CompilerContext } from '../compilerContext';
+import { Compiled } from '../types/compilable';
 import { Identifier } from '../types/identifier';
-import { Compiled } from './node';
 import { StatementNode } from './statementNode';
 
 export class LetStatementNode extends StatementNode {

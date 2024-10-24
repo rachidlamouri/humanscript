@@ -1,4 +1,4 @@
-import { Compiled } from '../nodes/node';
+import { Compiled } from './compilable';
 import { CompilerContext } from '../compilerContext';
 import { WriteableReference } from './writeableReference';
 
