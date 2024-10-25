@@ -1,9 +1,13 @@
-import { CompilerContext, Compiled } from '../../compilerContext';
+import { Compiled, CompilerContext } from '../../compilerContext';
 import { Node } from '../node';
+import { ReadableReference } from '../references/readableReference';
 import { Statement } from './statement';
 
-export class WhileStatementNode extends Node implements Statement {
-  constructor(public block: Statement[]) {
+export class IfStatementNode extends Node implements Statement {
+  constructor(
+    public reference: ReadableReference,
+    public block: Statement[],
+  ) {
     super();
   }
 
@@ -14,13 +18,14 @@ export class WhileStatementNode extends Node implements Statement {
       return statement.compileStatement(context);
     });
 
-    // TODO: support more than "true"
+    // TODO: support more than "ref != 0"
     const result = [
       // -
       this.compiledDebugName,
-      `${jumpLabel}:`,
+      ...this.reference.compileRead(context).map((line) => `  ${line}`),
+      `  JUMPZ ${jumpLabel}`,
       ...compiledBlock.map((line) => `  ${line}`),
-      `  JUMP ${jumpLabel}`,
+      `${jumpLabel}:`,
     ];
 
     return result;

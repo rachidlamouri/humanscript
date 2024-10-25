@@ -1,0 +1,15 @@
+-- FloorInitNode --
+-- LetStatementNode --
+-- WhileStatementNode --
+A:
+  -- AssignmentStatementNode --
+  INBOX
+  COPYTO 0
+  -- IfStatementNode --
+    COPYFROM 0
+    JUMPZ B
+    -- AssignmentStatementNode --
+    COPYFROM 0
+    OUTBOX
+  B:
+  JUMP A

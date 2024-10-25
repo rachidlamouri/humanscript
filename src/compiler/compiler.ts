@@ -14,6 +14,7 @@ import { IdentifierNode } from './nodes/references/identifierNode';
 import { FloorInitNode } from './nodes/statements/floorInitNode';
 import { ReadableExpression } from './nodes/expressions/readableExpression';
 import { CompilerContext, FloorIndex } from './compilerContext';
+import { IfStatementNode } from './nodes/statements/ifStatementNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -28,12 +29,14 @@ type Language = {
   statement: Statement;
   letStatement: LetStatementNode;
   whileStatement: WhileStatementNode;
+  ifStatement: IfStatementNode;
   assignmentStatement: AssignmentStatementNode;
 
   optionalFloorSlot: FloorIndex | null;
   floorSlot: FloorIndex;
 
-  condition: unknown;
+  whileCondition: null;
+  ifCondition: ReadableReference;
   block: Statement[];
 
   readableExpression: ReadableExpression;
@@ -126,6 +129,7 @@ const language = createLanguage<Language>(parserDebugger, {
       // -
       l.letStatement,
       l.whileStatement,
+      l.ifStatement,
       l.assignmentStatement,
     );
   },
@@ -145,11 +149,23 @@ const language = createLanguage<Language>(parserDebugger, {
       // -
       P.string('while'),
       P.whitespace,
-      l.condition,
+      l.whileCondition,
       P.whitespace,
       l.block,
     ).map((result) => {
       return new WhileStatementNode(result[4]);
+    });
+  },
+  ifStatement: (l) => {
+    return P.seq(
+      // -
+      P.string('if'),
+      P.optWhitespace,
+      l.ifCondition,
+      P.optWhitespace,
+      l.block,
+    ).map((result) => {
+      return new IfStatementNode(result[2], result[4]);
     });
   },
   assignmentStatement: (l) => {
@@ -192,8 +208,23 @@ const language = createLanguage<Language>(parserDebugger, {
     });
   },
 
-  condition: () => {
-    return P.string('true');
+  ifCondition: (l) => {
+    return P.seq(
+      P.string('('),
+      P.optWhitespace,
+      l.readableReference,
+      P.optWhitespace,
+      P.string('!='),
+      P.optWhitespace,
+      P.string('0'),
+      P.optWhitespace,
+      P.string(')'),
+    ).map((result) => {
+      return result[2];
+    });
+  },
+  whileCondition: () => {
+    return P.string('true').result(null);
   },
   block: (l) => {
     return P.seq(
