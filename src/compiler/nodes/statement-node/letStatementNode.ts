@@ -1,9 +1,9 @@
-import { CompilerContext, FloorIndex } from '../../compilerContext';
-import { Compiled } from '../interfaces/compilable';
+import { CompilerContext, Compiled, FloorIndex } from '../../compilerContext';
+import { Node } from '../node';
 import { IdentifierNode } from '../reference-node/identifierNode';
-import { StatementNode } from './statementNode';
+import { Statement } from './statement';
 
-export class LetStatementNode extends StatementNode {
+export class LetStatementNode extends Node implements Statement {
   constructor(
     public identifier: IdentifierNode,
     public floorIndex: FloorIndex | null,
@@ -11,7 +11,7 @@ export class LetStatementNode extends StatementNode {
     super();
   }
 
-  compile(context: CompilerContext): Compiled {
+  compileStatement(context: CompilerContext): Compiled {
     context.bindFloorSlot(this.identifier.name, this.floorIndex);
 
     return [this.compiledDebugName];

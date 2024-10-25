@@ -1,17 +1,17 @@
-import { CompilerContext } from '../../compilerContext';
-import { Compiled } from '../interfaces/compilable';
-import { StatementNode } from './statementNode';
+import { CompilerContext, Compiled } from '../../compilerContext';
+import { Node } from '../node';
+import { Statement } from './statement';
 
-export class WhileStatementNode extends StatementNode {
-  constructor(public block: StatementNode[]) {
+export class WhileStatementNode extends Node implements Statement {
+  constructor(public block: Statement[]) {
     super();
   }
 
-  compile(context: CompilerContext): Compiled {
+  compileStatement(context: CompilerContext): Compiled {
     const jumpLabel = context.createJumpLabel();
 
     const compiledBlock = this.block.flatMap((statement) => {
-      return statement.compile(context);
+      return statement.compileStatement(context);
     });
 
     const result = [

@@ -1,8 +1,6 @@
-import { CompilerContext } from '../../compilerContext';
-import { Compiled } from '../interfaces/compilable';
-import { ReadableExpression } from '../interfaces/readableExpression';
-import { ReadableReference } from '../interfaces/readableReference';
-4;
+import { Compiled, CompilerContext } from '../../compilerContext';
+import { ReadableExpression } from './readableExpression';
+import { ReadableReference } from '../reference-node/readableReference';
 import { Node } from '../node';
 
 export class AdditionExpressionNode extends Node implements ReadableExpression {
@@ -13,7 +11,7 @@ export class AdditionExpressionNode extends Node implements ReadableExpression {
     super();
   }
 
-  compile(context: CompilerContext): Compiled {
+  compileExpression(context: CompilerContext): Compiled {
     const register = context.bindReservedRegisterKey();
 
     const result = [
@@ -25,9 +23,5 @@ export class AdditionExpressionNode extends Node implements ReadableExpression {
     ];
 
     return result;
-  }
-
-  compileExpression(context: CompilerContext): Compiled {
-    return this.compile(context);
   }
 }

@@ -1,5 +1,7 @@
 import { IdentifierNode } from './nodes/reference-node/identifierNode';
 
+export type Compiled = string[];
+
 export type FloorIndex = number;
 
 const RESERVED_REGISTER_KEY = Symbol('reserved-register-key');

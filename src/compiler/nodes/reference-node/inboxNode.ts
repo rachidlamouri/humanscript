@@ -1,9 +1,8 @@
-import { Compiled } from '../interfaces/compilable';
-import { CompilerContext } from '../../compilerContext';
-import { ReadableReference } from '../interfaces/readableReference';
-import { ReferenceNode } from './referenceNode';
+import { CompilerContext, Compiled } from '../../compilerContext';
+import { Node } from '../node';
+import { ReadableReference } from './readableReference';
 
-export class InboxNode extends ReferenceNode implements ReadableReference {
+export class InboxNode extends Node implements ReadableReference {
   compileRead(_context: CompilerContext): Compiled {
     return ['INBOX'];
   }

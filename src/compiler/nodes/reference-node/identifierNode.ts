@@ -1,11 +1,10 @@
-import { Compiled } from '../interfaces/compilable';
-import { CompilerContext } from '../../compilerContext';
-import { ReadableReference } from '../interfaces/readableReference';
-import { WriteableReference } from '../interfaces/writeableReference';
-import { ReferenceNode } from './referenceNode';
+import { Compiled, CompilerContext } from '../../compilerContext';
+import { ReadableReference } from './readableReference';
+import { WriteableReference } from './writeableReference';
+import { Node } from '../node';
 
 export class IdentifierNode
-  extends ReferenceNode
+  extends Node
   implements ReadableReference, WriteableReference
 {
   constructor(public name: string) {

@@ -1,8 +1,8 @@
-import { Compiled } from '../interfaces/compilable';
-import { CompilerContext } from '../../compilerContext';
-import { WriteableReference } from '../interfaces/writeableReference';
+import { CompilerContext, Compiled } from '../../compilerContext';
+import { Node } from '../node';
+import { WriteableReference } from './writeableReference';
 
-export class OutboxNode implements WriteableReference {
+export class OutboxNode extends Node implements WriteableReference {
   compileWrite(_context: CompilerContext): Compiled {
     return ['OUTBOX'];
   }

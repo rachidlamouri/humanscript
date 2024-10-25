@@ -1,10 +1,10 @@
-import { ReadableExpression } from '../interfaces/readableExpression';
-import { WriteableReference } from '../interfaces/writeableReference';
-import { Compiled } from '../interfaces/compilable';
-import { CompilerContext } from '../../compilerContext';
-import { StatementNode } from './statementNode';
+import { ReadableExpression } from '../expression-node/readableExpression';
+import { WriteableReference } from '../reference-node/writeableReference';
+import { CompilerContext, Compiled } from '../../compilerContext';
+import { Node } from '../node';
+import { Statement } from './statement';
 
-export class AssignmentStatementNode extends StatementNode {
+export class AssignmentStatementNode extends Node implements Statement {
   constructor(
     public writeable: WriteableReference,
     public readable: ReadableExpression,
@@ -12,7 +12,7 @@ export class AssignmentStatementNode extends StatementNode {
     super();
   }
 
-  compile(context: CompilerContext): Compiled {
+  compileStatement(context: CompilerContext): Compiled {
     const result: Compiled = [
       this.compiledDebugName,
       ...this.readable.compileExpression(context),

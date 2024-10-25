@@ -1,32 +1,31 @@
 import P from 'parsimmon';
 import { AssignmentStatementNode } from './nodes/statement-node/assignmentStatementNode';
 import { createLanguage, parserDebugger, ul } from '../utils/parserUtils';
-import { Node } from './nodes/node';
 import { assertIsArray } from '../utils/assertIsArray';
-import { StatementNode } from './nodes/statement-node/statementNode';
+import { assertIsStatement, Statement } from './nodes/statement-node/statement';
 import { WhileStatementNode } from './nodes/statement-node/whileStatementNode';
 import { LetStatementNode } from './nodes/statement-node/letStatementNode';
-import { AdditionExpressionNode } from './nodes/expression-node/AdditionExpressionNode';
-import { ReadableReference } from './nodes/interfaces/readableReference';
+import { AdditionExpressionNode } from './nodes/expression-node/additionExpressionNode';
+import { ReadableReference } from './nodes/reference-node/readableReference';
 import { InboxNode } from './nodes/reference-node/inboxNode';
 import { OutboxNode } from './nodes/reference-node/outboxNode';
-import { WriteableReference } from './nodes/interfaces/writeableReference';
+import { WriteableReference } from './nodes/reference-node/writeableReference';
 import { IdentifierNode } from './nodes/reference-node/identifierNode';
-import { FloorInitNode } from './nodes/FloorInitNode';
-import { ReadableExpression } from './nodes/interfaces/readableExpression';
+import { FloorInitNode } from './nodes/statement-node/floorInitNode';
+import { ReadableExpression } from './nodes/expression-node/readableExpression';
 import { CompilerContext, FloorIndex } from './compilerContext';
 
-type NestedStatementNodeList = [StatementNode, unknown];
+type NestedStatementNodeList = [Statement, unknown];
 
 type Language = {
-  program: Node[];
+  program: Statement[];
 
   floorInit: FloorInitNode;
 
-  statementList: StatementNode[];
+  statementList: Statement[];
   recursiveStatementList: NestedStatementNodeList;
 
-  statement: StatementNode;
+  statement: Statement;
   letStatement: LetStatementNode;
   whileStatement: WhileStatementNode;
   assignmentStatement: AssignmentStatementNode;
@@ -35,7 +34,7 @@ type Language = {
   floorSlot: FloorIndex;
 
   condition: unknown;
-  block: StatementNode[];
+  block: Statement[];
 
   readableExpression: ReadableExpression;
   additionExpression: AdditionExpressionNode;
@@ -49,14 +48,6 @@ type Language = {
 
   positiveInteger: number;
 };
-
-function assertIsStatementNode(value: unknown): asserts value is StatementNode {
-  if (value instanceof StatementNode) {
-    return;
-  }
-
-  throw new Error('Expected a StatementNode');
-}
 
 const language = createLanguage<Language>(parserDebugger, {
   program: (l) => {
@@ -95,14 +86,14 @@ const language = createLanguage<Language>(parserDebugger, {
   },
   statementList: (l) => {
     return l.recursiveStatementList.map((result) => {
-      const statementList: Node[] = [];
+      const statementList: Statement[] = [];
       let nextResult: unknown = result;
 
       do {
         assertIsArray(nextResult);
 
         const [statement] = nextResult;
-        assertIsStatementNode(statement);
+        assertIsStatement(statement);
 
         statementList.push(statement);
         nextResult = nextResult[1];
@@ -279,7 +270,9 @@ export const compile = (code: string): string => {
   const root = language.program.tryParse(code);
 
   const context = new CompilerContext();
-  const result = root.flatMap((node) => node.compile(context)).join('\n');
+  const result = root
+    .flatMap((node) => node.compileStatement(context))
+    .join('\n');
 
   return result;
 };
