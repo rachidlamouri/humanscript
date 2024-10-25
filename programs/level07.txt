@@ -1,0 +1,11 @@
+floor size 9
+
+let tmp
+
+while true { 
+  tmp = inbox
+
+  if (tmp != 0) {
+    outbox = tmp
+  }
+}

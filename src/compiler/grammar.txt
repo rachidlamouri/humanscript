@@ -4,15 +4,16 @@ FLOOR_INIT      : floor size INT
 
 STATEMENT_LIST  : STATEMENT STATEMENT_LIST | STATEMENT
 
-STATEMENT       : LET | WHILE | ASSIGN
+STATEMENT       : LET | WHILE | ASSIGN | IF
 LET             : let ID OPT_FLOOR_SLOT
 WHILE           : while CONDITION BLOCK
 ASSIGN          : WRITE_REF = READ_EXP
+IF              : if CONDITION BLOCK
 
 OPT_FLOOR_SLOT  : FLOOR_SLOT | ε
 FLOOR_SLOT      : floor [ POS_INT ]
 
-CONDITION       : true
+CONDITION       : true | ( READ_REF != 0 )
 BLOCK           : { STATEMENT_LIST }
 
 READ_EXP        : ADD_EXP | READ_REF

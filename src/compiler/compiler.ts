@@ -15,6 +15,8 @@ import { Identifier } from './types/identifier';
 import { FloorInitNode } from './nodes/FloorInitNode';
 import { ReadableExpression } from './types/readableExpression';
 import { CompilerContext, FloorIndex } from './compilerContext';
+import { IfStatementNode } from './nodes/statement-node/ifStatementNode';
+import { ConditionNode } from './nodes/conditionNode';
 
 type NestedStatementNodeList = [StatementNode, unknown];
 
@@ -30,11 +32,12 @@ type Language = {
   letStatement: LetStatementNode;
   whileStatement: WhileStatementNode;
   assignmentStatement: AssignmentStatementNode;
+  ifStatement: IfStatementNode;
 
   optionalFloorSlot: FloorIndex | null;
   floorSlot: FloorIndex;
 
-  condition: unknown;
+  condition: ConditionNode;
   block: StatementNode[];
 
   readableExpression: ReadableExpression;
@@ -175,6 +178,11 @@ const language = createLanguage<Language>(parserDebugger, {
       return new AssignmentStatementNode(writeable, readable);
     });
   },
+  ifStatement: () => {
+    return P.string('true').map(() => {
+      return new IfStatementNode();
+    })
+  },
 
   optionalFloorSlot: (l) => {
     return P.alt<Language['optionalFloorSlot']>(
@@ -202,7 +210,9 @@ const language = createLanguage<Language>(parserDebugger, {
   },
 
   condition: () => {
-    return P.string('true');
+    return P.string('true').map(() => {
+      return new ConditionNode();
+    })
   },
   block: (l) => {
     return P.seq(
