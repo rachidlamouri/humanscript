@@ -1,4 +1,4 @@
-import { IdentifierNode } from './nodes/reference-node/identifierNode';
+import { IdentifierNode } from './nodes/references/identifierNode';
 
 export type Compiled = string[];
 

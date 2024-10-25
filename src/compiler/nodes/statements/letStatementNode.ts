@@ -1,6 +1,6 @@
 import { CompilerContext, Compiled, FloorIndex } from '../../compilerContext';
 import { Node } from '../node';
-import { IdentifierNode } from '../reference-node/identifierNode';
+import { IdentifierNode } from '../references/identifierNode';
 import { Statement } from './statement';
 
 export class LetStatementNode extends Node implements Statement {

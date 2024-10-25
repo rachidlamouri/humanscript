@@ -1,5 +1,5 @@
-import { ReadableExpression } from '../expression-node/readableExpression';
-import { WriteableReference } from '../reference-node/writeableReference';
+import { ReadableExpression } from '../expressions/readableExpression';
+import { WriteableReference } from '../references/writeableReference';
 import { CompilerContext, Compiled } from '../../compilerContext';
 import { Node } from '../node';
 import { Statement } from './statement';

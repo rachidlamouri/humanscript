@@ -1,6 +1,6 @@
 import { Compiled, CompilerContext } from '../../compilerContext';
 import { ReadableExpression } from './readableExpression';
-import { ReadableReference } from '../reference-node/readableReference';
+import { ReadableReference } from '../references/readableReference';
 import { Node } from '../node';
 
 export class AdditionExpressionNode extends Node implements ReadableExpression {
