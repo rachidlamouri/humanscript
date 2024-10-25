@@ -1,6 +1,6 @@
-import { ReadableExpression } from '../../types/readableExpression';
-import { WriteableReference } from '../../types/writeableReference';
-import { Compiled } from '../../types/compilable';
+import { ReadableExpression } from '../interfaces/readableExpression';
+import { WriteableReference } from '../interfaces/writeableReference';
+import { Compiled } from '../interfaces/compilable';
 import { CompilerContext } from '../../compilerContext';
 import { StatementNode } from './statementNode';
 

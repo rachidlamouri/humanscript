@@ -1,5 +1,5 @@
 import { CompilerContext } from '../compilerContext';
-import { Compilable, Compiled } from '../types/compilable';
+import { Compilable, Compiled } from './interfaces/compilable';
 
 export abstract class Node implements Compilable {
   abstract compile(context: CompilerContext): Compiled;

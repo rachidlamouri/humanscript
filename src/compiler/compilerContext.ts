@@ -1,10 +1,10 @@
-import { Identifier } from './types/identifier';
+import { IdentifierNode } from './nodes/reference-node/identifierNode';
 
 export type FloorIndex = number;
 
 const RESERVED_REGISTER_KEY = Symbol('reserved-register-key');
 
-type FloorIndexKey = Identifier['name'] | typeof RESERVED_REGISTER_KEY;
+type FloorIndexKey = IdentifierNode['name'] | typeof RESERVED_REGISTER_KEY;
 
 const A_CHAR_CODE = 65;
 

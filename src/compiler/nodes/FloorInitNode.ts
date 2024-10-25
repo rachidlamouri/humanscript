@@ -1,5 +1,5 @@
 import { CompilerContext } from '../compilerContext';
-import { Compiled } from '../types/compilable';
+import { Compiled } from './interfaces/compilable';
 import { Node } from './node';
 
 export class FloorInitNode extends Node {

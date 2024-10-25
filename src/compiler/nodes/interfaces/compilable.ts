@@ -1,4 +1,4 @@
-import { CompilerContext } from '../compilerContext';
+import { CompilerContext } from '../../compilerContext';
 
 export type Compiled = string[];
 

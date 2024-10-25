@@ -7,13 +7,13 @@ import { StatementNode } from './nodes/statement-node/statementNode';
 import { WhileStatementNode } from './nodes/statement-node/whileStatementNode';
 import { LetStatementNode } from './nodes/statement-node/letStatementNode';
 import { AdditionExpressionNode } from './nodes/expression-node/AdditionExpressionNode';
-import { ReadableReference } from './types/readableReference';
-import { Inbox } from './types/inbox';
-import { Outbox } from './types/outbox';
-import { WriteableReference } from './types/writeableReference';
-import { Identifier } from './types/identifier';
+import { ReadableReference } from './nodes/interfaces/readableReference';
+import { InboxNode } from './nodes/reference-node/inboxNode';
+import { OutboxNode } from './nodes/reference-node/outboxNode';
+import { WriteableReference } from './nodes/interfaces/writeableReference';
+import { IdentifierNode } from './nodes/reference-node/identifierNode';
 import { FloorInitNode } from './nodes/FloorInitNode';
-import { ReadableExpression } from './types/readableExpression';
+import { ReadableExpression } from './nodes/interfaces/readableExpression';
 import { CompilerContext, FloorIndex } from './compilerContext';
 
 type NestedStatementNodeList = [StatementNode, unknown];
@@ -43,9 +43,9 @@ type Language = {
   readableReference: ReadableReference;
   writeableReference: WriteableReference;
 
-  inbox: Inbox;
-  outbox: Outbox;
-  identifier: Identifier;
+  inbox: InboxNode;
+  outbox: OutboxNode;
+  identifier: IdentifierNode;
 
   positiveInteger: number;
 };
@@ -253,17 +253,17 @@ const language = createLanguage<Language>(parserDebugger, {
 
   inbox: () => {
     return P.string('inbox').map(() => {
-      return new Inbox();
+      return new InboxNode();
     });
   },
   outbox: () => {
     return P.string('outbox').map(() => {
-      return new Outbox();
+      return new OutboxNode();
     });
   },
   identifier: () => {
     return P.regex(/[a-zA-z]+/).map((result) => {
-      return new Identifier(result);
+      return new IdentifierNode(result);
     });
   },
 

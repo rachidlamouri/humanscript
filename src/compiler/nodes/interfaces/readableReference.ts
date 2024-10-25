@@ -1,6 +1,6 @@
 import { Merge } from 'type-fest';
 import { Compiled } from './compilable';
-import { CompilerContext } from '../compilerContext';
+import { CompilerContext } from '../../compilerContext';
 import { ReadableExpression } from './readableExpression';
 
 export type ReadableReference = Merge<

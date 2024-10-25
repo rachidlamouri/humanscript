@@ -1,11 +1,11 @@
 import { CompilerContext, FloorIndex } from '../../compilerContext';
-import { Compiled } from '../../types/compilable';
-import { Identifier } from '../../types/identifier';
+import { Compiled } from '../interfaces/compilable';
+import { IdentifierNode } from '../reference-node/identifierNode';
 import { StatementNode } from './statementNode';
 
 export class LetStatementNode extends StatementNode {
   constructor(
-    public identifier: Identifier,
+    public identifier: IdentifierNode,
     public floorIndex: FloorIndex | null,
   ) {
     super();
