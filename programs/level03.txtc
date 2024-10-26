@@ -1,13 +1,23 @@
--- FloorInitNode --
--- LetStatementNode --
--- LetStatementNode --
--- LetStatementNode --
--- AssignmentStatementNode --
-COPYFROM 4
+-- FloorInitNode
+  -- register -> null
+
+-- LetStatementNode
+  -- b -> floor[4]
+
+-- LetStatementNode
+  -- u -> floor[0]
+
+-- LetStatementNode
+  -- g -> floor[3]
+
+-- AssignmentStatementNode
+COPYFROM 4 --$b
 OUTBOX
--- AssignmentStatementNode --
-COPYFROM 0
+
+-- AssignmentStatementNode
+COPYFROM 0 --$u
 OUTBOX
--- AssignmentStatementNode --
-COPYFROM 3
+
+-- AssignmentStatementNode
+COPYFROM 3 --$g
 OUTBOX

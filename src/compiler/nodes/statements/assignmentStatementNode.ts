@@ -1,8 +1,10 @@
 import { ReadableExpression } from '../expressions/readableExpression';
 import { WriteableReference } from '../references/writeableReference';
-import { CompilerContext, Compiled } from '../../compilerContext';
+import { CompilerContext } from '../../compilerContext';
+import { Compiled } from '../../compiled';
 import { Node } from '../node';
 import { Statement } from './statement';
+import { Assembly } from '../../assembly';
 
 export class AssignmentStatementNode extends Node implements Statement {
   constructor(
@@ -14,9 +16,10 @@ export class AssignmentStatementNode extends Node implements Statement {
 
   compileStatement(context: CompilerContext): Compiled {
     const result: Compiled = [
-      this.compiledDebugName,
+      Assembly.DEBUG(context, this.className),
       ...this.readable.compileExpression(context),
       ...this.writeable.compileWrite(context),
+      Assembly.LINE_FEED(context),
     ];
 
     return result;

@@ -1,33 +1,43 @@
--- FloorInitNode --
--- # For each two things in the --
--- # INBOX, first subtract the 1st --
--- # from the 2nd and put the --
--- # result in the OUTBOX. AND --
--- # THEN, subtract the 2nd from --
--- # the 1st and put the result in --
--- # the OUTBOX. Repeat. --
--- LetStatementNode --
--- LetStatementNode --
--- WhileStatementNode --
+-- FloorInitNode
+  -- register -> floor[2]
+
+-- # For each two things in the
+-- # INBOX, first subtract the 1st
+-- # from the 2nd and put the
+-- # result in the OUTBOX. AND
+-- # THEN, subtract the 2nd from
+-- # the 1st and put the result in
+-- # the OUTBOX. Repeat.
+-- LetStatementNode
+  -- first -> floor[0]
+
+-- LetStatementNode
+  -- second -> floor[1]
+
+-- WhileStatementNode
 A:
-  -- AssignmentStatementNode --
+  -- AssignmentStatementNode
   INBOX
-  COPYTO 0
-  -- AssignmentStatementNode --
+  COPYTO 0 --$first
+  
+  -- AssignmentStatementNode
   INBOX
-  COPYTO 1
-  -- AssignmentStatementNode --
-  -- SubtractionExpressionNode --
-  COPYFROM 0
-  COPYTO 2
-  COPYFROM 1
-  SUB 2
+  COPYTO 1 --$second
+  
+  -- AssignmentStatementNode
+  -- SubtractionExpressionNode
+  COPYFROM 0 --$first
+  COPYTO 2 --$register
+  COPYFROM 1 --$second
+  SUB 2 --$register
   OUTBOX
-  -- AssignmentStatementNode --
-  -- SubtractionExpressionNode --
-  COPYFROM 1
-  COPYTO 2
-  COPYFROM 0
-  SUB 2
+  
+  -- AssignmentStatementNode
+  -- SubtractionExpressionNode
+  COPYFROM 1 --$second
+  COPYTO 2 --$register
+  COPYFROM 0 --$first
+  SUB 2 --$register
   OUTBOX
-  JUMP A
+  
+JUMP A

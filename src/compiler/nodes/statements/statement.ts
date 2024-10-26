@@ -1,5 +1,5 @@
-import { assertIsNotNull } from '../../../utils/assertIsNotNull';
-import { CompilerContext, Compiled } from '../../compilerContext';
+import { CompilerContext } from '../../compilerContext';
+import { Compiled } from '../../compiled';
 
 export type Statement = {
   compileStatement(context: CompilerContext): Compiled;

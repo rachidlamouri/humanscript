@@ -1,7 +1,9 @@
-import { Compiled, CompilerContext } from '../../compilerContext';
+import { CompilerContext } from '../../compilerContext';
+import { Compiled } from '../../compiled';
 import { Node } from '../node';
 import { ReadableReference } from '../references/readableReference';
 import { Statement } from './statement';
+import { Assembly } from '../../assembly';
 
 export class IfStatementNode extends Node implements Statement {
   constructor(
@@ -16,31 +18,39 @@ export class IfStatementNode extends Node implements Statement {
     const ifJumpLabel = context.createJumpLabel();
     const endJumpLabel = context.createJumpLabel();
 
+    context.incrementDepth();
+    context.incrementDepth();
     const compiledBlock = this.block.flatMap((statement) => {
       return statement.compileStatement(context);
     });
+    context.decrementDepth();
+    context.decrementDepth();
 
-    const formattedBLock = compiledBlock.map((line) => `  ${line}`);
-    const ifBlock = this.isEqualToZero ? formattedBLock : [];
-    const elseBlock = this.isEqualToZero ? [] : formattedBLock;
+    const ifBlock = this.isEqualToZero ? compiledBlock : [];
+    const elseBlock = this.isEqualToZero ? [] : compiledBlock;
 
-    const result = [
-      this.compiledDebugName,
-      // condition
-      `  -- condition --`,
-      ...this.reference.compileRead(context).map((line) => `  ${line}`),
-      `  JUMPZ ${ifJumpLabel}`,
-      // else
-      `  -- else --`,
-      ...elseBlock,
-      `  JUMP ${endJumpLabel}`,
-      // if
-      `  -- if --`,
-      `${ifJumpLabel}:`,
-      ...ifBlock,
-      // end
-      `${endJumpLabel}:`,
-    ];
+    const result: Compiled = [];
+    result.push(Assembly.DEBUG(context, this.className));
+    context.incrementDepth();
+    // condition
+    result.push(Assembly.DEBUG(context, 'condition'));
+    context.incrementDepth();
+    result.push(...this.reference.compileRead(context));
+    result.push(Assembly.JUMPZ(context, ifJumpLabel));
+    context.decrementDepth();
+    // else
+    result.push(Assembly.DEBUG(context, 'else'));
+    context.incrementDepth();
+    result.push(...elseBlock);
+    result.push(Assembly.JUMP(context, endJumpLabel));
+    context.decrementDepth();
+    // if
+    result.push(Assembly.DEBUG(context, 'if'));
+    context.decrementDepth();
+    result.push(Assembly.LABEL(context, ifJumpLabel));
+    result.push(...ifBlock);
+    // end
+    result.push(Assembly.LABEL(context, endJumpLabel));
 
     return result;
   }

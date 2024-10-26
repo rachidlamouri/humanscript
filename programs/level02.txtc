@@ -1,6 +1,7 @@
--- WhileStatementNode --
+-- WhileStatementNode
 A:
-  -- AssignmentStatementNode --
+  -- AssignmentStatementNode
   INBOX
   OUTBOX
-  JUMP A
+  
+JUMP A

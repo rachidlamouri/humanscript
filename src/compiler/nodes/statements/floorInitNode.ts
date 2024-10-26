@@ -1,6 +1,8 @@
-import { CompilerContext, Compiled } from '../../compilerContext';
+import { CompilerContext } from '../../compilerContext';
+import { Compiled } from '../../compiled';
 import { Node } from '../node';
 import { Statement } from './statement';
+import { Assembly } from '../../assembly';
 
 export class FloorInitNode extends Node implements Statement {
   constructor(public size: number) {
@@ -9,6 +11,14 @@ export class FloorInitNode extends Node implements Statement {
 
   compileStatement(context: CompilerContext): Compiled {
     context.initFloor(this.size);
-    return [this.compiledDebugName];
+
+    const result: Compiled = [];
+    result.push(Assembly.DEBUG(context, this.className));
+    context.incrementDepth();
+    result.push(Assembly.DEBUG_MAPPING(context, context.registerKey));
+    context.decrementDepth();
+    result.push(Assembly.LINE_FEED(context));
+
+    return result;
   }
 }

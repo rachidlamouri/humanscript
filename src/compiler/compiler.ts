@@ -17,6 +17,7 @@ import { CompilerContext, FloorIndex } from './compilerContext';
 import { IfStatementNode } from './nodes/statements/ifStatementNode';
 import { CommentNode } from './nodes/statements/commentNode';
 import { SubtractionExpressionNode } from './nodes/expressions/subtractionExpressionNode';
+import { CompiledPart } from './compiledPart';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -340,12 +341,14 @@ const language = createLanguage<Language>(parserDebugger, {
 });
 
 export const compile = (code: string): string => {
-  const root = language.program.tryParse(code);
+  const statements = language.program.tryParse(code);
 
   const context = new CompilerContext();
-  const result = root
-    .flatMap((node) => node.compileStatement(context))
-    .join('\n');
+  const compiledParts = statements.flatMap<CompiledPart>((node) => {
+    return node.compileStatement(context);
+  });
+
+  const result = compiledParts.map((part) => part.serialized).join('\n');
 
   return result;
 };

@@ -1,14 +1,21 @@
--- FloorInitNode --
--- LetStatementNode --
--- WhileStatementNode --
+-- FloorInitNode
+  -- register -> null
+
+-- LetStatementNode
+  -- tmp -> floor[0]
+
+-- WhileStatementNode
 A:
-  -- AssignmentStatementNode --
+  -- AssignmentStatementNode
   INBOX
-  COPYTO 0
-  -- AssignmentStatementNode --
+  COPYTO 0 --$tmp
+  
+  -- AssignmentStatementNode
   INBOX
   OUTBOX
-  -- AssignmentStatementNode --
-  COPYFROM 0
+  
+  -- AssignmentStatementNode
+  COPYFROM 0 --$tmp
   OUTBOX
-  JUMP A
+  
+JUMP A

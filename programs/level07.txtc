@@ -1,20 +1,26 @@
--- FloorInitNode --
--- LetStatementNode --
--- WhileStatementNode --
+-- FloorInitNode
+  -- register -> null
+
+-- LetStatementNode
+  -- tmp -> floor[0]
+
+-- WhileStatementNode
 A:
-  -- AssignmentStatementNode --
+  -- AssignmentStatementNode
   INBOX
-  COPYTO 0
-  -- IfStatementNode --
-    -- condition --
-    COPYFROM 0
-    JUMPZ B
-    -- else --
-    -- AssignmentStatementNode --
-    COPYFROM 0
-    OUTBOX
-    JUMP C
-    -- if --
+  COPYTO 0 --$tmp
+  
+  -- IfStatementNode
+    -- condition
+      COPYFROM 0 --$tmp
+      JUMPZ B
+    -- else
+      -- AssignmentStatementNode
+      COPYFROM 0 --$tmp
+      OUTBOX
+      
+      JUMP C
+    -- if
   B:
   C:
-  JUMP A
+JUMP A

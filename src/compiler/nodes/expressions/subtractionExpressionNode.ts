@@ -1,7 +1,9 @@
-import { CompilerContext, Compiled } from '../../compilerContext';
+import { CompilerContext } from '../../compilerContext';
+import { Compiled } from '../../compiled';
 import { Node } from '../node';
 import { ReadableReference } from '../references/readableReference';
 import { ReadableExpression } from './readableExpression';
+import { Assembly } from '../../assembly';
 
 export class SubtractionExpressionNode
   extends Node
@@ -15,14 +17,14 @@ export class SubtractionExpressionNode
   }
 
   compileExpression(context: CompilerContext): Compiled {
-    const register = context.bindReservedRegisterKey();
+    context.bindReservedRegisterKey();
 
     const result = [
-      this.compiledDebugName,
+      Assembly.DEBUG(context, this.className),
       ...this.right.compileRead(context),
-      `COPYTO ${register}`,
+      Assembly.COPYTO(context, context.registerKey),
       ...this.left.compileRead(context),
-      `SUB ${register}`,
+      Assembly.SUB(context),
     ];
 
     return result;

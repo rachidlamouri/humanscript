@@ -1,7 +1,9 @@
-import { Compiled, CompilerContext } from '../../compilerContext';
+import { CompilerContext } from '../../compilerContext';
+import { Compiled } from '../../compiled';
 import { ReadableReference } from './readableReference';
 import { WriteableReference } from './writeableReference';
 import { Node } from '../node';
+import { Assembly } from '../../assembly';
 
 export class IdentifierNode
   extends Node
@@ -12,9 +14,7 @@ export class IdentifierNode
   }
 
   compileRead(context: CompilerContext): Compiled {
-    const floorIndex = context.getFloorIndex(this.name);
-
-    return [`COPYFROM ${floorIndex}`];
+    return [Assembly.COPYFROM(context, this.name)];
   }
 
   compileExpression(context: CompilerContext): Compiled {
@@ -22,8 +22,6 @@ export class IdentifierNode
   }
 
   compileWrite(context: CompilerContext): Compiled {
-    const floorIndex = context.getFloorIndex(this.name);
-
-    return [`COPYTO ${floorIndex}`];
+    return [Assembly.COPYTO(context, this.name)];
   }
 }

@@ -1,9 +1,11 @@
-import { CompilerContext, Compiled } from '../../compilerContext';
+import { CompilerContext } from '../../compilerContext';
+import { Compiled } from '../../compiled';
 import { Node } from '../node';
 import { WriteableReference } from './writeableReference';
+import { Assembly } from '../../assembly';
 
 export class OutboxNode extends Node implements WriteableReference {
-  compileWrite(_context: CompilerContext): Compiled {
-    return ['OUTBOX'];
+  compileWrite(context: CompilerContext): Compiled {
+    return [Assembly.OUTBOX(context)];
   }
 }

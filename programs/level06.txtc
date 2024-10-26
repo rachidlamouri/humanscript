@@ -1,11 +1,14 @@
--- FloorInitNode --
--- WhileStatementNode --
+-- FloorInitNode
+  -- register -> floor[0]
+
+-- WhileStatementNode
 A:
-  -- AssignmentStatementNode --
-  -- AdditionExpressionNode --
+  -- AssignmentStatementNode
+  -- AdditionExpressionNode
   INBOX
-  COPYTO 0
+  COPYTO 0 --$register
   INBOX
-  ADD 0
+  ADD 0 --$register
   OUTBOX
-  JUMP A
+  
+JUMP A

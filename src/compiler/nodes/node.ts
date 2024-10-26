@@ -1,5 +1,5 @@
 export abstract class Node {
-  get compiledDebugName(): string {
-    return `-- ${this.constructor.name} --`;
+  get className(): string {
+    return this.constructor.name;
   }
 }

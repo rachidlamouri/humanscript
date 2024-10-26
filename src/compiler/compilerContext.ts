@@ -1,14 +1,22 @@
 import { IdentifierNode } from './nodes/references/identifierNode';
-
-export type Compiled = string[];
-
 export type FloorIndex = number;
 
-const RESERVED_REGISTER_KEY = Symbol('reserved-register-key');
+export type FloorIndexKey = IdentifierNode['name'];
 
-type FloorIndexKey = IdentifierNode['name'] | typeof RESERVED_REGISTER_KEY;
+const REGISTER_KEY = 'register';
 
 const A_CHAR_CODE = 65;
+
+const reservedWords = new Set([
+  // -
+  'floor',
+  'let',
+  'inbox',
+  'outbox',
+  'while',
+  'if',
+  'register',
+]);
 
 class FloorSlot {
   isBound = false;
@@ -27,6 +35,20 @@ export class CompilerContext {
 
   jumpCount = 0;
 
+  outputDepth = 0;
+
+  registerKey = REGISTER_KEY;
+
+  incrementDepth(): never[] {
+    this.outputDepth += 1;
+    return [];
+  }
+
+  decrementDepth(): never[] {
+    this.outputDepth -= 1;
+    return [];
+  }
+
   get floorSize() {
     return this.floor.length;
   }
@@ -40,19 +62,23 @@ export class CompilerContext {
   }
 
   bindReservedRegisterKey(): FloorIndex {
-    const existingIndex = this.floorIndexByKey.get(RESERVED_REGISTER_KEY);
+    const existingIndex = this.floorIndexByKey.get(REGISTER_KEY);
 
     if (existingIndex !== undefined) {
       return existingIndex;
     }
 
-    this.bindFloorSlot(RESERVED_REGISTER_KEY, null);
-    const index = this.getFloorIndex(RESERVED_REGISTER_KEY);
+    this.performBind(REGISTER_KEY, null);
+    const index = this.getFloorIndex(REGISTER_KEY);
 
     return index;
   }
 
-  bindFloorSlot(key: FloorIndexKey, index: FloorIndex | null): void {
+  private performBind(key: FloorIndexKey, index: FloorIndex | null) {
+    if (this.floorIndexByKey.has(key)) {
+      throw new Error(`Floor key "${key}" is already bound`);
+    }
+
     let slot: FloorSlot;
 
     if (index === null) {
@@ -79,6 +105,14 @@ export class CompilerContext {
 
     slot.bind();
     this.floorIndexByKey.set(key, slot.index);
+  }
+
+  bindFloorSlot(key: FloorIndexKey, index: FloorIndex | null): void {
+    if (reservedWords.has(key)) {
+      throw new Error(`Invalid floor key: "${key}" is a reserved word`);
+    }
+
+    this.performBind(key, index);
   }
 
   getFloorIndex(key: FloorIndexKey): FloorIndex {

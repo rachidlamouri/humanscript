@@ -1,7 +1,9 @@
-import { Compiled, CompilerContext } from '../../compilerContext';
+import { CompilerContext } from '../../compilerContext';
+import { Compiled } from '../../compiled';
 import { ReadableExpression } from './readableExpression';
 import { ReadableReference } from '../references/readableReference';
 import { Node } from '../node';
+import { Assembly } from '../../assembly';
 
 export class AdditionExpressionNode extends Node implements ReadableExpression {
   constructor(
@@ -12,14 +14,14 @@ export class AdditionExpressionNode extends Node implements ReadableExpression {
   }
 
   compileExpression(context: CompilerContext): Compiled {
-    const register = context.bindReservedRegisterKey();
+    context.bindReservedRegisterKey();
 
     const result = [
-      this.compiledDebugName,
+      Assembly.DEBUG(context, this.className),
       ...this.left.compileRead(context),
-      `COPYTO ${register}`,
+      Assembly.COPYTO(context, context.registerKey),
       ...this.right.compileRead(context),
-      `ADD ${register}`,
+      Assembly.ADD(context),
     ];
 
     return result;
