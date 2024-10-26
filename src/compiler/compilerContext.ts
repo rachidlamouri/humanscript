@@ -29,7 +29,7 @@ class FloorSlot {
 }
 
 export class CompilerContext {
-  floor: FloorSlot[] = [];
+  floor: FloorSlot[] | null = null;
   floorSlotByIndex = new Map<FloorIndex, FloorSlot>();
   floorIndexByKey = new Map<FloorIndexKey, FloorIndex>();
 
@@ -50,14 +50,18 @@ export class CompilerContext {
   }
 
   get floorSize() {
-    return this.floor.length;
+    return this.floor?.length ?? 0;
   }
 
   initFloor(floorSize: number): void {
-    Array.from({ length: floorSize }).forEach((_, index) => {
+    if (this.floor !== null) {
+      throw new Error('Floor has already been initialized');
+    }
+
+    this.floor = Array.from({ length: floorSize }).map((_, index) => {
       const slot = new FloorSlot(index);
-      this.floor.push(slot);
       this.floorSlotByIndex.set(index, slot);
+      return slot;
     });
   }
 
@@ -82,7 +86,7 @@ export class CompilerContext {
     let slot: FloorSlot;
 
     if (index === null) {
-      const nextUnboundSlot = this.floor.find((slot) => !slot.isBound);
+      const nextUnboundSlot = this.floor?.find((slot) => !slot.isBound);
 
       if (nextUnboundSlot === undefined) {
         throw new Error(

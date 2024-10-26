@@ -1,6 +1,3 @@
--- FloorInitNode
-  -- register -> floor[2]
-
 -- # For each two things in the
 -- # INBOX, first subtract the 1st
 -- # from the 2nd and put the
@@ -8,6 +5,9 @@
 -- # THEN, subtract the 2nd from
 -- # the 1st and put the result in
 -- # the OUTBOX. Repeat.
+-- FloorInitNode
+  -- register -> floor[2]
+
 -- LetStatementNode
   -- first -> floor[0]
 

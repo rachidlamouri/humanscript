@@ -65,17 +65,7 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.seq(
       // -
       P.optWhitespace,
-      P.alt<Language['program']>(
-        P.seq(
-          // -
-          l.floorInit,
-          P.optWhitespace,
-          l.statementList,
-        ).map((result) => {
-          return [result[0], ...result[2]];
-        }),
-        l.statementList,
-      ),
+      l.statementList,
       P.optWhitespace,
     ).map((result) => {
       const statementList = result[1];
@@ -140,6 +130,7 @@ const language = createLanguage<Language>(parserDebugger, {
       l.whileStatement,
       l.ifStatement,
       l.assignmentStatement,
+      l.floorInit,
     );
   },
   letStatement: (l) => {
