@@ -15,6 +15,7 @@ import { FloorInitNode } from './nodes/statements/floorInitNode';
 import { ReadableExpression } from './nodes/expressions/readableExpression';
 import { CompilerContext, FloorIndex } from './compilerContext';
 import { IfStatementNode } from './nodes/statements/ifStatementNode';
+import { CommentNode } from './nodes/statements/commentNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -27,6 +28,7 @@ type Language = {
   recursiveStatementList: NestedStatementNodeList;
 
   statement: Statement;
+  comment: CommentNode;
   letStatement: LetStatementNode;
   whileStatement: WhileStatementNode;
   ifStatement: IfStatementNode;
@@ -36,7 +38,11 @@ type Language = {
   floorSlot: FloorIndex;
 
   whileCondition: null;
-  ifCondition: ReadableReference;
+  ifConditionExpression: {
+    reference: ReadableReference;
+    isEqualToZero: boolean;
+  };
+  ifCondition: { reference: ReadableReference; isEqualToZero: boolean };
   block: Statement[];
 
   readableExpression: ReadableExpression;
@@ -127,6 +133,7 @@ const language = createLanguage<Language>(parserDebugger, {
   statement: (l) => {
     return P.alt<Language['statement']>(
       // -
+      l.comment,
       l.letStatement,
       l.whileStatement,
       l.ifStatement,
@@ -161,11 +168,12 @@ const language = createLanguage<Language>(parserDebugger, {
       // -
       P.string('if'),
       P.optWhitespace,
-      l.ifCondition,
+      l.ifConditionExpression,
       P.optWhitespace,
       l.block,
     ).map((result) => {
-      return new IfStatementNode(result[2], result[4]);
+      const { isEqualToZero, reference } = result[2];
+      return new IfStatementNode(isEqualToZero, reference, result[4]);
     });
   },
   assignmentStatement: (l) => {
@@ -208,19 +216,33 @@ const language = createLanguage<Language>(parserDebugger, {
     });
   },
 
-  ifCondition: (l) => {
+  ifConditionExpression: (l) => {
     return P.seq(
       P.string('('),
       P.optWhitespace,
-      l.readableReference,
-      P.optWhitespace,
-      P.string('!='),
-      P.optWhitespace,
-      P.string('0'),
+      l.ifCondition,
       P.optWhitespace,
       P.string(')'),
     ).map((result) => {
       return result[2];
+    });
+  },
+  ifCondition: (l) => {
+    return P.seq(
+      l.readableReference,
+      P.optWhitespace,
+      P.alt<boolean>(
+        // -
+        P.string('==').result(true),
+        P.string('!=').result(false),
+      ),
+      P.optWhitespace,
+      P.string('0'),
+    ).map((result) => {
+      return {
+        reference: result[0],
+        isEqualToZero: result[2],
+      };
     });
   },
   whileCondition: () => {
@@ -293,6 +315,13 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.regex(/[1-9][0-9]*|0/).map((result) => {
       const value = Number.parseInt(result, 10);
       return value;
+    });
+  },
+
+  comment: () => {
+    return P.regex(/#[^\n]*/).map((comment) => {
+      const text = comment.slice(1).trim();
+      return new CommentNode(text);
     });
   },
 });

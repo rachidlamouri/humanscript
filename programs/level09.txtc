@@ -10,11 +10,11 @@ A:
     COPYFROM 0
     JUMPZ B
     -- else --
+    JUMP C
+    -- if --
+  B:
     -- AssignmentStatementNode --
     COPYFROM 0
     OUTBOX
-    sfJUMP C
-    -- if --
-  B:
   C:
   JUMP A
