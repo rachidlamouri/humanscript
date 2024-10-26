@@ -16,6 +16,7 @@ import { ReadableExpression } from './nodes/expressions/readableExpression';
 import { CompilerContext, FloorIndex } from './compilerContext';
 import { IfStatementNode } from './nodes/statements/ifStatementNode';
 import { CommentNode } from './nodes/statements/commentNode';
+import { SubtractionExpressionNode } from './nodes/expressions/subtractionExpressionNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -46,7 +47,7 @@ type Language = {
   block: Statement[];
 
   readableExpression: ReadableExpression;
-  additionExpression: AdditionExpressionNode;
+  mathExpression: AdditionExpressionNode | SubtractionExpressionNode;
 
   readableReference: ReadableReference;
   writeableReference: WriteableReference;
@@ -263,20 +264,32 @@ const language = createLanguage<Language>(parserDebugger, {
   readableExpression: (l) => {
     return P.alt<Language['readableExpression']>(
       // -
-      l.additionExpression,
+      l.mathExpression,
       l.readableReference,
     );
   },
-  additionExpression: (l) => {
+  mathExpression: (l) => {
     return P.seq(
       // -
       l.readableReference,
       P.optWhitespace,
-      P.string('+'),
+      P.alt<boolean>(
+        // -
+        P.string('+').result(true),
+        P.string('-').result(false),
+      ),
       P.optWhitespace,
       l.readableReference,
     ).map((result) => {
-      return new AdditionExpressionNode(result[0], result[4]);
+      const isAddition = result[2];
+      const left = result[0];
+      const right = result[4];
+
+      if (isAddition) {
+        return new AdditionExpressionNode(left, right);
+      } else {
+        return new SubtractionExpressionNode(left, right);
+      }
     });
   },
 

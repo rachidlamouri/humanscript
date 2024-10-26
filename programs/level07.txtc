@@ -13,7 +13,7 @@ A:
     -- AssignmentStatementNode --
     COPYFROM 0
     OUTBOX
-    sfJUMP C
+    JUMP C
     -- if --
   B:
   C:

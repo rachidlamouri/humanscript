@@ -1,0 +1,33 @@
+-- FloorInitNode --
+-- # For each two things in the --
+-- # INBOX, first subtract the 1st --
+-- # from the 2nd and put the --
+-- # result in the OUTBOX. AND --
+-- # THEN, subtract the 2nd from --
+-- # the 1st and put the result in --
+-- # the OUTBOX. Repeat. --
+-- LetStatementNode --
+-- LetStatementNode --
+-- WhileStatementNode --
+A:
+  -- AssignmentStatementNode --
+  INBOX
+  COPYTO 0
+  -- AssignmentStatementNode --
+  INBOX
+  COPYTO 1
+  -- AssignmentStatementNode --
+  -- SubtractionExpressionNode --
+  COPYFROM 0
+  COPYTO 2
+  COPYFROM 1
+  SUB 2
+  OUTBOX
+  -- AssignmentStatementNode --
+  -- SubtractionExpressionNode --
+  COPYFROM 1
+  COPYTO 2
+  COPYFROM 0
+  SUB 2
+  OUTBOX
+  JUMP A
