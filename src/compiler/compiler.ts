@@ -18,6 +18,7 @@ import { IfStatementNode } from './nodes/statements/ifStatementNode';
 import { CommentNode } from './nodes/statements/commentNode';
 import { SubtractionExpressionNode } from './nodes/expressions/subtractionExpressionNode';
 import { CompiledPart } from './compiledPart';
+import { Assembly } from './assembly';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -334,12 +335,25 @@ const language = createLanguage<Language>(parserDebugger, {
 export const compile = (code: string): string => {
   const statements = language.program.tryParse(code);
 
+  const firstNonCommentIndex = statements.findIndex(
+    (statement) => !(statement instanceof CommentNode),
+  );
+
   const context = new CompilerContext();
   const compiledParts = statements.flatMap<CompiledPart>((node) => {
     return node.compileStatement(context);
   });
 
-  const result = compiledParts.map((part) => part.serialized).join('\n');
+  const adjustedParts =
+    firstNonCommentIndex > 0
+      ? [
+          ...compiledParts.slice(0, firstNonCommentIndex),
+          Assembly.LINE_FEED(context),
+          ...compiledParts.slice(firstNonCommentIndex),
+        ]
+      : compiledParts;
+
+  const result = adjustedParts.map((part) => part.serialized).join('\n');
 
   return result;
 };

@@ -1,3 +1,13 @@
+# Zero Exterminator
+#
+# Send all things that ARE NOT
+# ZERO to the OUTBOX.
+#
+# You got a new command! It
+# jumps ONLY if the value you
+# are holding is ZERO. Otherwise
+# it continues to the next line.
+
 floor size 9
 
 let tmp

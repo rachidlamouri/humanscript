@@ -1,3 +1,5 @@
+# Sub Hallway
+#
 # For each two things in the
 # INBOX, first subtract the 1st
 # from the 2nd and put the
@@ -5,6 +7,11 @@
 # THEN, subtract the 2nd from
 # the 1st and put the result in
 # the OUTBOX. Repeat.
+#
+# You got a new command!
+# SUBtracts the contents of a tile
+# on the floor FROM whatever
+# value you're currently holding.
 
 floor size 3
 

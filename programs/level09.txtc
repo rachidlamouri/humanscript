@@ -1,3 +1,8 @@
+-- # Zero Preservation Initiative
+-- # 
+-- # Send only the ZEROs to the
+-- # OUTBOX.
+
 -- FloorInitNode
   -- register -> null
 

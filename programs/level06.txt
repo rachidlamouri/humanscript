@@ -1,3 +1,15 @@
+# Rainy Summer
+#
+# For each two things in the
+# INBOX, add them together,
+# and put the result in the
+# OUTBOX.
+#
+# You got a new command! It
+# ADDS the contents of a tile on
+# the floor to whatever value
+# you're currently holding.
+
 floor size 3
 
 while true {

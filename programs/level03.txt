@@ -1,3 +1,17 @@
+# Copy Floor
+#
+# Ignore the INBOX for now, and
+# just send the following 3
+# letters to the OUTBOX:
+#
+# BUG
+#
+# The Facilities Management
+# staff has placed some items
+# over there on the carpet for
+# you. If only there were a way
+# you could pick them up...
+
 floor size 6
 
 let b floor[4]
