@@ -19,7 +19,6 @@ export class AssignmentStatementNode extends Node implements Statement {
       Assembly.DEBUG(context, this.className),
       ...this.readable.compileExpression(context),
       ...this.writeable.compileWrite(context),
-      Assembly.LINE_FEED(context),
     ];
 
     return result;

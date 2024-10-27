@@ -30,5 +30,4 @@ A:
   -- AssignmentStatementNode
   COPYFROM 0 --$tmp
   OUTBOX
-  
 JUMP A

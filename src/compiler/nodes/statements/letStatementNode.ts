@@ -22,7 +22,6 @@ export class LetStatementNode extends Node implements Statement {
     context.incrementDepth();
     result.push(Assembly.DEBUG_MAPPING(context, floorKey));
     context.decrementDepth();
-    result.push(Assembly.LINE_FEED(context));
 
     return result;
   }

@@ -22,5 +22,4 @@ A:
   INBOX
   ADD 0 --$register
   OUTBOX
-  
 JUMP A

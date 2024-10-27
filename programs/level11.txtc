@@ -47,5 +47,4 @@ A:
   COPYFROM 0 --$first
   SUB 2 --$register
   OUTBOX
-  
 JUMP A

@@ -17,13 +17,12 @@ import { CompilerContext, FloorIndex } from './compilerContext';
 import { IfStatementNode } from './nodes/statements/ifStatementNode';
 import { CommentNode } from './nodes/statements/commentNode';
 import { SubtractionExpressionNode } from './nodes/expressions/subtractionExpressionNode';
-import { CompiledPart } from './compiledPart';
-import { Assembly } from './assembly';
+import { BlockNode } from './nodes/statements/blockNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
 type Language = {
-  program: Statement[];
+  program: BlockNode;
 
   floorInit: FloorInitNode;
 
@@ -46,7 +45,7 @@ type Language = {
     isEqualToZero: boolean;
   };
   ifCondition: { reference: ReadableReference; isEqualToZero: boolean };
-  block: Statement[];
+  block: BlockNode;
 
   readableExpression: ReadableExpression;
   mathExpression: AdditionExpressionNode | SubtractionExpressionNode;
@@ -69,8 +68,7 @@ const language = createLanguage<Language>(parserDebugger, {
       l.statementList,
       P.optWhitespace,
     ).map((result) => {
-      const statementList = result[1];
-      return statementList;
+      return new BlockNode(result[1]);
     });
   },
 
@@ -250,7 +248,7 @@ const language = createLanguage<Language>(parserDebugger, {
       P.whitespace,
       P.string('}'),
     ).map((result) => {
-      return result[2];
+      return new BlockNode(result[2]);
     });
   },
 
@@ -333,27 +331,12 @@ const language = createLanguage<Language>(parserDebugger, {
 });
 
 export const compile = (code: string): string => {
-  const statements = language.program.tryParse(code);
-
-  const firstNonCommentIndex = statements.findIndex(
-    (statement) => !(statement instanceof CommentNode),
-  );
+  const block = language.program.tryParse(code);
 
   const context = new CompilerContext();
-  const compiledParts = statements.flatMap<CompiledPart>((node) => {
-    return node.compileStatement(context);
-  });
+  const compiledParts = block.compile(context);
 
-  const adjustedParts =
-    firstNonCommentIndex > 0
-      ? [
-          ...compiledParts.slice(0, firstNonCommentIndex),
-          Assembly.LINE_FEED(context),
-          ...compiledParts.slice(firstNonCommentIndex),
-        ]
-      : compiledParts;
-
-  const result = adjustedParts.map((part) => part.serialized).join('\n');
+  const result = compiledParts.map((part) => part.serialized).join('\n');
 
   return result;
 };

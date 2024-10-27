@@ -4,12 +4,13 @@ import { Node } from '../node';
 import { ReadableReference } from '../references/readableReference';
 import { Statement } from './statement';
 import { Assembly } from '../../assembly';
+import { BlockNode } from './blockNode';
 
 export class IfStatementNode extends Node implements Statement {
   constructor(
     public isEqualToZero: boolean,
     public reference: ReadableReference,
-    public block: Statement[],
+    public block: BlockNode,
   ) {
     super();
   }
@@ -20,9 +21,7 @@ export class IfStatementNode extends Node implements Statement {
 
     context.incrementDepth();
     context.incrementDepth();
-    const compiledBlock = this.block.flatMap((statement) => {
-      return statement.compileStatement(context);
-    });
+    const compiledBlock = this.block.compile(context);
     context.decrementDepth();
     context.decrementDepth();
 

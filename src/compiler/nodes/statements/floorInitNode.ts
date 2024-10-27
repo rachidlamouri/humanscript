@@ -17,7 +17,6 @@ export class FloorInitNode extends Node implements Statement {
     context.incrementDepth();
     result.push(Assembly.DEBUG_MAPPING(context, context.registerKey));
     context.decrementDepth();
-    result.push(Assembly.LINE_FEED(context));
 
     return result;
   }
