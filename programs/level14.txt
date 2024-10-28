@@ -1,0 +1,30 @@
+# Grab TWO things from the
+# INBOX, and put only the
+# BIGGER of the two in the
+# OUTBOX. If they are equal, just
+# pick either one. Repeat!
+#
+# You got a new command!
+# Jumps only if the thing you're
+# holding is negative. (Less than
+# zero.) Otherwise continues to
+# the next line.
+
+floor size 3
+
+let first
+let tmp
+
+while true {
+  first = inbox
+  tmp = inbox - first
+
+  if (tmp < 0) {
+    ## first bigger
+    outbox = first
+  } else {
+    ## second bigger or equal
+    tmp = tmp + first
+    outbox = tmp
+  }
+}
