@@ -1,0 +1,59 @@
+-- # Get two things from the
+-- # INBOX. If they are EQUAL, put
+-- # ONE of them in the OUTBOX.
+-- # Discard non-equal pairs.
+-- # Repeat!
+-- # 
+-- # You got... COMMENTS! You
+-- # can use them, if you like, to
+-- # mark sections of your
+-- # program.
+
+-- FloorInitNode
+  -- register -> floor[2]
+
+-- LetStatementNode
+  -- first -> floor[0]
+
+-- # note: not enough room for a "second" variable
+
+-- LetStatementNode
+  -- difference -> floor[1]
+
+-- WhileStatementNode
+A:
+  COMMENT 0
+  
+  -- AssignmentStatementNode
+  INBOX
+  COPYTO 0 --$first
+  
+  -- AssignmentStatementNode
+  -- SubtractionExpressionNode
+  INBOX
+  COPYTO 2 --$register
+  COPYFROM 0 --$first
+  SUB 2 --$register
+  COPYTO 1 --$difference
+  
+  COMMENT 1
+  
+  -- IfStatementNode
+    -- condition
+      COPYFROM 1 --$difference
+      JUMPZ B
+    -- else
+      JUMP C
+    -- if
+  B:
+      -- AssignmentStatementNode
+      COPYFROM 0 --$first
+      OUTBOX
+  C:
+JUMP A
+
+DEFINE COMMENT 0
+eJzt0iGvglAchnG2W9iIlrMZKcxoYkSTM5Iw2iTasBGJxhNp0ojSjNBszkR0JOOZ8e7e5/0OFinvnnK2H/vXnudNP13g/W8UsjZh/ZQtcnYq2cyyQ8vGPduMf9sFvNcFdDWjqxmdzelsTkchHYX0e0G/F/SwpIclbRPaJvR+Re9XdLyh4w3tp7Sf0o8t/djSzY5udnSR00VOrw/0+kCbI22O9FTq/5XyV/JX8p/kP8lv5bfy1/LX8p/lP8vfyt/Kf5H/Iv9V/qv8vfy9/Df5b/Lf5b/LP8o/yv+U/yn/S/6X/E5+x70Yx70Yx70Yx70Yx70Yx70Yx70Yx70Yx3vf77PfL0wlpvU;
+
+DEFINE COMMENT 1
+eJzt0iGvglAchnG2W9iIlrMZKcxoYkSTM5Iw2iTasBGJxhNp0ojSjNBszkR0JOOZ8e7e5/0OFinvnnK2H/vXnudNP13g/W8UsjZh/ZQtcnYq2cyyQ8vGPduMf9sFvNcFdDWjqxmdzelsTkchHYX0e0G/F/SwpIclbRPaJvR+Re9XdLyh4w3tp7Sf0o8t/djSzY5udnSR00VOrw/0+kCbI22O9FTq/5XyV/JX8p/kP8lv5bfy1/LX8p/lP8vfyt/Kf5H/Iv9V/qv8vfy9/Df5b/Lf5b/LP8o/yv+U/yn/S/6X/E5+x70Yx70Yx70Yx70Yx70Yx70Yx70Yx70Yx3vf77PfL0wlpvU;

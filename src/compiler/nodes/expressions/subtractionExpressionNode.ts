@@ -1,6 +1,6 @@
 import { CompilerContext } from '../../compilerContext';
 import { Compiled } from '../../compiled';
-import { Node } from '../node';
+import { assertIsNode, Node } from '../node';
 import { ReadableReference } from '../references/readableReference';
 import { ReadableExpression } from './readableExpression';
 import { Assembly } from '../../assembly';
@@ -28,5 +28,15 @@ export class SubtractionExpressionNode
     ];
 
     return result;
+  }
+
+  flatten(accumulator: Node[]): void {
+    accumulator.push(this);
+
+    assertIsNode(this.left);
+    assertIsNode(this.right);
+
+    this.left.flatten(accumulator);
+    this.right.flatten(accumulator);
   }
 }

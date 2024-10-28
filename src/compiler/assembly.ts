@@ -23,8 +23,27 @@ export class Assembly {
     });
   }
 
-  static COMMENT(context: CompilerContext, text: string) {
+  static HUMANSCRIPT_COMMENT(context: CompilerContext, text: string) {
     return new CompiledPart(context, `-- # ${text}`);
+  }
+
+  static COMMENT(context: CompilerContext, index: number) {
+    return new CompiledPart(context, `COMMENT ${index}`);
+  }
+
+  static DEFINE_COMMENT(context: CompilerContext, index: number, text: string) {
+    // TODO: generate image from "text"
+    const placeholder =
+      `eJzt0iGvglAchnG2W9iIlrMZKcxoYkSTM5Iw2iTasBGJxhNp0ojSjNBszkR0JOOZ8e7e5/0OFinvnnK2
+H/vXnudNP13g/W8UsjZh/ZQtcnYq2cyyQ8vGPduMf9sFvNcFdDWjqxmdzelsTkchHYX0e0G/F/SwpIcl
+bRPaJvR+Re9XdLyh4w3tp7Sf0o8t/djSzY5udnSR00VOrw/0+kCbI22O9FTq/5XyV/JX8p/kP8lv5bfy
+1/LX8p/lP8vfyt/Kf5H/Iv9V/qv8vfy9/Df5b/Lf5b/LP8o/yv+U/yn/S/6X/E5+x70Yx70Yx70Yx70Y
+x70Yx70Yx70Yx70Yx3vf77PfL0wlpvU`.replaceAll('\n', '');
+
+    return new CompiledPart(
+      context,
+      `DEFINE COMMENT ${index}\n${placeholder};`,
+    );
   }
 
   static LINE_FEED(context: CompilerContext) {

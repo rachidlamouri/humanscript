@@ -23,4 +23,10 @@ export class WhileStatementNode extends Node implements Statement {
 
     return result;
   }
+
+  flatten(accumulator: Node[]): void {
+    accumulator.push(this.block);
+
+    this.block.flatten(accumulator);
+  }
 }

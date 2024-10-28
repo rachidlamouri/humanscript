@@ -1,3 +1,4 @@
+import { assertIsNotUndefined } from '../utils/assertIsNotUndefined';
 import { IdentifierNode } from './nodes/references/identifierNode';
 export type FloorIndex = number;
 
@@ -34,6 +35,8 @@ export class CompilerContext {
   floorIndexByKey = new Map<FloorIndexKey, FloorIndex>();
 
   jumpCount = 0;
+
+  commentIndexByKey = new Map<unknown, number>();
 
   outputDepth = 0;
 
@@ -135,5 +138,19 @@ export class CompilerContext {
     this.jumpCount += 1;
 
     return label;
+  }
+
+  createCommentIndex(key: unknown): number {
+    const index = this.commentIndexByKey.size;
+
+    this.commentIndexByKey.set(key, index);
+
+    return index;
+  }
+
+  getCommentIndex(key: unknown): number {
+    const index = this.commentIndexByKey.get(key);
+    assertIsNotUndefined(index);
+    return index;
   }
 }

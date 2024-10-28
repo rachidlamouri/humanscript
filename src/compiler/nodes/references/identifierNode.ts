@@ -24,4 +24,8 @@ export class IdentifierNode
   compileWrite(context: CompilerContext): Compiled {
     return [Assembly.COPYTO(context, this.name)];
   }
+
+  flatten(accumulator: Node[]): void {
+    accumulator.push(this);
+  }
 }

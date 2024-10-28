@@ -8,4 +8,8 @@ export class OutboxNode extends Node implements WriteableReference {
   compileWrite(context: CompilerContext): Compiled {
     return [Assembly.OUTBOX(context)];
   }
+
+  flatten(accumulator: Node[]): void {
+    accumulator.push(this);
+  }
 }

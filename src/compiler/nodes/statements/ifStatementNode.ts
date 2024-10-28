@@ -1,6 +1,6 @@
 import { CompilerContext } from '../../compilerContext';
 import { Compiled } from '../../compiled';
-import { Node } from '../node';
+import { assertIsNode, Node } from '../node';
 import { ReadableReference } from '../references/readableReference';
 import { Statement } from './statement';
 import { Assembly } from '../../assembly';
@@ -52,5 +52,14 @@ export class IfStatementNode extends Node implements Statement {
     result.push(Assembly.LABEL(context, endJumpLabel));
 
     return result;
+  }
+
+  flatten(accumulator: Node[]): void {
+    accumulator.push(this);
+
+    assertIsNode(this.reference);
+
+    this.reference.flatten(accumulator);
+    this.block.flatten(accumulator);
   }
 }

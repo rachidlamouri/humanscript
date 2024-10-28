@@ -2,7 +2,7 @@ import { ReadableExpression } from '../expressions/readableExpression';
 import { WriteableReference } from '../references/writeableReference';
 import { CompilerContext } from '../../compilerContext';
 import { Compiled } from '../../compiled';
-import { Node } from '../node';
+import { assertIsNode, Node } from '../node';
 import { Statement } from './statement';
 import { Assembly } from '../../assembly';
 
@@ -22,5 +22,15 @@ export class AssignmentStatementNode extends Node implements Statement {
     ];
 
     return result;
+  }
+
+  flatten(accumulator: Node[]): void {
+    accumulator.push(this);
+
+    assertIsNode(this.writeable);
+    assertIsNode(this.readable);
+
+    this.writeable.flatten(accumulator);
+    this.readable.flatten(accumulator);
   }
 }

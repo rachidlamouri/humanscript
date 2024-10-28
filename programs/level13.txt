@@ -1,0 +1,27 @@
+# Get two things from the
+# INBOX. If they are EQUAL, put
+# ONE of them in the OUTBOX.
+# Discard non-equal pairs.
+# Repeat!
+#
+# You got... COMMENTS! You
+# can use them, if you like, to
+# mark sections of your
+# program.
+
+floor size 3
+
+let first
+# note: not enough room for a "second" variable
+let difference
+
+while true {
+  ## init
+  first = inbox
+  difference = first - inbox
+
+  ## is eq?
+  if (difference == 0) {
+    outbox = first
+  }
+}

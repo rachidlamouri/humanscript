@@ -20,4 +20,8 @@ export class FloorInitNode extends Node implements Statement {
 
     return result;
   }
+
+  flatten(accumulator: Node[]): void {
+    accumulator.push(this);
+  }
 }

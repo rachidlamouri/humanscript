@@ -2,7 +2,7 @@ import { CompilerContext } from '../../compilerContext';
 import { Compiled } from '../../compiled';
 import { ReadableExpression } from './readableExpression';
 import { ReadableReference } from '../references/readableReference';
-import { Node } from '../node';
+import { assertIsNode, Node } from '../node';
 import { Assembly } from '../../assembly';
 
 export class AdditionExpressionNode extends Node implements ReadableExpression {
@@ -25,5 +25,15 @@ export class AdditionExpressionNode extends Node implements ReadableExpression {
     ];
 
     return result;
+  }
+
+  flatten(accumulator: Node[]): void {
+    accumulator.push(this);
+
+    assertIsNode(this.left);
+    assertIsNode(this.right);
+
+    this.left.flatten(accumulator);
+    this.right.flatten(accumulator);
   }
 }

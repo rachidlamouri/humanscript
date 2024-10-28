@@ -15,9 +15,12 @@ import { FloorInitNode } from './nodes/statements/floorInitNode';
 import { ReadableExpression } from './nodes/expressions/readableExpression';
 import { CompilerContext, FloorIndex } from './compilerContext';
 import { IfStatementNode } from './nodes/statements/ifStatementNode';
-import { CommentNode } from './nodes/statements/commentNode';
+import { HumanscriptCommentNode } from './nodes/statements/humanScriptCommentNode';
 import { SubtractionExpressionNode } from './nodes/expressions/subtractionExpressionNode';
 import { BlockNode } from './nodes/statements/blockNode';
+import { AssemblyCommentReferenceNode } from './nodes/statements/assembly-comments/assemblyCommentStatementNode';
+import { AssemblyCommentDefinitionNode } from './nodes/statements/assembly-comments/assemblyCommentDefinitionNode';
+import { Node } from './nodes/node';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -30,7 +33,8 @@ type Language = {
   recursiveStatementList: NestedStatementNodeList;
 
   statement: Statement;
-  comment: CommentNode;
+  assemblyComment: AssemblyCommentReferenceNode;
+  humanscriptComment: HumanscriptCommentNode;
   letStatement: LetStatementNode;
   whileStatement: WhileStatementNode;
   ifStatement: IfStatementNode;
@@ -68,7 +72,23 @@ const language = createLanguage<Language>(parserDebugger, {
       l.statementList,
       P.optWhitespace,
     ).map((result) => {
-      return new BlockNode(result[1]);
+      const initialStatements = result[1];
+      const tempBlock = new BlockNode(initialStatements);
+
+      const flattenedAst: Node[] = [];
+      tempBlock.flatten(flattenedAst);
+
+      const finalStatements = [...initialStatements];
+      flattenedAst
+        .filter(
+          (node): node is AssemblyCommentReferenceNode =>
+            node instanceof AssemblyCommentReferenceNode,
+        )
+        .forEach((reference) => {
+          finalStatements.push(new AssemblyCommentDefinitionNode(reference));
+        });
+
+      return new BlockNode(finalStatements);
     });
   },
 
@@ -124,7 +144,8 @@ const language = createLanguage<Language>(parserDebugger, {
   statement: (l) => {
     return P.alt<Language['statement']>(
       // -
-      l.comment,
+      l.assemblyComment,
+      l.humanscriptComment,
       l.letStatement,
       l.whileStatement,
       l.ifStatement,
@@ -322,10 +343,17 @@ const language = createLanguage<Language>(parserDebugger, {
     });
   },
 
-  comment: () => {
+  assemblyComment: () => {
+    return P.regex(/##[^\n]*/).map((comment) => {
+      const text = comment.slice(1).trim();
+      return new AssemblyCommentReferenceNode(text);
+    });
+  },
+
+  humanscriptComment: () => {
     return P.regex(/#[^\n]*/).map((comment) => {
       const text = comment.slice(1).trim();
-      return new CommentNode(text);
+      return new HumanscriptCommentNode(text);
     });
   },
 });

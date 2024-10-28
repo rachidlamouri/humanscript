@@ -25,4 +25,10 @@ export class LetStatementNode extends Node implements Statement {
 
     return result;
   }
+
+  flatten(accumulator: Node[]): void {
+    accumulator.push(this);
+
+    this.identifier.flatten(accumulator);
+  }
 }

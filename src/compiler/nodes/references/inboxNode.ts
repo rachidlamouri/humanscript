@@ -12,4 +12,8 @@ export class InboxNode extends Node implements ReadableReference {
   compileExpression(context: CompilerContext): Compiled {
     return this.compileRead(context);
   }
+
+  flatten(accumulator: Node[]): void {
+    accumulator.push(this);
+  }
 }

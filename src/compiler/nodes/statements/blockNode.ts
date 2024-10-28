@@ -1,8 +1,8 @@
 import { Assembly } from '../../assembly';
 import { Compiled } from '../../compiled';
 import { CompilerContext } from '../../compilerContext';
-import { Node } from '../node';
-import { CommentNode } from './commentNode';
+import { assertIsNode, Node } from '../node';
+import { HumanscriptCommentNode } from './humanScriptCommentNode';
 import { Statement } from './statement';
 
 export class BlockNode extends Node {
@@ -13,9 +13,9 @@ export class BlockNode extends Node {
   compile(context: CompilerContext): Compiled {
     const lineFeedIndices = new Set<number>();
     this.statements.forEach((statement, index) => {
-      const isCommentNode = statement instanceof CommentNode;
+      const isCommentNode = statement instanceof HumanscriptCommentNode;
       const isNextCommentNode =
-        this.statements[index + 1] instanceof CommentNode;
+        this.statements[index + 1] instanceof HumanscriptCommentNode;
 
       if (!isCommentNode || !isNextCommentNode) {
         lineFeedIndices.add(index);
@@ -36,5 +36,14 @@ export class BlockNode extends Node {
     );
 
     return compiledBlock;
+  }
+
+  flatten(accumulator: Node[]): void {
+    accumulator.push(this);
+
+    this.statements.forEach((statement) => {
+      assertIsNode(statement);
+      statement.flatten(accumulator);
+    });
   }
 }
