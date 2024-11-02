@@ -1,0 +1,43 @@
+{
+  "scopeName": "source.hassembly",
+  "patterns": [
+    {
+      "match": "--.*$",
+      "name": "comment.line.double-dash.hassembly"
+    },
+    {
+      "match": "INBOX|OUTBOX|COPYFROM|COPYTO|ADD|SUB|COMMENT|DEFINE COMMENT",
+      "name": "support.function.hassembly"
+    },
+    {
+      "match": "(JUMPZ|JUMPN|JUMP)(\\s+(\\w+))?",
+      "captures": {
+        "1": {
+          "name": "support.function.hassembly"
+        },
+        "3": {
+          "name": "constant.character.hassembly"
+        }
+      }
+    },
+    {
+      "match": "(\\w+)(:)",
+      "captures": {
+        "1": {
+          "name": "constant.character.hassembly"
+        },
+        "2": {
+          "name": "keyword.operator.hassembly"
+        }
+      }
+    },
+    {
+      "match": "\\d+",
+      "name": "constant.numeric.hassembly"
+    },
+    {
+      "match": "^.+;$",
+      "name": "hassembly"
+    }
+  ]
+}

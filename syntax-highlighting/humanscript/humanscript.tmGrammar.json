@@ -1,0 +1,44 @@
+{
+  "scopeName": "source.humanscript",
+  "patterns": [
+    {
+      "match": "#.*$",
+      "name": "comment.line.number-sign.humanscript"
+    },
+    {
+      "match": "(floor)\\s+(size)",
+      "captures": {
+        "1": {
+          "name": "support.constant.humanscript"
+        },
+        "2": {
+          "name": "keyword.control.humanscript"
+        }
+      }
+    },
+    {
+      "match": "inbox|outbox|floor",
+      "name": "support.constant.humanscript"
+    },
+    {
+      "match": "while|if|else",
+      "name": "keyword.control.humanscript"
+    },
+    {
+      "match": "let",
+      "name": "storage.type.humanscript"
+    },
+    {
+      "match": "=|\\+|-|!=|==|>|<",
+      "name": "keyword.operator.humanscript"
+    },
+    {
+      "match": "\\d+",
+      "name": "constant.numeric.humanscript"
+    },
+    {
+      "match": "[a-z]+",
+      "name": "variable.other.humanscript"
+    }
+  ]
+}

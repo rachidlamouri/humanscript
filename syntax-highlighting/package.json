@@ -1,0 +1,59 @@
+{
+  "name": "humanscript-syntax-highlighting",
+  "scripts": {
+    "build": "vsce package",
+    "apply": "code --install-extension ./humanscript-syntax-highlighting-0.0.0.vsix",
+    "update": "npm run build && npm run apply"
+  },
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "repository": "https://github.com/rachidlamouri/humanscript/",
+  "license": "LICENSE",
+  "version": "0.0.0",
+  "contributes": {
+    "languages": [
+      {
+        "id": "humanscript",
+        "name": "Humanscript",
+        "configuration": "./humanscript/language-configuration.json",
+        "extensions": [
+          ".hus"
+        ],
+        "icon": {
+          "light": "./humanscript/icon.png",
+          "dark": "./humanscript/icon.png"
+        }
+      },
+      {
+        "id": "hassembly",
+        "name": "Hassembly",
+        "configuration": "./hassembly/language-configuration.json",
+        "extensions": [
+          ".husc"
+        ],
+        "icon": {
+          "light": "./hassembly/icon.png",
+          "dark": "./hassembly/icon.png"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "humanscript",
+        "name": "Humanscript",
+        "scopeName": "source.humanscript",
+        "path": "./humanscript/humanscript.tmGrammar.json"
+      },
+      {
+        "language": "hassembly",
+        "name": "Hassembly",
+        "scopeName": "source.hassembly",
+        "path": "./hassembly/hassembly.tmGrammar.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.2.1"
+  }
+}

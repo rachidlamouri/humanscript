@@ -13,5 +13,8 @@
     "type-fest": "^4.25.0",
     "typescript": "^5.5.4",
     "zod": "^3.23.8"
-  }
+  },
+  "workspaces": [
+    "syntax-highlighting"
+  ]
 }
