@@ -1,3 +1,5 @@
+# Maximization Room
+#
 # Grab TWO things from the
 # INBOX, and put only the
 # BIGGER of the two in the
@@ -13,18 +15,17 @@
 floor size 3
 
 let first
-let tmp
+let second
 
 while true {
   first = inbox
-  tmp = inbox - first
+  second = inbox
 
-  if (tmp < 0) {
+  if (first > second) {
     ## first bigger
     outbox = first
   } else {
-    ## second bigger or equal
-    tmp = tmp + first
-    outbox = tmp
+    ## second bigger
+    outbox = second
   }
 }

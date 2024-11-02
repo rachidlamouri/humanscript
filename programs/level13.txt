@@ -1,3 +1,5 @@
+# Equalization Room
+#
 # Get two things from the
 # INBOX. If they are EQUAL, put
 # ONE of them in the OUTBOX.
@@ -12,16 +14,15 @@
 floor size 3
 
 let first
-# note: not enough room for a "second" variable
-let difference
+let second
 
 while true {
   ## init
   first = inbox
-  difference = first - inbox
+  second = inbox
 
   ## is eq?
-  if (difference == 0) {
+  if (first == second) {
     outbox = first
   }
 }

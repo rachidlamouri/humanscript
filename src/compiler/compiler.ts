@@ -21,6 +21,16 @@ import { BlockNode } from './nodes/statements/blockNode';
 import { AssemblyCommentReferenceNode } from './nodes/statements/assembly-comments/assemblyCommentStatementNode';
 import { AssemblyCommentDefinitionNode } from './nodes/statements/assembly-comments/assemblyCommentDefinitionNode';
 import { Node } from './nodes/node';
+import { EqualsConditionNode } from './nodes/conditions/equalsConditionNode';
+import { NotEqualsConditionNode } from './nodes/conditions/notEqualsConditionNode';
+import { Condition } from './nodes/conditions/condition';
+import {
+  BinaryComparisonConstructor,
+  Comparable,
+} from './nodes/conditions/comparable';
+import { ZeroLiteralNode } from './nodes/zeroLiteralNode';
+import { TrueConditionNode } from './nodes/conditions/trueConditionNode';
+import { GreaterThanConditionNode } from './nodes/conditions/greaterThanConditionNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -38,23 +48,23 @@ type Language = {
   letStatement: LetStatementNode;
   whileStatement: WhileStatementNode;
   ifStatement: IfStatementNode;
+  optionalElseStatement: BlockNode | null;
+  elseStatement: BlockNode;
   assignmentStatement: AssignmentStatementNode;
 
   optionalFloorSlot: FloorIndex | null;
   floorSlot: FloorIndex;
 
-  whileCondition: null;
-  ifConditionExpression: {
-    reference: ReadableReference;
-    isEqualToZero: boolean;
-  };
-  ifCondition: { reference: ReadableReference; isEqualToZero: boolean };
+  whileCondition: Condition;
+  ifConditionExpression: Condition;
+  ifCondition: Condition;
   block: BlockNode;
 
   readableExpression: ReadableExpression;
   mathExpression: AdditionExpressionNode | SubtractionExpressionNode;
 
   readableReference: ReadableReference;
+  comparable: Comparable;
   writeableReference: WriteableReference;
 
   inbox: InboxNode;
@@ -173,20 +183,42 @@ const language = createLanguage<Language>(parserDebugger, {
       P.whitespace,
       l.block,
     ).map((result) => {
-      return new WhileStatementNode(result[4]);
+      return new WhileStatementNode(result[2], result[4]);
     });
   },
   ifStatement: (l) => {
     return P.seq(
       // -
       P.string('if'),
-      P.optWhitespace,
+      P.whitespace,
       l.ifConditionExpression,
-      P.optWhitespace,
+      P.whitespace,
+      l.block,
+      l.optionalElseStatement,
+    ).map((result) => {
+      const elseBlock = result[5] ?? new BlockNode([]);
+      return new IfStatementNode(result[2], result[4], elseBlock);
+    });
+  },
+  optionalElseStatement: (l) => {
+    return P.alt<Language['optionalElseStatement']>(
+      // -
+      P.seq(
+        // -
+        P.whitespace,
+        l.elseStatement,
+      ).map((result) => result[1]),
+      ul.ε,
+    );
+  },
+  elseStatement: (l) => {
+    return P.seq(
+      // -
+      P.string('else'),
+      P.whitespace,
       l.block,
     ).map((result) => {
-      const { isEqualToZero, reference } = result[2];
-      return new IfStatementNode(isEqualToZero, reference, result[4]);
+      return result[2];
     });
   },
   assignmentStatement: (l) => {
@@ -244,22 +276,27 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.seq(
       l.readableReference,
       P.optWhitespace,
-      P.alt<boolean>(
+      P.alt<BinaryComparisonConstructor>(
         // -
-        P.string('==').result(true),
-        P.string('!=').result(false),
+        P.string('==').result(EqualsConditionNode),
+        P.string('!=').result(NotEqualsConditionNode),
+        P.string('>').result(GreaterThanConditionNode),
       ),
       P.optWhitespace,
-      P.string('0'),
+      l.comparable,
     ).map((result) => {
-      return {
-        reference: result[0],
-        isEqualToZero: result[2],
-      };
+      const left = result[0];
+      const Constructor = result[2];
+      const right = result[4];
+
+      const condition = new Constructor(left, right);
+      return condition;
     });
   },
   whileCondition: () => {
-    return P.string('true').result(null);
+    return P.string('true').map(() => {
+      return new TrueConditionNode();
+    });
   },
   block: (l) => {
     return P.seq(
@@ -310,6 +347,14 @@ const language = createLanguage<Language>(parserDebugger, {
       // -
       l.inbox,
       l.identifier,
+    );
+  },
+  comparable: (l) => {
+    return P.alt<Comparable>(
+      P.string('0').map(() => {
+        return new ZeroLiteralNode();
+      }),
+      l.readableReference,
     );
   },
   writeableReference: (l) => {

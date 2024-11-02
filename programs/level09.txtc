@@ -4,7 +4,7 @@
 -- # OUTBOX.
 
 -- FloorInitNode
-  -- register -> null
+  -- register -> floor[1]
 
 -- LetStatementNode
   -- tmp -> floor[0]
@@ -17,14 +17,15 @@ A:
   
   -- IfStatementNode
     -- condition
-      COPYFROM 0 --$tmp
+      -- EqualsConditionNode
       JUMPZ B
     -- else
-      JUMP C
+    C:
+      JUMP D
     -- if
-  B:
+    B:
       -- AssignmentStatementNode
       COPYFROM 0 --$tmp
       OUTBOX
-  C:
+  D:
 JUMP A

@@ -22,14 +22,16 @@ A:
   
   -- IfStatementNode
     -- condition
+      -- NotEqualsConditionNode
       COPYFROM 0 --$tmp
-      JUMPZ B
-    -- else
+      JUMPZ C
+    -- if
+    B:
       -- AssignmentStatementNode
       COPYFROM 0 --$tmp
       OUTBOX
-      JUMP C
-    -- if
-  B:
-  C:
+      JUMP D
+    -- else
+    C:
+  D:
 JUMP A

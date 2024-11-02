@@ -89,4 +89,8 @@ x70Yx70Yx70Yx70Yx3vf77PfL0wlpvU`.replaceAll('\n', '');
   static JUMPZ(context: CompilerContext, label: string) {
     return new CompiledPart(context, `JUMPZ ${label}`);
   }
+
+  static JUMPN(context: CompilerContext, label: string) {
+    return new CompiledPart(context, `JUMPN ${label}`);
+  }
 }
