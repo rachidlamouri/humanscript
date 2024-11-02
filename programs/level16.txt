@@ -1,0 +1,20 @@
+# Absolute Positivity
+
+# Send each thing from the
+# INBOX to the OUTBOX. BUT, if
+# a number is negative, first
+# remove its negative sign.
+
+floor size 3
+
+let tmp
+
+while true {
+  tmp = inbox
+
+  if (tmp < 0) {
+    outbox = -tmp
+  } else {
+    outbox tmp
+  }
+}
