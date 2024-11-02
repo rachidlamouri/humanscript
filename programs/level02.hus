@@ -13,6 +13,6 @@
 # complete this assignment
 # using only 3 total commands.
 
-while true {
+while {
   outbox = inbox
 }

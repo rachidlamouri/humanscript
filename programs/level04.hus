@@ -15,7 +15,7 @@ floor size 3
 
 let tmp
 
-while true {
+while {
   tmp = inbox
   outbox = inbox
   outbox = tmp

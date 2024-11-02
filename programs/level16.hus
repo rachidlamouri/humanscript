@@ -9,7 +9,7 @@ floor size 3
 
 let tmp
 
-while true {
+while {
   tmp = inbox
 
   if (tmp < 0) {

@@ -12,6 +12,6 @@
 
 floor size 3
 
-while true {
+while {
   outbox = inbox + inbox
 }

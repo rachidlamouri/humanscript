@@ -17,7 +17,7 @@ floor size 3
 let first
 let second
 
-while true {
+while {
   first = inbox
   second = inbox
 

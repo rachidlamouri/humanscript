@@ -55,7 +55,6 @@ type Language = {
   optionalFloorSlot: FloorIndex | null;
   floorSlot: FloorIndex;
 
-  whileCondition: Condition;
   ifConditionExpression: Condition;
   ifCondition: Condition;
   block: BlockNode;
@@ -179,11 +178,9 @@ const language = createLanguage<Language>(parserDebugger, {
       // -
       P.string('while'),
       P.whitespace,
-      l.whileCondition,
-      P.whitespace,
       l.block,
     ).map((result) => {
-      return new WhileStatementNode(result[2], result[4]);
+      return new WhileStatementNode(new TrueConditionNode(), result[2]);
     });
   },
   ifStatement: (l) => {
@@ -291,11 +288,6 @@ const language = createLanguage<Language>(parserDebugger, {
 
       const condition = new Constructor(left, right);
       return condition;
-    });
-  },
-  whileCondition: () => {
-    return P.string('true').map(() => {
-      return new TrueConditionNode();
     });
   },
   block: (l) => {
