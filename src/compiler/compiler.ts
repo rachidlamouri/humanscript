@@ -382,7 +382,7 @@ const language = createLanguage<Language>(parserDebugger, {
 
   assemblyComment: () => {
     return P.regex(/##[^\n]*/).map((comment) => {
-      const text = comment.slice(1).trim();
+      const text = comment.slice(2).trim();
       return new AssemblyCommentReferenceNode(text);
     });
   },

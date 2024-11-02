@@ -1,4 +1,9 @@
 import zlib from 'zlib';
+import c from 'chalk';
+
+type Point = [x: number, y: number];
+type Path = Point[];
+type Pixel = [Point];
 
 const HUMAN_RESOURCE_MACHINE_IMAGE_BUFFER_LENGTH = 1028;
 
@@ -14,8 +19,93 @@ const MIN_VALUE = 1;
 
 const MAX_VALUE = 2 ** 16 - 1;
 
-type Point = [x: number, y: number];
-type Path = Point[];
+const BRUSH_WIDTH = 2000;
+const BRUSH_HEIGHT = 6000;
+
+const PIXEL_COUNT_X = Math.floor((MAX_VALUE + 1) / BRUSH_WIDTH);
+const PIXEL_COUNT_Y = Math.floor((MAX_VALUE + 1) / BRUSH_HEIGHT);
+
+const PIXEL_GRID_WHITESPACE_X = MAX_VALUE - PIXEL_COUNT_X * BRUSH_WIDTH;
+const PIXEL_GRID_LEFT_MARGIN = BRUSH_WIDTH / 2 + PIXEL_GRID_WHITESPACE_X / 2;
+const PIXEL_GRID_WHITESPACE_Y = MAX_VALUE - PIXEL_COUNT_Y * BRUSH_HEIGHT;
+const PIXEL_GRID_TOP_MARGIN = BRUSH_HEIGHT / 2 + PIXEL_GRID_WHITESPACE_Y / 2;
+const PIXEL_GRID_CAP_HEIGHT = 7;
+const PIXEL_GRID_DESCENDER_HEIGHT = 3;
+
+const CORNER_DOT_PATHS: Pixel[] = [
+  [[MIN_VALUE, MIN_VALUE]],
+  [[MAX_VALUE, MIN_VALUE]],
+  [[MAX_VALUE, MAX_VALUE]],
+  [[MIN_VALUE, MAX_VALUE]],
+];
+
+const CORNER_PATHS: Path[] = [
+  [
+    [MIN_VALUE, BRUSH_HEIGHT],
+    [MIN_VALUE, MIN_VALUE],
+    [BRUSH_WIDTH, MIN_VALUE],
+  ],
+  [
+    [MAX_VALUE - BRUSH_WIDTH, MIN_VALUE],
+    [MAX_VALUE, MIN_VALUE],
+    [MAX_VALUE, BRUSH_HEIGHT],
+  ],
+  [
+    [MAX_VALUE - BRUSH_WIDTH, MAX_VALUE],
+    [MAX_VALUE, MAX_VALUE],
+    [MAX_VALUE, MAX_VALUE - BRUSH_HEIGHT],
+  ],
+  [
+    [MIN_VALUE, MAX_VALUE - BRUSH_HEIGHT],
+    [MIN_VALUE, MAX_VALUE],
+    [MIN_VALUE + BRUSH_WIDTH, MAX_VALUE],
+  ],
+];
+
+const BORDER_PATHS: Path[] = [
+  [
+    [MIN_VALUE, MIN_VALUE],
+    [MAX_VALUE, MIN_VALUE],
+    [MAX_VALUE, MAX_VALUE],
+    [MIN_VALUE, MAX_VALUE],
+    [MIN_VALUE, MIN_VALUE],
+  ],
+];
+
+const centerPixels = (pixels: Pixel[]): Pixel[] => {
+  return pixels.map(([point]) => {
+    return [
+      [PIXEL_GRID_LEFT_MARGIN + point[0], PIXEL_GRID_TOP_MARGIN + point[1]],
+    ];
+  });
+};
+
+const truncatePixels = (pixels: Pixel[]): Pixel[] => {
+  return pixels.filter(([point]) => {
+    return point[0] <= MAX_VALUE && point[1] <= MAX_VALUE;
+  });
+};
+
+const PIXEL_GRID_OUTLINE_PATHS: Pixel[] = truncatePixels(
+  centerPixels(
+    Array.from({ length: PIXEL_COUNT_X })
+      .flatMap((_, xIndex) => {
+        return Array.from({ length: PIXEL_COUNT_Y }).map<Point>((_, yIndex) => {
+          return [xIndex, yIndex];
+        });
+      })
+      .filter(
+        (point) =>
+          point[0] === 0 ||
+          point[0] === PIXEL_COUNT_X - 1 ||
+          point[1] === 0 ||
+          point[1] === PIXEL_COUNT_Y - 1,
+      )
+      .map((point) => {
+        return [point];
+      }),
+  ),
+);
 
 export const decode = (base64Encoded: string) => {
   const zippedBuffer = Buffer.from(base64Encoded, 'base64');
@@ -78,4 +168,296 @@ export const encode = (paths: Path[]) => {
   const encoded = base64Encoded.replaceAll('=', '+');
 
   return encoded;
+};
+
+type CharacterMetadata = {
+  points: Point[];
+  letterWidth: number;
+  letterHeight: number;
+  descenderHeight: number;
+  hasDescender: boolean;
+};
+
+/**
+ * See uses for example input. Takes a character template and produces the
+ * smallest 2d array needed to hold the character template and surrounding empty
+ * space. Uses the 2d array to produce x and y coordinates for each rendered
+ * point of the character. These can be translated into a larger coordinate
+ * space as needed.
+ */
+const localPoints = (strings: TemplateStringsArray): CharacterMetadata => {
+  const rawLines = strings.join('').split('\n');
+
+  // trim leading lines
+  rawLines.reverse();
+  while (rawLines.at(-1)?.trim() === '') {
+    rawLines.pop();
+  }
+
+  // trim trailing lines
+  rawLines.reverse();
+  while (rawLines.at(-1)?.trim() === '') {
+    rawLines.pop();
+  }
+
+  const lines = [...rawLines];
+  const nonEmptyLines = lines.filter((line) => line.trim() !== '');
+
+  const startIndex = Math.min(
+    ...nonEmptyLines.map((line) => {
+      const leadingWhitespace = line.match(/^(\s*)/)?.[1] ?? '';
+      return leadingWhitespace.length;
+    }),
+  );
+
+  const letterWidth = Math.max(
+    ...nonEmptyLines.map((line) => {
+      return line.substring(startIndex).length;
+    }),
+  );
+
+  const fullHeight = lines.length;
+  const descenderIndex = lines.findIndex((line) => line.includes('_')) + 1;
+  const hasDescender = descenderIndex > 0;
+  const letterHeight = hasDescender ? descenderIndex : fullHeight;
+  const descenderHeight = fullHeight - letterHeight;
+
+  const normalizedLines = lines.map((line) => {
+    const substring = line.substring(startIndex, startIndex + letterWidth);
+    return substring.padEnd(letterWidth, ' ').split('');
+  });
+
+  const points = normalizedLines.flatMap((line, row) => {
+    return line
+      .map<Point | null>((cell, column) => {
+        if (cell === ' ') {
+          return null;
+        }
+
+        if (cell !== 'X' && cell !== '_') {
+          throw new Error(`Unexpected character "${cell}"`);
+        }
+
+        const point: Point = [MIN_VALUE + column, MIN_VALUE + row];
+        return point;
+      })
+      .filter((point): point is Point => point !== null);
+  });
+
+  return {
+    points,
+    letterWidth,
+    letterHeight,
+    descenderHeight,
+    hasDescender,
+  };
+};
+
+const lp = localPoints;
+
+const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
+  1: lp`
+    X
+   XX
+    X
+    X
+    X
+    X
+   XXX
+  `,
+  2: lp`
+    XX
+   X  X
+      X
+     X
+    X
+   X
+   XXXX
+  `,
+  ' ': {
+    points: [],
+    letterWidth: 1,
+    letterHeight: 0,
+    descenderHeight: 0,
+    hasDescender: false,
+  },
+  '?': lp`
+     XX
+    X  X
+       X
+      X
+     X
+
+     X
+  `,
+  b: lp`
+   X
+   X
+   X
+   XXX
+   X  X
+   X  X
+   XXX
+  `,
+  c: lp`
+    XX
+   X  X
+   X
+   X  X
+    XX
+  `,
+  d: lp`
+      X
+      X
+      X
+    XXX
+   X  X
+   X  X
+    XXX
+  `,
+  e: lp`
+    XX
+   X  X
+   XXXX
+   X
+    XXX
+  `,
+  f: lp`
+    XX
+   X  X
+   X
+   XXX
+   X
+   X
+   X
+  `,
+  g: lp`
+    XXX
+   X  X
+   X  X
+    XXX
+      _
+      X
+    XX
+  `,
+  i: lp`
+    X
+
+
+    X
+    X
+    X
+  `,
+  o: lp`
+    XX
+   X  X
+   X  X
+   X  X
+    XX
+  `,
+  n: lp`
+    XXX
+    X  X
+    X  X
+    X  X
+    X  X
+  `,
+  q: lp`
+    XX
+   X  X
+   X  X
+   X  X
+    ___
+      X
+      X
+  `,
+  r: lp`
+    X XX
+    XX
+    X
+    X
+    X
+  `,
+  s: lp`
+    XXX
+   X
+    XX
+      X
+   XXX
+  `,
+  t: lp`
+     X
+     X
+    XXXX
+     X
+     X X
+      X
+  `,
+};
+
+const getTextMetadata = (text: string): CharacterMetadata[] => {
+  const characterStrings = text.split('');
+
+  const characters: CharacterMetadata[] = [];
+  const missingCharacters: string[] = [];
+
+  characterStrings.forEach((character) => {
+    const localPoints = CHARACTER_METADATA[character];
+
+    if (localPoints !== undefined) {
+      characters.push(localPoints);
+    } else {
+      missingCharacters.push(character);
+    }
+
+    return localPoints;
+  });
+
+  if (missingCharacters.length > 0) {
+    const uniqueSortedCharacters = [...new Set(missingCharacters)].sort();
+    throw new Error(
+      `Some character images are not implemented: ${uniqueSortedCharacters.join(',')}`,
+    );
+  }
+
+  return characters;
+};
+
+const getCharacterPixels = (characters: CharacterMetadata[]) => {
+  let accumulatedPixelWidth: number = 0;
+  const pixels = characters.flatMap((character, index) => {
+    const adjustedPoints = character.points.map((point) => {
+      const accumulatedLetterSpacing = index;
+      const letterHeightOffset = PIXEL_GRID_CAP_HEIGHT - character.letterHeight;
+
+      const adjustedPoint: Point = [
+        (accumulatedPixelWidth + accumulatedLetterSpacing + point[0]) *
+          BRUSH_WIDTH,
+        (letterHeightOffset + point[1]) * BRUSH_HEIGHT,
+      ];
+      return adjustedPoint;
+    });
+
+    accumulatedPixelWidth += character.letterWidth;
+
+    const paths: Pixel[] = adjustedPoints.map((point) => [point]);
+    return paths;
+  });
+
+  return pixels;
+};
+
+export const encodeAsPixels = (text: string) => {
+  const textMetadata = getTextMetadata(text);
+  const uncenteredPixels = getCharacterPixels(textMetadata);
+  const centeredPixels = centerPixels(uncenteredPixels);
+  const truncatedPixels = truncatePixels(centeredPixels);
+
+  if (truncatedPixels.length !== centeredPixels.length) {
+    console.warn(c.yellow(`Comment "${text}" was truncated`));
+  }
+
+  const image = encode([...CORNER_PATHS, ...truncatedPixels]);
+
+  return image;
 };

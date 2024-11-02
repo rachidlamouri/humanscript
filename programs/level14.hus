@@ -22,10 +22,10 @@ while {
   second = inbox
 
   if (first > second) {
-    ## first bigger
+    ## 1 big
     outbox = first
   } else {
-    ## second bigger
+    ## 2 big
     outbox = second
   }
 }

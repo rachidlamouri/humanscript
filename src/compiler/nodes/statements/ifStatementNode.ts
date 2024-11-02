@@ -86,5 +86,6 @@ export class IfStatementNode extends Node implements Statement {
 
     this.condition.flatten(accumulator);
     this.ifBlock.flatten(accumulator);
+    this.elseBlock.flatten(accumulator);
   }
 }
