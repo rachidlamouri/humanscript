@@ -33,9 +33,22 @@ export class Assembly {
   }
 
   static DEFINE_COMMENT(context: CompilerContext, index: number, text: string) {
-    const image = encodeAsPixels(text);
+    const encodedImage = encodeAsPixels(text);
 
-    return new CompiledPart(context, `DEFINE COMMENT ${index}\n${image};`);
+    const chunkSize = 60;
+    const chunkCount = Math.ceil(encodedImage.length / chunkSize);
+
+    const chunks = Array.from({ length: chunkCount }).map((_, index) => {
+      const startIndex = index * chunkSize;
+      return encodedImage.substring(startIndex, startIndex + chunkSize);
+    });
+
+    const serializedChunks = chunks.join('\n');
+
+    return new CompiledPart(
+      context,
+      `DEFINE COMMENT ${index}\n${serializedChunks};`,
+    );
   }
 
   static LINE_FEED(context: CompilerContext) {

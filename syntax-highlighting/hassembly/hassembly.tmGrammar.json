@@ -6,7 +6,25 @@
       "name": "comment.line.double-dash.hassembly"
     },
     {
-      "match": "INBOX|OUTBOX|COPYFROM|COPYTO|ADD|SUB|COMMENT|DEFINE COMMENT",
+      "begin": "(DEFINE COMMENT) (\\d+)",
+      "end": "(;)$",
+      "beginCaptures": {
+        "1": {
+          "name": "support.function.hassembly"
+        },
+        "2": {
+          "name": "constant.numeric.hassembly"
+        }
+      },
+      "contentName": "humanscript",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.hassembly"
+        }
+      }
+    },
+    {
+      "match": "INBOX|OUTBOX|COPYFROM|COPYTO|ADD|SUB|COMMENT",
       "name": "support.function.hassembly"
     },
     {
@@ -34,10 +52,6 @@
     {
       "match": "\\d+",
       "name": "constant.numeric.hassembly"
-    },
-    {
-      "match": "^.+;$",
-      "name": "hassembly"
     }
   ]
 }
