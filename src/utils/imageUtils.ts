@@ -185,7 +185,9 @@ type CharacterMetadata = {
  * point of the character. These can be translated into a larger coordinate
  * space as needed.
  */
-const localPoints = (strings: TemplateStringsArray): CharacterMetadata => {
+const getCharacterMetadata = (
+  strings: TemplateStringsArray,
+): CharacterMetadata => {
   const rawLines = strings.join('').split('\n');
 
   // trim leading lines
@@ -253,10 +255,10 @@ const localPoints = (strings: TemplateStringsArray): CharacterMetadata => {
   };
 };
 
-const lp = localPoints;
+const cm = getCharacterMetadata;
 
 const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
-  1: lp`
+  1: cm`
     X
    XX
     X
@@ -265,7 +267,7 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
     X
    XXX
   `,
-  2: lp`
+  2: cm`
     XX
    X  X
       X
@@ -281,7 +283,7 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
     descenderHeight: 0,
     hasDescender: false,
   },
-  '?': lp`
+  '?': cm`
      XX
     X  X
        X
@@ -290,7 +292,7 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
 
      X
   `,
-  b: lp`
+  b: cm`
    X
    X
    X
@@ -299,14 +301,14 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
    X  X
    XXX
   `,
-  c: lp`
+  c: cm`
     XX
    X  X
    X
    X  X
     XX
   `,
-  d: lp`
+  d: cm`
       X
       X
       X
@@ -315,14 +317,14 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
    X  X
     XXX
   `,
-  e: lp`
+  e: cm`
     XX
    X  X
    XXXX
    X
     XXX
   `,
-  f: lp`
+  f: cm`
     XX
    X  X
    X
@@ -331,7 +333,7 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
    X
    X
   `,
-  g: lp`
+  g: cm`
     XXX
    X  X
    X  X
@@ -340,7 +342,7 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
       X
     XX
   `,
-  i: lp`
+  i: cm`
     X
 
 
@@ -348,21 +350,21 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
     X
     X
   `,
-  o: lp`
+  o: cm`
     XX
    X  X
    X  X
    X  X
     XX
   `,
-  n: lp`
+  n: cm`
     XXX
     X  X
     X  X
     X  X
     X  X
   `,
-  q: lp`
+  q: cm`
     XX
    X  X
    X  X
@@ -371,21 +373,21 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
       X
       X
   `,
-  r: lp`
+  r: cm`
     X XX
     XX
     X
     X
     X
   `,
-  s: lp`
+  s: cm`
     XXX
    X
     XX
       X
    XXX
   `,
-  t: lp`
+  t: cm`
      X
      X
     XXXX
