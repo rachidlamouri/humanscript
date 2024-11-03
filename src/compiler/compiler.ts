@@ -31,6 +31,9 @@ import {
 import { ZeroLiteralNode } from './nodes/zeroLiteralNode';
 import { TrueConditionNode } from './nodes/conditions/trueConditionNode';
 import { GreaterThanConditionNode } from './nodes/conditions/greaterThanConditionNode';
+import { LessThanConditionNode } from './nodes/conditions/lessThanConditionNode.ts';
+import { NegationExpressionNode } from './nodes/expressions/negationExpressionNode';
+import { BinaryMathExpressionNode } from './nodes/expressions/binaryMathExpressionNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -60,7 +63,9 @@ type Language = {
   block: BlockNode;
 
   readableExpression: ReadableExpression;
-  mathExpression: AdditionExpressionNode | SubtractionExpressionNode;
+  mathExpression: BinaryMathExpressionNode | NegationExpressionNode;
+  binaryMathExpression: BinaryMathExpressionNode;
+  negationExpression: NegationExpressionNode;
 
   readableReference: ReadableReference;
   comparable: Comparable;
@@ -278,6 +283,7 @@ const language = createLanguage<Language>(parserDebugger, {
         P.string('==').result(EqualsConditionNode),
         P.string('!=').result(NotEqualsConditionNode),
         P.string('>').result(GreaterThanConditionNode),
+        P.string('<').result(LessThanConditionNode),
       ),
       P.optWhitespace,
       l.comparable,
@@ -310,6 +316,13 @@ const language = createLanguage<Language>(parserDebugger, {
     );
   },
   mathExpression: (l) => {
+    return P.alt<Language['mathExpression']>(
+      // -
+      l.binaryMathExpression,
+      l.negationExpression,
+    );
+  },
+  binaryMathExpression: (l) => {
     return P.seq(
       // -
       l.readableReference,
@@ -331,6 +344,16 @@ const language = createLanguage<Language>(parserDebugger, {
       } else {
         return new SubtractionExpressionNode(left, right);
       }
+    });
+  },
+  negationExpression: (l) => {
+    return P.seq(
+      // -
+      P.string('-'),
+      P.optWhitespace,
+      l.readableReference,
+    ).map((result) => {
+      return new NegationExpressionNode(result[2]);
     });
   },
 

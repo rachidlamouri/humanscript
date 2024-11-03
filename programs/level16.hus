@@ -13,8 +13,10 @@ while {
   tmp = inbox
 
   if (tmp < 0) {
+    ## negate
     outbox = -tmp
   } else {
-    outbox tmp
+    ## is pos
+    outbox = tmp
   }
 }

@@ -1,0 +1,60 @@
+-- # Absolute Positivity
+-- # Send each thing from the
+-- # INBOX to the OUTBOX. BUT, if
+-- # a number is negative, first
+-- # remove its negative sign.
+
+-- FloorInitNode
+  -- register -> floor[1]
+
+-- LetStatementNode
+  -- tmp -> floor[0]
+
+-- WhileStatementNode
+A:
+  -- AssignmentStatementNode
+  INBOX
+  COPYTO 0 --$tmp
+  
+  -- IfStatementNode
+    -- condition
+      -- LessThanConditionNode
+      COPYFROM 0 --$tmp
+      JUMPN B
+    -- else
+    C:
+      COMMENT 1 -- ## is pos
+      
+      -- AssignmentStatementNode
+      COPYFROM 0 --$tmp
+      OUTBOX
+      JUMP D
+    -- if
+    B:
+      COMMENT 0 -- ## negate
+      
+      -- AssignmentStatementNode
+      -- NegationExpressionNode
+      COPYFROM 0 --$tmp
+      COPYTO 1 --$register
+      SUB 1 --$register
+      SUB 1 --$register
+      OUTBOX
+  D:
+JUMP A
+
+DEFINE COMMENT 0
+eJzt0KFvg0AUx/FD4ZCrm1zlFEEhySk0BtkEU1FBwh9QgUBUIBCYJhMkk5hL
+kDXYDUOQqJa/YHNs1+/1b5jZS+CTB3e/l7yzEMISh431+/6wLaHr9dsS66qf
+w4Z+NXW6ifv5003//bTXVffKGWNt/oTRMypHptrtCypHFfSonO0bPSqn6uix
+8slJAuxdcrwQe5ecysckQC/E3iW38slLAvRCbHbkZnuUKY4x+TLFMSZPptjs
+yM32KNOH5MrUHjiXLZxDVSTBfU8lRrXZU8GcvMSoxuuReVGN1yNzotrsq2Be
+XmJUY9+S37fkf72bfbVYdZhcHt/Nvlpyk4vZW0feOJHTzGgP3MsWtAfuj5PZ
+z4zZgvZA3jiZvc+YLfhff1s/rWusyQ++;
+
+DEFINE COMMENT 1
+eJztz6EOgkAcx/EjXbNeI0piJh/B+QQ3CtHNQjC4UWgGAsFA4AEIbEQKGy9A
+VQuPoD4BttPzi29g5L9xn93ufr9xkRDCEQflfNaLdISd1csRxtjvoNibac4P
+8b1/ftjTqzTG7tvFfoNthl6JRWf1lkNoHX3s1xi42yPn5EYf+zX5wP3lcfRx
+CMlXO5SanjhCqemJI5SaviHEaodS0ye1vGH8tN5P9LYZqoTeNEeV0JvmqBL6
+0hzvJ3rbbPrvenp3g0WHXknfWE/vbrDo6PHKXx77BueZ55/zBlw4dQU+;

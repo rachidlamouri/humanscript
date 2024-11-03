@@ -292,6 +292,15 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
 
      X
   `,
+  a: cm`
+
+    XX
+      X
+    XXX
+   X  X
+   X  X
+    XXX
+  `,
   b: cm`
    X
    X
@@ -357,6 +366,15 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
    X  X
     XX
   `,
+  p: cm`
+    XX
+   X  X
+   X  X
+   XXX
+   _
+   X
+   X
+  `,
   n: cm`
     XXX
     X  X
@@ -392,6 +410,13 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
      X
     XXXX
      X
+     X X
+      X
+  `,
+  v: cm`
+    X   X
+    X   X
+    X   X
      X X
       X
   `,
