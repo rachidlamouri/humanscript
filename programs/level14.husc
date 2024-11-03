@@ -41,7 +41,7 @@ A:
       JUMPN B
     -- else
     C:
-      COMMENT 1
+      COMMENT 1 -- ## 2 big
       
       -- AssignmentStatementNode
       COPYFROM 1 --$second
@@ -49,7 +49,7 @@ A:
       JUMP D
     -- if
     B:
-      COMMENT 0
+      COMMENT 0 -- ## 1 big
       
       -- AssignmentStatementNode
       COPYFROM 0 --$first

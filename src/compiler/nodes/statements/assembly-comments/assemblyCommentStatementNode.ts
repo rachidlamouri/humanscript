@@ -11,7 +11,7 @@ export class AssemblyCommentReferenceNode extends Node implements Statement {
 
   compileStatement(context: CompilerContext): Compiled {
     const index = context.createCommentIndex(this);
-    const result = [Assembly.COMMENT(context, index)];
+    const result = [Assembly.COMMENT(context, this.text, index)];
 
     return result;
   }

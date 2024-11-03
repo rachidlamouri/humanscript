@@ -22,7 +22,7 @@
 
 -- WhileStatementNode
 A:
-  COMMENT 0
+  COMMENT 0 -- ## init
   
   -- AssignmentStatementNode
   INBOX
@@ -32,7 +32,7 @@ A:
   INBOX
   COPYTO 1 --$second
   
-  COMMENT 1
+  COMMENT 1 -- ## is eq?
   
   -- IfStatementNode
     -- condition

@@ -28,8 +28,8 @@ export class Assembly {
     return new CompiledPart(context, `-- # ${text}`);
   }
 
-  static COMMENT(context: CompilerContext, index: number) {
-    return new CompiledPart(context, `COMMENT ${index}`);
+  static COMMENT(context: CompilerContext, text: string, index: number) {
+    return new CompiledPart(context, `COMMENT ${index} -- ## ${text}`);
   }
 
   static DEFINE_COMMENT(context: CompilerContext, index: number, text: string) {
