@@ -1,0 +1,82 @@
+-- # Multiplication Workshop
+-- # 
+-- # For each two things in the
+-- # INBOX, multiply them, and
+-- # OUTBOX the result. Don't
+-- # worry about negative numbers
+-- # for now.
+-- # 
+-- # You got... LABELS! They can
+-- # help you remember the
+-- # purpose of each tile on the
+-- # floor. Just tap any tile on the
+-- # floor to edit.
+
+-- FloorInitNode
+  -- accumulator -> floor[2]
+  -- iterator -> floor[3]
+
+-- LetStatementNode
+  -- multiplicand -> floor[0]
+
+-- LetStatementNode
+  -- multiplier -> floor[1]
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$multiplicand
+  
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 1 --$multiplier
+  
+  -- AssignmentStatementNode
+    -- read
+    -- MultiplicationExpressionNode
+      -- zero the accumulator
+      COPYFROM 0 --$multiplicand
+      COPYTO 2 --$accumulator
+      SUB 2 --$accumulator
+      COPYTO 2 --$accumulator
+      -- set the iterator
+      COPYFROM 1 --$multiplier
+      COPYTO 3 --$iterator
+      -- multiply
+      -- WhileStatementNode
+      JUMP condition01
+      loop01:
+        -- AssignmentStatementNode
+          -- read
+          -- AdditionExpressionNode
+          COPYFROM 2 --$accumulator
+          COPYTO 2 --$accumulator
+          COPYFROM 0 --$multiplicand
+          ADD 2 --$accumulator
+          -- write
+          COPYTO 2 --$accumulator
+        
+        -- DecrementAssignmentStatementNode
+        BUMPDN 3 --$iterator
+        
+        condition01:
+        -- GreaterThanConditionNode
+        COPYFROM 3 --$iterator
+        -- compare 0
+        JUMPZ break01
+        JUMPN break01
+        JUMP loop01
+      break01:
+      COPYFROM 2 --$accumulator
+    -- write
+    OUTBOX
+  
+  condition00:
+  JUMP loop00
+break00:

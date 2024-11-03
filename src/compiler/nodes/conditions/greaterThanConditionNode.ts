@@ -20,9 +20,10 @@ export class GreaterThanConditionNode extends Node implements Condition {
 
   compileCondition(
     context: CompilerContext,
-    { trueLabel }: ConditionLabels,
+    { trueLabel, falseLabel }: ConditionLabels,
   ): Compiled {
     assertIsNotUndefined(trueLabel);
+    assertIsNotUndefined(falseLabel);
     context.bindReservedRegisterKey(RegisterKey.Accumulator);
 
     const result = [];
@@ -31,7 +32,9 @@ export class GreaterThanConditionNode extends Node implements Condition {
     if (this.right instanceof ZeroLiteralNode) {
       result.push(...this.left.compileRead(context));
       result.push(Assembly.DEBUG(context, 'compare 0'));
-      throw new Error('Not implemented');
+      result.push(Assembly.JUMPZ(context, falseLabel));
+      result.push(Assembly.JUMPN(context, falseLabel));
+      result.push(Assembly.JUMP(context, trueLabel));
     } else {
       result.push(...this.left.compileRead(context));
       result.push(Assembly.COPYTO(context, RegisterKey.Accumulator));

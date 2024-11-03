@@ -1,0 +1,25 @@
+# Multiplication Workshop
+#
+# For each two things in the
+# INBOX, multiply them, and
+# OUTBOX the result. Don't
+# worry about negative numbers
+# for now.
+#
+# You got... LABELS! They can
+# help you remember the
+# purpose of each tile on the
+# floor. Just tap any tile on the
+# floor to edit.
+
+floor size 20
+
+let multiplicand
+let multiplier
+
+while {
+  multiplicand = inbox
+  multiplier = inbox
+
+  outbox = multiplicand * multiplier
+}

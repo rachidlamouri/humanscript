@@ -1,4 +1,4 @@
-import { CompilerContext } from '../../compilerContext';
+import { CompilerContext, RegisterKey } from '../../compilerContext';
 import { Compiled } from '../../compiled';
 import { ReadableReference } from './readableReference';
 import { WriteableReference } from './writeableReference';
@@ -27,5 +27,17 @@ export class IdentifierNode
 
   flatten(accumulator: Node[]): void {
     accumulator.push(this);
+  }
+}
+
+export class AccumulatorNode extends IdentifierNode {
+  constructor() {
+    super(RegisterKey.Accumulator);
+  }
+}
+
+export class IteratorNode extends IdentifierNode {
+  constructor() {
+    super(RegisterKey.Iterator);
   }
 }

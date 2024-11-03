@@ -1,6 +1,6 @@
 import { AdditionExpressionNode } from './additionExpressionNode';
 import { SubtractionExpressionNode } from './subtractionExpressionNode';
 
-export type BinaryMathExpressionNode =
+export type AdditiveExpressionNode =
   | AdditionExpressionNode
   | SubtractionExpressionNode;

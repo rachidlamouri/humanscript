@@ -33,11 +33,12 @@ import { TrueConditionNode } from './nodes/conditions/trueConditionNode';
 import { GreaterThanConditionNode } from './nodes/conditions/greaterThanConditionNode';
 import { LessThanConditionNode } from './nodes/conditions/lessThanConditionNode.ts';
 import { NegationExpressionNode } from './nodes/expressions/negationExpressionNode';
-import { BinaryMathExpressionNode } from './nodes/expressions/binaryMathExpressionNode';
+import { AdditiveExpressionNode } from './nodes/expressions/additiveExpressionNode';
 import { GreaterThanOrEqualToConditionNode } from './nodes/conditions/greaterThanOrEqualToConditionNode';
 import { LessThanOrEqualToConditionNode } from './nodes/conditions/lessThanOrEqualToConditionNode';
 import { IncremenetAssignmentStatementNode } from './nodes/statements/incrementAssignmentStatementNode';
 import { DecrementAssignmentStatementNode } from './nodes/statements/decrementAssignmentStatementNode';
+import { MultiplicationExpressionNode } from './nodes/expressions/multiplicationExpressionNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -70,8 +71,12 @@ type Language = {
   block: BlockNode;
 
   readableExpression: ReadableExpression;
-  mathExpression: BinaryMathExpressionNode | NegationExpressionNode;
-  binaryMathExpression: BinaryMathExpressionNode;
+  mathExpression:
+    | AdditiveExpressionNode
+    | MultiplicationExpressionNode
+    | NegationExpressionNode;
+  additiveExpression: AdditiveExpressionNode;
+  multiplicationExpression: MultiplicationExpressionNode;
   negationExpression: NegationExpressionNode;
 
   readableReference: ReadableReference;
@@ -366,11 +371,12 @@ const language = createLanguage<Language>(parserDebugger, {
   mathExpression: (l) => {
     return P.alt<Language['mathExpression']>(
       // -
-      l.binaryMathExpression,
+      l.additiveExpression,
+      l.multiplicationExpression,
       l.negationExpression,
     );
   },
-  binaryMathExpression: (l) => {
+  additiveExpression: (l) => {
     return P.seq(
       // -
       l.readableReference,
@@ -392,6 +398,18 @@ const language = createLanguage<Language>(parserDebugger, {
       } else {
         return new SubtractionExpressionNode(left, right);
       }
+    });
+  },
+  multiplicationExpression: (l) => {
+    return P.seq(
+      // -
+      l.identifier,
+      P.optWhitespace,
+      P.string('*'),
+      P.optWhitespace,
+      l.identifier,
+    ).map((result) => {
+      return new MultiplicationExpressionNode(result[0], result[4]);
     });
   },
   negationExpression: (l) => {
