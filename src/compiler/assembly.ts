@@ -83,6 +83,16 @@ export class Assembly {
     return new CompiledPart(context, `SUB ${index} --$${context.registerKey}`);
   }
 
+  static BUMP_UP(context: CompilerContext, key: FloorIndexKey) {
+    const index = context.getFloorIndex(key);
+    return new CompiledPart(context, `BUMPUP ${index} --$${key}`);
+  }
+
+  static BUMP_DN(context: CompilerContext, key: FloorIndexKey) {
+    const index = context.getFloorIndex(key);
+    return new CompiledPart(context, `BUMPDN ${index} --$${key}`);
+  }
+
   static LABEL(context: CompilerContext, label: string) {
     return new CompiledPart(context, `${label}:`);
   }

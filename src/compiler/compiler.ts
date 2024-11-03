@@ -34,6 +34,10 @@ import { GreaterThanConditionNode } from './nodes/conditions/greaterThanConditio
 import { LessThanConditionNode } from './nodes/conditions/lessThanConditionNode.ts';
 import { NegationExpressionNode } from './nodes/expressions/negationExpressionNode';
 import { BinaryMathExpressionNode } from './nodes/expressions/binaryMathExpressionNode';
+import { GreaterThanOrEqualToConditionNode } from './nodes/conditions/greaterThanOrEqualToConditionNode';
+import { LessThanOrEqualToConditionNode } from './nodes/conditions/lessThanOrEqualToConditionNode';
+import { IncremenetAssignmentStatementNode } from './nodes/statements/incrementAssignmentStatementNode';
+import { DecrementAssignmentStatementNode } from './nodes/statements/decrementAssignmentStatementNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -54,12 +58,15 @@ type Language = {
   optionalElseStatement: BlockNode | null;
   elseStatement: BlockNode;
   assignmentStatement: AssignmentStatementNode;
+  incrementAssignmentStatement: IncremenetAssignmentStatementNode;
+  decrementAssignmentStatement: DecrementAssignmentStatementNode;
 
   optionalFloorSlot: FloorIndex | null;
   floorSlot: FloorIndex;
 
-  ifConditionExpression: Condition;
-  ifCondition: Condition;
+  optionalConditionExpression: Condition;
+  conditionExpression: Condition;
+  condition: Condition;
   block: BlockNode;
 
   readableExpression: ReadableExpression;
@@ -164,6 +171,8 @@ const language = createLanguage<Language>(parserDebugger, {
       l.whileStatement,
       l.ifStatement,
       l.assignmentStatement,
+      l.incrementAssignmentStatement,
+      l.decrementAssignmentStatement,
       l.floorInit,
     );
   },
@@ -182,10 +191,11 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.seq(
       // -
       P.string('while'),
+      l.optionalConditionExpression,
       P.whitespace,
       l.block,
     ).map((result) => {
-      return new WhileStatementNode(new TrueConditionNode(), result[2]);
+      return new WhileStatementNode(result[1], result[3]);
     });
   },
   ifStatement: (l) => {
@@ -193,7 +203,7 @@ const language = createLanguage<Language>(parserDebugger, {
       // -
       P.string('if'),
       P.whitespace,
-      l.ifConditionExpression,
+      l.conditionExpression,
       P.whitespace,
       l.block,
       l.optionalElseStatement,
@@ -237,6 +247,30 @@ const language = createLanguage<Language>(parserDebugger, {
       return new AssignmentStatementNode(writeable, readable);
     });
   },
+  incrementAssignmentStatement: (l) => {
+    return P.seq(
+      // -
+      l.identifier,
+      P.whitespace,
+      P.string('+='),
+      P.whitespace,
+      P.string('1'),
+    ).map((result) => {
+      return new IncremenetAssignmentStatementNode(result[0]);
+    });
+  },
+  decrementAssignmentStatement: (l) => {
+    return P.seq(
+      // -
+      l.identifier,
+      P.whitespace,
+      P.string('-='),
+      P.whitespace,
+      P.string('1'),
+    ).map((result) => {
+      return new DecrementAssignmentStatementNode(result[0]);
+    });
+  },
 
   optionalFloorSlot: (l) => {
     return P.alt<Language['optionalFloorSlot']>(
@@ -263,18 +297,30 @@ const language = createLanguage<Language>(parserDebugger, {
     });
   },
 
-  ifConditionExpression: (l) => {
+  optionalConditionExpression: (l) => {
+    return P.alt<Language['optionalConditionExpression']>(
+      P.seq(
+        // -
+        P.whitespace,
+        l.conditionExpression,
+      ).map((result) => result[1]),
+      ul.ε.map(() => {
+        return new TrueConditionNode();
+      }),
+    );
+  },
+  conditionExpression: (l) => {
     return P.seq(
       P.string('('),
       P.optWhitespace,
-      l.ifCondition,
+      l.condition,
       P.optWhitespace,
       P.string(')'),
     ).map((result) => {
       return result[2];
     });
   },
-  ifCondition: (l) => {
+  condition: (l) => {
     return P.seq(
       l.readableReference,
       P.optWhitespace,
@@ -282,7 +328,9 @@ const language = createLanguage<Language>(parserDebugger, {
         // -
         P.string('==').result(EqualsConditionNode),
         P.string('!=').result(NotEqualsConditionNode),
+        P.string('>=').result(GreaterThanOrEqualToConditionNode),
         P.string('>').result(GreaterThanConditionNode),
+        P.string('<=').result(LessThanOrEqualToConditionNode),
         P.string('<').result(LessThanConditionNode),
       ),
       P.optWhitespace,

@@ -24,7 +24,7 @@
       }
     },
     {
-      "match": "INBOX|OUTBOX|COPYFROM|COPYTO|ADD|SUB|COMMENT",
+      "match": "INBOX|OUTBOX|COPYFROM|COPYTO|ADD|SUB|COMMENT|BUMPDN|BUMPUP",
       "name": "support.function.hassembly"
     },
     {
