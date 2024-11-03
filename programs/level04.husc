@@ -12,7 +12,8 @@
 -- # cleaned later.
 
 -- FloorInitNode
-  -- register -> null
+  -- accumulator -> null
+  -- iterator -> null
 
 -- LetStatementNode
   -- tmp -> floor[0]

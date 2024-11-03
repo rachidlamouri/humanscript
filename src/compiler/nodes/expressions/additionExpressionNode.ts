@@ -1,4 +1,4 @@
-import { CompilerContext } from '../../compilerContext';
+import { CompilerContext, RegisterKey } from '../../compilerContext';
 import { Compiled } from '../../compiled';
 import { ReadableExpression } from './readableExpression';
 import { ReadableReference } from '../references/readableReference';
@@ -14,14 +14,14 @@ export class AdditionExpressionNode extends Node implements ReadableExpression {
   }
 
   compileExpression(context: CompilerContext): Compiled {
-    context.bindReservedRegisterKey();
+    context.bindReservedRegisterKey(RegisterKey.Accumulator);
 
     const result = [
       Assembly.DEBUG(context, this.className),
       ...this.left.compileRead(context),
-      Assembly.COPYTO(context, context.registerKey),
+      Assembly.COPYTO(context, RegisterKey.Accumulator),
       ...this.right.compileRead(context),
-      Assembly.ADD(context),
+      Assembly.ADD(context, RegisterKey.Accumulator),
     ];
 
     return result;

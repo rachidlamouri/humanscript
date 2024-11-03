@@ -1,7 +1,7 @@
 import { assertIsNotUndefined } from '../../../utils/assertIsNotUndefined';
 import { Assembly } from '../../assembly';
 import { Compiled } from '../../compiled';
-import { CompilerContext } from '../../compilerContext';
+import { CompilerContext, RegisterKey } from '../../compilerContext';
 import { Node } from '../node';
 import { ReadableReference } from '../references/readableReference';
 import { ZeroLiteralNode } from '../zeroLiteralNode';
@@ -33,9 +33,9 @@ export class NotEqualsConditionNode extends Node implements Condition {
       result.push(Assembly.JUMPZ(context, falseLabel));
     } else {
       result.push(...this.right.compileRead(context));
-      result.push(Assembly.COPYTO(context, context.registerKey));
+      result.push(Assembly.COPYTO(context, RegisterKey.Accumulator));
       result.push(...this.left.compileRead(context));
-      result.push(Assembly.SUB(context));
+      result.push(Assembly.SUB(context, RegisterKey.Accumulator));
       result.push(Assembly.JUMPZ(context, falseLabel));
     }
 

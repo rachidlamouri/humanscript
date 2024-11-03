@@ -4,9 +4,10 @@ export type FloorIndex = number;
 
 export type FloorIndexKey = IdentifierNode['name'];
 
-const REGISTER_KEY = 'register';
-
-const A_CHAR_CODE = 65;
+export enum RegisterKey {
+  Accumulator = 'accumulator',
+  Iterator = 'iterator',
+}
 
 const reservedWords = new Set([
   // -
@@ -16,7 +17,8 @@ const reservedWords = new Set([
   'outbox',
   'while',
   'if',
-  'register',
+  RegisterKey.Accumulator,
+  RegisterKey.Iterator,
 ]);
 
 class FloorSlot {
@@ -39,8 +41,6 @@ export class CompilerContext {
   commentIndexByKey = new Map<unknown, number>();
 
   outputDepth = 0;
-
-  registerKey = REGISTER_KEY;
 
   incrementDepth(): never[] {
     this.outputDepth += 1;
@@ -68,15 +68,15 @@ export class CompilerContext {
     });
   }
 
-  bindReservedRegisterKey(): FloorIndex {
-    const existingIndex = this.floorIndexByKey.get(REGISTER_KEY);
+  bindReservedRegisterKey(key: RegisterKey): FloorIndex {
+    const existingIndex = this.floorIndexByKey.get(key);
 
     if (existingIndex !== undefined) {
       return existingIndex;
     }
 
-    this.performBind(REGISTER_KEY, null);
-    const index = this.getFloorIndex(REGISTER_KEY);
+    this.performBind(key, null);
+    const index = this.getFloorIndex(key);
 
     return index;
   }

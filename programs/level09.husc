@@ -4,7 +4,8 @@
 -- # OUTBOX.
 
 -- FloorInitNode
-  -- register -> floor[1]
+  -- accumulator -> floor[1]
+  -- iterator -> null
 
 -- LetStatementNode
   -- tmp -> floor[0]

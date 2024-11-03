@@ -1,6 +1,10 @@
 import { encodeAsPixels } from '../utils/imageUtils';
 import { CompiledPart } from './compiledPart';
-import { CompilerContext, FloorIndexKey } from './compilerContext';
+import { CompilerContext, FloorIndexKey, RegisterKey } from './compilerContext';
+
+type RegisterConfig = {
+  useAccumulator: boolean;
+};
 
 /**
  * Abstracts output formatting
@@ -73,14 +77,14 @@ export class Assembly {
     return new CompiledPart(context, `COPYTO ${index} --$${key}`);
   }
 
-  static ADD(context: CompilerContext) {
-    const index = context.bindReservedRegisterKey();
-    return new CompiledPart(context, `ADD ${index} --$${context.registerKey}`);
+  static ADD(context: CompilerContext, key: RegisterKey) {
+    const index = context.bindReservedRegisterKey(key);
+    return new CompiledPart(context, `ADD ${index} --$${key}`);
   }
 
-  static SUB(context: CompilerContext) {
-    const index = context.bindReservedRegisterKey();
-    return new CompiledPart(context, `SUB ${index} --$${context.registerKey}`);
+  static SUB(context: CompilerContext, key: RegisterKey) {
+    const index = context.bindReservedRegisterKey(key);
+    return new CompiledPart(context, `SUB ${index} --$${key}`);
   }
 
   static BUMP_UP(context: CompilerContext, key: FloorIndexKey) {

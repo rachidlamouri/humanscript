@@ -14,7 +14,8 @@
 -- # value you're currently holding.
 
 -- FloorInitNode
-  -- register -> floor[2]
+  -- accumulator -> floor[2]
+  -- iterator -> null
 
 -- LetStatementNode
   -- first -> floor[0]
@@ -41,9 +42,9 @@ loop00:
     -- read
     -- SubtractionExpressionNode
     COPYFROM 0 --$first
-    COPYTO 2 --$register
+    COPYTO 2 --$accumulator
     COPYFROM 1 --$second
-    SUB 2 --$register
+    SUB 2 --$accumulator
     -- write
     OUTBOX
   
@@ -51,9 +52,9 @@ loop00:
     -- read
     -- SubtractionExpressionNode
     COPYFROM 1 --$second
-    COPYTO 2 --$register
+    COPYTO 2 --$accumulator
     COPYFROM 0 --$first
-    SUB 2 --$register
+    SUB 2 --$accumulator
     -- write
     OUTBOX
   

@@ -11,7 +11,8 @@
 -- # you're currently holding.
 
 -- FloorInitNode
-  -- register -> floor[0]
+  -- accumulator -> floor[0]
+  -- iterator -> null
 
 -- WhileStatementNode
 loop00:
@@ -20,9 +21,9 @@ loop00:
     -- read
     -- AdditionExpressionNode
     INBOX
-    COPYTO 0 --$register
+    COPYTO 0 --$accumulator
     INBOX
-    ADD 0 --$register
+    ADD 0 --$accumulator
     -- write
     OUTBOX
   

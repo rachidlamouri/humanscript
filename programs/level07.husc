@@ -9,7 +9,8 @@
 -- # it continues to the next line.
 
 -- FloorInitNode
-  -- register -> null
+  -- accumulator -> null
+  -- iterator -> null
 
 -- LetStatementNode
   -- tmp -> floor[0]

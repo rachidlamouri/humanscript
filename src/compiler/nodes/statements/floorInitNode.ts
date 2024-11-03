@@ -1,4 +1,4 @@
-import { CompilerContext } from '../../compilerContext';
+import { CompilerContext, RegisterKey } from '../../compilerContext';
 import { Compiled } from '../../compiled';
 import { Node } from '../node';
 import { Statement } from './statement';
@@ -15,7 +15,8 @@ export class FloorInitNode extends Node implements Statement {
     const result: Compiled = [];
     result.push(Assembly.DEBUG(context, this.className));
     context.incrementDepth();
-    result.push(Assembly.DEBUG_MAPPING(context, context.registerKey));
+    result.push(Assembly.DEBUG_MAPPING(context, RegisterKey.Accumulator));
+    result.push(Assembly.DEBUG_MAPPING(context, RegisterKey.Iterator));
     context.decrementDepth();
 
     return result;

@@ -13,7 +13,8 @@
 -- # the next line.
 
 -- FloorInitNode
-  -- register -> floor[2]
+  -- accumulator -> floor[2]
+  -- iterator -> null
 
 -- LetStatementNode
   -- first -> floor[0]
@@ -41,9 +42,9 @@ loop00:
     -- condition
       -- GreaterThanConditionNode
       COPYFROM 0 --$first
-      COPYTO 2 --$register
+      COPYTO 2 --$accumulator
       COPYFROM 1 --$second
-      SUB 2 --$register
+      SUB 2 --$accumulator
       JUMPN if01
     else01:
       -- block

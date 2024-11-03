@@ -1,7 +1,7 @@
 import { assertIsNotUndefined } from '../../../utils/assertIsNotUndefined';
 import { Assembly } from '../../assembly';
 import { Compiled } from '../../compiled';
-import { CompilerContext } from '../../compilerContext';
+import { CompilerContext, RegisterKey } from '../../compilerContext';
 import { assertIsNode, Node } from '../node';
 import { ReadableReference } from '../references/readableReference';
 import { ZeroLiteralNode } from '../zeroLiteralNode';
@@ -23,7 +23,7 @@ export class GreaterThanConditionNode extends Node implements Condition {
     { trueLabel }: ConditionLabels,
   ): Compiled {
     assertIsNotUndefined(trueLabel);
-    context.bindReservedRegisterKey();
+    context.bindReservedRegisterKey(RegisterKey.Accumulator);
 
     const result = [];
 
@@ -34,9 +34,9 @@ export class GreaterThanConditionNode extends Node implements Condition {
       throw new Error('Not implemented');
     } else {
       result.push(...this.left.compileRead(context));
-      result.push(Assembly.COPYTO(context, context.registerKey));
+      result.push(Assembly.COPYTO(context, RegisterKey.Accumulator));
       result.push(...this.right.compileRead(context));
-      result.push(Assembly.SUB(context));
+      result.push(Assembly.SUB(context, RegisterKey.Accumulator));
       result.push(Assembly.JUMPN(context, trueLabel));
     }
 

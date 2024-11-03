@@ -1,7 +1,7 @@
 import { assertIsNotUndefined } from '../../../utils/assertIsNotUndefined';
 import { Assembly } from '../../assembly';
 import { Compiled } from '../../compiled';
-import { CompilerContext } from '../../compilerContext';
+import { CompilerContext, RegisterKey } from '../../compilerContext';
 import { assertIsNode, Node } from '../node';
 import { ReadableReference } from '../references/readableReference';
 import { ZeroLiteralNode } from '../zeroLiteralNode';
@@ -23,7 +23,7 @@ export class LessThanOrEqualToConditionNode extends Node implements Condition {
     { trueLabel }: ConditionLabels,
   ): Compiled {
     assertIsNotUndefined(trueLabel);
-    context.bindReservedRegisterKey();
+    context.bindReservedRegisterKey(RegisterKey.Accumulator);
 
     const result = [];
 

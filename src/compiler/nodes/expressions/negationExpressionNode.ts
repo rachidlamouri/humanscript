@@ -1,4 +1,4 @@
-import { CompilerContext } from '../../compilerContext';
+import { CompilerContext, RegisterKey } from '../../compilerContext';
 import { Compiled } from '../../compiled';
 import { ReadableExpression } from './readableExpression';
 import { ReadableReference } from '../references/readableReference';
@@ -11,14 +11,14 @@ export class NegationExpressionNode extends Node implements ReadableExpression {
   }
 
   compileExpression(context: CompilerContext): Compiled {
-    context.bindReservedRegisterKey();
+    context.bindReservedRegisterKey(RegisterKey.Accumulator);
 
     const result = [
       Assembly.DEBUG(context, this.className),
       ...this.reference.compileRead(context),
-      Assembly.COPYTO(context, context.registerKey),
-      Assembly.SUB(context),
-      Assembly.SUB(context),
+      Assembly.COPYTO(context, RegisterKey.Accumulator),
+      Assembly.SUB(context, RegisterKey.Accumulator),
+      Assembly.SUB(context, RegisterKey.Accumulator),
     ];
 
     return result;

@@ -12,7 +12,8 @@
 -- # program.
 
 -- FloorInitNode
-  -- register -> floor[2]
+  -- accumulator -> floor[2]
+  -- iterator -> null
 
 -- LetStatementNode
   -- first -> floor[0]
@@ -44,9 +45,9 @@ loop00:
     -- condition
       -- EqualsConditionNode
       COPYFROM 1 --$second
-      COPYTO 2 --$register
+      COPYTO 2 --$accumulator
       COPYFROM 0 --$first
-      SUB 2 --$register
+      SUB 2 --$accumulator
       JUMPZ if01
     else01:
       -- block

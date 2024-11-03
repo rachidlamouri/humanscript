@@ -1,4 +1,4 @@
-import { CompilerContext } from '../../compilerContext';
+import { CompilerContext, RegisterKey } from '../../compilerContext';
 import { Compiled } from '../../compiled';
 import { assertIsNode, Node } from '../node';
 import { ReadableReference } from '../references/readableReference';
@@ -17,14 +17,14 @@ export class SubtractionExpressionNode
   }
 
   compileExpression(context: CompilerContext): Compiled {
-    context.bindReservedRegisterKey();
+    context.bindReservedRegisterKey(RegisterKey.Accumulator);
 
     const result = [
       Assembly.DEBUG(context, this.className),
       ...this.right.compileRead(context),
-      Assembly.COPYTO(context, context.registerKey),
+      Assembly.COPYTO(context, RegisterKey.Accumulator),
       ...this.left.compileRead(context),
-      Assembly.SUB(context),
+      Assembly.SUB(context, RegisterKey.Accumulator),
     ];
 
     return result;

@@ -14,7 +14,8 @@
 -- # right back to the floor. BUMP!
 
 -- FloorInitNode
-  -- register -> floor[1]
+  -- accumulator -> floor[1]
+  -- iterator -> null
 
 -- LetStatementNode
   -- count -> floor[0]

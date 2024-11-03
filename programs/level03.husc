@@ -13,7 +13,8 @@
 -- # you could pick them up...
 
 -- FloorInitNode
-  -- register -> null
+  -- accumulator -> null
+  -- iterator -> null
 
 -- LetStatementNode
   -- b -> floor[4]

@@ -6,7 +6,8 @@
 -- # remove its negative sign.
 
 -- FloorInitNode
-  -- register -> floor[1]
+  -- accumulator -> floor[1]
+  -- iterator -> null
 
 -- LetStatementNode
   -- tmp -> floor[0]
@@ -45,9 +46,9 @@ loop00:
         -- read
         -- NegationExpressionNode
         COPYFROM 0 --$tmp
-        COPYTO 1 --$register
-        SUB 1 --$register
-        SUB 1 --$register
+        COPYTO 1 --$accumulator
+        SUB 1 --$accumulator
+        SUB 1 --$accumulator
         -- write
         OUTBOX
   end01:
