@@ -12,6 +12,7 @@
 
 -- WhileStatementNode
 A:
+  -- continue
   -- AssignmentStatementNode
     -- read
     INBOX
@@ -23,9 +24,9 @@ A:
       -- LessThanConditionNode
       COPYFROM 0 --$tmp
       -- compare 0
-      JUMPN B
+      JUMPN C
     -- else
-    C:
+    D:
       -- block
       COMMENT 1 -- ## is pos
       
@@ -34,9 +35,9 @@ A:
         COPYFROM 0 --$tmp
         -- write
         OUTBOX
-    JUMP D
+    JUMP E
     -- if
-    B:
+    C:
       -- block
       COMMENT 0 -- ## negate
       
@@ -49,8 +50,12 @@ A:
         SUB 1 --$register
         -- write
         OUTBOX
-  D:
-JUMP A
+  E:
+  
+  -- condition
+  JUMP A
+-- break
+B:
 
 DEFINE COMMENT 0
 eJzt0KFvg0AUx/FD4ZCrm1zlFEEhySk0BtkEU1FBwh9QgUBUIBCYJhMkk5hL

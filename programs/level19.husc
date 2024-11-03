@@ -1,0 +1,87 @@
+-- # Countdown
+-- # For each number in the INBOX,
+-- # send that number to the
+-- # OUTBOX, followed by all
+-- # numbers down to (or up to)
+-- # zero. It's a countdown!
+-- # You got new commands! They
+-- # add ONE or subtract ONE from
+-- # an item on the floor. The result
+-- # is given back to you, and for
+-- # your convenience, also written
+-- # right back to the floor. BUMP!
+
+-- FloorInitNode
+  -- register -> floor[1]
+
+-- LetStatementNode
+  -- count -> floor[0]
+
+-- WhileStatementNode
+A:
+  -- continue
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$count
+  
+  -- IfStatementNode
+    -- condition
+      -- GreaterThanOrEqualToConditionNode
+      COPYFROM 0 --$count
+      -- compare 0
+      JUMPN D
+    -- if
+    C:
+      -- block
+      -- WhileStatementNode
+      F:
+        -- continue
+        -- AssignmentStatementNode
+          -- read
+          COPYFROM 0 --$count
+          -- write
+          OUTBOX
+        
+        -- DecrementAssignmentStatementNode
+        BUMPDN 0 --$count
+        
+        -- condition
+        -- GreaterThanOrEqualToConditionNode
+        COPYFROM 0 --$count
+        -- compare 0
+        JUMPN G
+        JUMP F
+      -- break
+      G:
+    JUMP E
+    -- else
+    D:
+      -- block
+      -- WhileStatementNode
+      H:
+        -- continue
+        -- AssignmentStatementNode
+          -- read
+          COPYFROM 0 --$count
+          -- write
+          OUTBOX
+        
+        -- IncremenetAssignmentStatementNode
+        BUMPUP 0 --$count
+        
+        -- condition
+        -- LessThanOrEqualToConditionNode
+        COPYFROM 0 --$count
+        -- compare 0
+        JUMPN H
+        JUMPZ H
+      -- break
+      I:
+  E:
+  
+  -- condition
+  JUMP A
+-- break
+B:

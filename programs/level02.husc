@@ -15,9 +15,14 @@
 
 -- WhileStatementNode
 A:
+  -- continue
   -- AssignmentStatementNode
     -- read
     INBOX
     -- write
     OUTBOX
-JUMP A
+  
+  -- condition
+  JUMP A
+-- break
+B:

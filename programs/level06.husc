@@ -15,6 +15,7 @@
 
 -- WhileStatementNode
 A:
+  -- continue
   -- AssignmentStatementNode
     -- read
     -- AdditionExpressionNode
@@ -24,4 +25,8 @@ A:
     ADD 0 --$register
     -- write
     OUTBOX
-JUMP A
+  
+  -- condition
+  JUMP A
+-- break
+B:

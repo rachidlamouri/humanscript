@@ -23,6 +23,7 @@
 
 -- WhileStatementNode
 A:
+  -- continue
   -- AssignmentStatementNode
     -- read
     INBOX
@@ -42,9 +43,9 @@ A:
       COPYTO 2 --$register
       COPYFROM 1 --$second
       SUB 2 --$register
-      JUMPN B
+      JUMPN C
     -- else
-    C:
+    D:
       -- block
       COMMENT 1 -- ## 2 big
       
@@ -53,9 +54,9 @@ A:
         COPYFROM 1 --$second
         -- write
         OUTBOX
-    JUMP D
+    JUMP E
     -- if
-    B:
+    C:
       -- block
       COMMENT 0 -- ## 1 big
       
@@ -64,8 +65,12 @@ A:
         COPYFROM 0 --$first
         -- write
         OUTBOX
-  D:
-JUMP A
+  E:
+  
+  -- condition
+  JUMP A
+-- break
+B:
 
 DEFINE COMMENT 0
 eJztjyEOwjAYRjtVh2QOiyLIqcplanLBoMiS2YklmLkJRMVkD4DYEZpwCsBw

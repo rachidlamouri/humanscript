@@ -16,6 +16,7 @@
 
 -- WhileStatementNode
 A:
+  -- continue
   -- AssignmentStatementNode
     -- read
     INBOX
@@ -27,18 +28,22 @@ A:
       -- NotEqualsConditionNode
       COPYFROM 0 --$tmp
       -- compare 0
-      JUMPZ C
+      JUMPZ D
     -- if
-    B:
+    C:
       -- block
       -- AssignmentStatementNode
         -- read
         COPYFROM 0 --$tmp
         -- write
         OUTBOX
-    JUMP D
+    JUMP E
     -- else
-    C:
+    D:
       -- block
-  D:
-JUMP A
+  E:
+  
+  -- condition
+  JUMP A
+-- break
+B:

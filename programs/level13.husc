@@ -22,6 +22,7 @@
 
 -- WhileStatementNode
 A:
+  -- continue
   COMMENT 0 -- ## init
   
   -- AssignmentStatementNode
@@ -45,21 +46,25 @@ A:
       COPYTO 2 --$register
       COPYFROM 0 --$first
       SUB 2 --$register
-      JUMPZ B
+      JUMPZ C
     -- else
-    C:
+    D:
       -- block
-    JUMP D
+    JUMP E
     -- if
-    B:
+    C:
       -- block
       -- AssignmentStatementNode
         -- read
         COPYFROM 0 --$first
         -- write
         OUTBOX
-  D:
-JUMP A
+  E:
+  
+  -- condition
+  JUMP A
+-- break
+B:
 
 DEFINE COMMENT 0
 eJztjSEOwjAYhVtVh52rZIqgeoSGBE9qKpfUTEyQ7BCISQ6A2BGWcIFaUL3C

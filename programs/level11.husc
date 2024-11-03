@@ -24,6 +24,7 @@
 
 -- WhileStatementNode
 A:
+  -- continue
   -- AssignmentStatementNode
     -- read
     INBOX
@@ -55,4 +56,8 @@ A:
     SUB 2 --$register
     -- write
     OUTBOX
-JUMP A
+  
+  -- condition
+  JUMP A
+-- break
+B:

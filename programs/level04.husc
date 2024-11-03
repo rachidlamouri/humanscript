@@ -19,6 +19,7 @@
 
 -- WhileStatementNode
 A:
+  -- continue
   -- AssignmentStatementNode
     -- read
     INBOX
@@ -36,4 +37,8 @@ A:
     COPYFROM 0 --$tmp
     -- write
     OUTBOX
-JUMP A
+  
+  -- condition
+  JUMP A
+-- break
+B:
