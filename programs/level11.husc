@@ -25,26 +25,34 @@
 -- WhileStatementNode
 A:
   -- AssignmentStatementNode
-  INBOX
-  COPYTO 0 --$first
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$first
   
   -- AssignmentStatementNode
-  INBOX
-  COPYTO 1 --$second
+    -- read
+    INBOX
+    -- write
+    COPYTO 1 --$second
   
   -- AssignmentStatementNode
-  -- SubtractionExpressionNode
-  COPYFROM 0 --$first
-  COPYTO 2 --$register
-  COPYFROM 1 --$second
-  SUB 2 --$register
-  OUTBOX
+    -- read
+    -- SubtractionExpressionNode
+    COPYFROM 0 --$first
+    COPYTO 2 --$register
+    COPYFROM 1 --$second
+    SUB 2 --$register
+    -- write
+    OUTBOX
   
   -- AssignmentStatementNode
-  -- SubtractionExpressionNode
-  COPYFROM 1 --$second
-  COPYTO 2 --$register
-  COPYFROM 0 --$first
-  SUB 2 --$register
-  OUTBOX
+    -- read
+    -- SubtractionExpressionNode
+    COPYFROM 1 --$second
+    COPYTO 2 --$register
+    COPYFROM 0 --$first
+    SUB 2 --$register
+    -- write
+    OUTBOX
 JUMP A

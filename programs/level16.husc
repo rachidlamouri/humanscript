@@ -13,33 +13,42 @@
 -- WhileStatementNode
 A:
   -- AssignmentStatementNode
-  INBOX
-  COPYTO 0 --$tmp
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$tmp
   
   -- IfStatementNode
     -- condition
       -- LessThanConditionNode
       COPYFROM 0 --$tmp
+      -- compare 0
       JUMPN B
     -- else
     C:
+      -- block
       COMMENT 1 -- ## is pos
       
       -- AssignmentStatementNode
-      COPYFROM 0 --$tmp
-      OUTBOX
-      JUMP D
+        -- read
+        COPYFROM 0 --$tmp
+        -- write
+        OUTBOX
+    JUMP D
     -- if
     B:
+      -- block
       COMMENT 0 -- ## negate
       
       -- AssignmentStatementNode
-      -- NegationExpressionNode
-      COPYFROM 0 --$tmp
-      COPYTO 1 --$register
-      SUB 1 --$register
-      SUB 1 --$register
-      OUTBOX
+        -- read
+        -- NegationExpressionNode
+        COPYFROM 0 --$tmp
+        COPYTO 1 --$register
+        SUB 1 --$register
+        SUB 1 --$register
+        -- write
+        OUTBOX
   D:
 JUMP A
 

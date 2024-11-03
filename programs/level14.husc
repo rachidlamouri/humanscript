@@ -24,12 +24,16 @@
 -- WhileStatementNode
 A:
   -- AssignmentStatementNode
-  INBOX
-  COPYTO 0 --$first
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$first
   
   -- AssignmentStatementNode
-  INBOX
-  COPYTO 1 --$second
+    -- read
+    INBOX
+    -- write
+    COPYTO 1 --$second
   
   -- IfStatementNode
     -- condition
@@ -41,19 +45,25 @@ A:
       JUMPN B
     -- else
     C:
+      -- block
       COMMENT 1 -- ## 2 big
       
       -- AssignmentStatementNode
-      COPYFROM 1 --$second
-      OUTBOX
-      JUMP D
+        -- read
+        COPYFROM 1 --$second
+        -- write
+        OUTBOX
+    JUMP D
     -- if
     B:
+      -- block
       COMMENT 0 -- ## 1 big
       
       -- AssignmentStatementNode
-      COPYFROM 0 --$first
-      OUTBOX
+        -- read
+        COPYFROM 0 --$first
+        -- write
+        OUTBOX
   D:
 JUMP A
 

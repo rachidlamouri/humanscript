@@ -25,12 +25,16 @@ A:
   COMMENT 0 -- ## init
   
   -- AssignmentStatementNode
-  INBOX
-  COPYTO 0 --$first
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$first
   
   -- AssignmentStatementNode
-  INBOX
-  COPYTO 1 --$second
+    -- read
+    INBOX
+    -- write
+    COPYTO 1 --$second
   
   COMMENT 1 -- ## is eq?
   
@@ -44,12 +48,16 @@ A:
       JUMPZ B
     -- else
     C:
-      JUMP D
+      -- block
+    JUMP D
     -- if
     B:
+      -- block
       -- AssignmentStatementNode
-      COPYFROM 0 --$first
-      OUTBOX
+        -- read
+        COPYFROM 0 --$first
+        -- write
+        OUTBOX
   D:
 JUMP A
 

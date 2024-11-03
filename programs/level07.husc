@@ -17,21 +17,28 @@
 -- WhileStatementNode
 A:
   -- AssignmentStatementNode
-  INBOX
-  COPYTO 0 --$tmp
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$tmp
   
   -- IfStatementNode
     -- condition
       -- NotEqualsConditionNode
       COPYFROM 0 --$tmp
+      -- compare 0
       JUMPZ C
     -- if
     B:
+      -- block
       -- AssignmentStatementNode
-      COPYFROM 0 --$tmp
-      OUTBOX
-      JUMP D
+        -- read
+        COPYFROM 0 --$tmp
+        -- write
+        OUTBOX
+    JUMP D
     -- else
     C:
+      -- block
   D:
 JUMP A

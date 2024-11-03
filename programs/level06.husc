@@ -16,10 +16,12 @@
 -- WhileStatementNode
 A:
   -- AssignmentStatementNode
-  -- AdditionExpressionNode
-  INBOX
-  COPYTO 0 --$register
-  INBOX
-  ADD 0 --$register
-  OUTBOX
+    -- read
+    -- AdditionExpressionNode
+    INBOX
+    COPYTO 0 --$register
+    INBOX
+    ADD 0 --$register
+    -- write
+    OUTBOX
 JUMP A

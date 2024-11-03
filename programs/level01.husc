@@ -9,13 +9,19 @@
 -- # into the OUTBOX.
 
 -- AssignmentStatementNode
-INBOX
-OUTBOX
+  -- read
+  INBOX
+  -- write
+  OUTBOX
 
 -- AssignmentStatementNode
-INBOX
-OUTBOX
+  -- read
+  INBOX
+  -- write
+  OUTBOX
 
 -- AssignmentStatementNode
-INBOX
-OUTBOX
+  -- read
+  INBOX
+  -- write
+  OUTBOX

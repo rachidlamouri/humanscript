@@ -29,6 +29,8 @@ export class GreaterThanConditionNode extends Node implements Condition {
 
     result.push(Assembly.DEBUG(context, this.className));
     if (this.right instanceof ZeroLiteralNode) {
+      result.push(...this.left.compileRead(context));
+      result.push(Assembly.DEBUG(context, 'compare 0'));
       throw new Error('Not implemented');
     } else {
       result.push(...this.left.compileRead(context));

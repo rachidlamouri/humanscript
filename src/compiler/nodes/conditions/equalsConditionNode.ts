@@ -29,6 +29,8 @@ export class EqualsConditionNode extends Node implements Condition {
 
     result.push(Assembly.DEBUG(context, this.className));
     if (this.right instanceof ZeroLiteralNode) {
+      result.push(...this.left.compileRead(context));
+      result.push(Assembly.DEBUG(context, 'compare 0'));
       result.push(Assembly.JUMPZ(context, trueLabel));
     } else {
       result.push(...this.right.compileRead(context));

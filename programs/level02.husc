@@ -16,6 +16,8 @@
 -- WhileStatementNode
 A:
   -- AssignmentStatementNode
-  INBOX
-  OUTBOX
+    -- read
+    INBOX
+    -- write
+    OUTBOX
 JUMP A

@@ -15,11 +15,14 @@ export class AssignmentStatementNode extends Node implements Statement {
   }
 
   compileStatement(context: CompilerContext): Compiled {
-    const result: Compiled = [
-      Assembly.DEBUG(context, this.className),
-      ...this.readable.compileExpression(context),
-      ...this.writeable.compileWrite(context),
-    ];
+    const result: Compiled = [];
+    result.push(Assembly.DEBUG(context, this.className));
+    context.incrementDepth();
+    result.push(Assembly.DEBUG(context, 'read'));
+    result.push(...this.readable.compileExpression(context));
+    result.push(Assembly.DEBUG(context, 'write'));
+    result.push(...this.writeable.compileWrite(context));
+    context.decrementDepth();
 
     return result;
   }

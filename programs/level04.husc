@@ -20,14 +20,20 @@
 -- WhileStatementNode
 A:
   -- AssignmentStatementNode
-  INBOX
-  COPYTO 0 --$tmp
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$tmp
   
   -- AssignmentStatementNode
-  INBOX
-  OUTBOX
+    -- read
+    INBOX
+    -- write
+    OUTBOX
   
   -- AssignmentStatementNode
-  COPYFROM 0 --$tmp
-  OUTBOX
+    -- read
+    COPYFROM 0 --$tmp
+    -- write
+    OUTBOX
 JUMP A

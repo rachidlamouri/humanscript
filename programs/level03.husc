@@ -25,13 +25,19 @@
   -- g -> floor[3]
 
 -- AssignmentStatementNode
-COPYFROM 4 --$b
-OUTBOX
+  -- read
+  COPYFROM 4 --$b
+  -- write
+  OUTBOX
 
 -- AssignmentStatementNode
-COPYFROM 0 --$u
-OUTBOX
+  -- read
+  COPYFROM 0 --$u
+  -- write
+  OUTBOX
 
 -- AssignmentStatementNode
-COPYFROM 3 --$g
-OUTBOX
+  -- read
+  COPYFROM 3 --$g
+  -- write
+  OUTBOX
