@@ -16,8 +16,8 @@
   -- tmp -> floor[0]
 
 -- WhileStatementNode
+JUMP condition00
 loop00:
-  -- continue
   -- AssignmentStatementNode
     -- read
     INBOX
@@ -43,6 +43,6 @@ loop00:
       -- block
   end01:
   
-  -- condition
+  condition00:
   JUMP loop00
 break00:

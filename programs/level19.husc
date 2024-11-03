@@ -21,8 +21,8 @@
   -- count -> floor[0]
 
 -- WhileStatementNode
+JUMP condition00
 loop00:
-  -- continue
   -- AssignmentStatementNode
     -- read
     INBOX
@@ -39,8 +39,8 @@ loop00:
     if01:
       -- block
       -- WhileStatementNode
+      JUMP condition02
       loop02:
-        -- continue
         -- AssignmentStatementNode
           -- read
           COPYFROM 0 --$count
@@ -50,7 +50,7 @@ loop00:
         -- DecrementAssignmentStatementNode
         BUMPDN 0 --$count
         
-        -- condition
+        condition02:
         -- GreaterThanOrEqualToConditionNode
         COPYFROM 0 --$count
         -- compare 0
@@ -61,8 +61,8 @@ loop00:
     else01:
       -- block
       -- WhileStatementNode
+      JUMP condition03
       loop03:
-        -- continue
         -- AssignmentStatementNode
           -- read
           COPYFROM 0 --$count
@@ -72,7 +72,7 @@ loop00:
         -- IncremenetAssignmentStatementNode
         BUMPUP 0 --$count
         
-        -- condition
+        condition03:
         -- LessThanOrEqualToConditionNode
         COPYFROM 0 --$count
         -- compare 0
@@ -81,6 +81,6 @@ loop00:
       break03:
   end01:
   
-  -- condition
+  condition00:
   JUMP loop00
 break00:

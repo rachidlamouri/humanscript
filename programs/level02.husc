@@ -14,14 +14,14 @@
 -- # using only 3 total commands.
 
 -- WhileStatementNode
+JUMP condition00
 loop00:
-  -- continue
   -- AssignmentStatementNode
     -- read
     INBOX
     -- write
     OUTBOX
   
-  -- condition
+  condition00:
   JUMP loop00
 break00:

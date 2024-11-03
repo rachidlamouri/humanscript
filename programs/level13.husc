@@ -22,8 +22,8 @@
   -- second -> floor[1]
 
 -- WhileStatementNode
+JUMP condition00
 loop00:
-  -- continue
   COMMENT 0 -- ## init
   
   -- AssignmentStatementNode
@@ -61,7 +61,7 @@ loop00:
         OUTBOX
   end01:
   
-  -- condition
+  condition00:
   JUMP loop00
 break00:
 
