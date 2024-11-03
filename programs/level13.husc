@@ -21,7 +21,7 @@
   -- second -> floor[1]
 
 -- WhileStatementNode
-A:
+loop00:
   -- continue
   COMMENT 0 -- ## init
   
@@ -40,31 +40,29 @@ A:
   COMMENT 1 -- ## is eq?
   
   -- IfStatementNode
+  -- 01
     -- condition
       -- EqualsConditionNode
       COPYFROM 1 --$second
       COPYTO 2 --$register
       COPYFROM 0 --$first
       SUB 2 --$register
-      JUMPZ C
-    -- else
-    D:
+      JUMPZ if01
+    else01:
       -- block
-    JUMP E
-    -- if
-    C:
+    JUMP end01
+    if01:
       -- block
       -- AssignmentStatementNode
         -- read
         COPYFROM 0 --$first
         -- write
         OUTBOX
-  E:
+  end01:
   
   -- condition
-  JUMP A
--- break
-B:
+  JUMP loop00
+break00:
 
 DEFINE COMMENT 0
 eJztjSEOwjAYhVtVh52rZIqgeoSGBE9qKpfUTEyQ7BCISQ6A2BGWcIFaUL3C

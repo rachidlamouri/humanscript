@@ -16,9 +16,10 @@ export class IfStatementNode extends Node implements Statement {
   }
 
   compileStatement(context: CompilerContext): Compiled {
-    const ifJumpLabel = context.createJumpLabel();
-    const elseJumpLabel = context.createJumpLabel();
-    const endJumpLabel = context.createJumpLabel();
+    const labelSuffix = context.createJumpLabelSuffix();
+    const ifJumpLabel = `if${labelSuffix}`;
+    const elseJumpLabel = `else${labelSuffix}`;
+    const endJumpLabel = `end${labelSuffix}`;
     const labels: ConditionLabels = {
       trueLabel: ifJumpLabel,
       falseLabel: elseJumpLabel,
@@ -35,26 +36,21 @@ export class IfStatementNode extends Node implements Statement {
     let jumpToLabel: string;
     let fallthroughBlock: Compiled;
     let jumpToBlock: Compiled;
-    let fallthroughDebugLabel: string;
-    let jumpToDebugLabel: string;
     if (this.condition.jumpsIfTrue) {
       fallthroughLabel = elseJumpLabel;
       jumpToLabel = ifJumpLabel;
       fallthroughBlock = compiledElseBlock;
       jumpToBlock = compiledIfBlock;
-      fallthroughDebugLabel = 'else';
-      jumpToDebugLabel = 'if';
     } else {
       fallthroughLabel = ifJumpLabel;
       jumpToLabel = elseJumpLabel;
       fallthroughBlock = compiledIfBlock;
       jumpToBlock = compiledElseBlock;
-      fallthroughDebugLabel = 'if';
-      jumpToDebugLabel = 'else';
     }
 
     const result: Compiled = [];
     result.push(Assembly.DEBUG(context, this.className));
+    result.push(Assembly.DEBUG(context, labelSuffix));
     context.incrementDepth();
     // condition
     result.push(Assembly.DEBUG(context, 'condition'));
@@ -62,7 +58,6 @@ export class IfStatementNode extends Node implements Statement {
     result.push(...this.condition.compileCondition(context, labels));
     context.decrementDepth();
     // fallthrough
-    result.push(Assembly.DEBUG(context, fallthroughDebugLabel));
     result.push(Assembly.LABEL(context, fallthroughLabel));
     context.incrementDepth();
     result.push(Assembly.DEBUG(context, 'block'));
@@ -70,7 +65,6 @@ export class IfStatementNode extends Node implements Statement {
     result.push(...fallthroughBlock);
     result.push(Assembly.JUMP(context, endJumpLabel));
     // jump-to
-    result.push(Assembly.DEBUG(context, jumpToDebugLabel));
     result.push(Assembly.LABEL(context, jumpToLabel));
     context.incrementDepth();
     result.push(Assembly.DEBUG(context, 'block'));

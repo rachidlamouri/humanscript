@@ -14,7 +14,7 @@
   -- register -> floor[0]
 
 -- WhileStatementNode
-A:
+loop00:
   -- continue
   -- AssignmentStatementNode
     -- read
@@ -27,6 +27,5 @@ A:
     OUTBOX
   
   -- condition
-  JUMP A
--- break
-B:
+  JUMP loop00
+break00:

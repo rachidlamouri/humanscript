@@ -18,7 +18,7 @@
   -- count -> floor[0]
 
 -- WhileStatementNode
-A:
+loop00:
   -- continue
   -- AssignmentStatementNode
     -- read
@@ -27,16 +27,16 @@ A:
     COPYTO 0 --$count
   
   -- IfStatementNode
+  -- 01
     -- condition
       -- GreaterThanOrEqualToConditionNode
       COPYFROM 0 --$count
       -- compare 0
-      JUMPN D
-    -- if
-    C:
+      JUMPN else01
+    if01:
       -- block
       -- WhileStatementNode
-      F:
+      loop02:
         -- continue
         -- AssignmentStatementNode
           -- read
@@ -51,16 +51,14 @@ A:
         -- GreaterThanOrEqualToConditionNode
         COPYFROM 0 --$count
         -- compare 0
-        JUMPN G
-        JUMP F
-      -- break
-      G:
-    JUMP E
-    -- else
-    D:
+        JUMPN break02
+        JUMP loop02
+      break02:
+    JUMP end01
+    else01:
       -- block
       -- WhileStatementNode
-      H:
+      loop03:
         -- continue
         -- AssignmentStatementNode
           -- read
@@ -75,13 +73,11 @@ A:
         -- LessThanOrEqualToConditionNode
         COPYFROM 0 --$count
         -- compare 0
-        JUMPN H
-        JUMPZ H
-      -- break
-      I:
-  E:
+        JUMPN loop03
+        JUMPZ loop03
+      break03:
+  end01:
   
   -- condition
-  JUMP A
--- break
-B:
+  JUMP loop00
+break00:

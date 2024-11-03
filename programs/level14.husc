@@ -22,7 +22,7 @@
   -- second -> floor[1]
 
 -- WhileStatementNode
-A:
+loop00:
   -- continue
   -- AssignmentStatementNode
     -- read
@@ -37,15 +37,15 @@ A:
     COPYTO 1 --$second
   
   -- IfStatementNode
+  -- 01
     -- condition
       -- GreaterThanConditionNode
       COPYFROM 0 --$first
       COPYTO 2 --$register
       COPYFROM 1 --$second
       SUB 2 --$register
-      JUMPN C
-    -- else
-    D:
+      JUMPN if01
+    else01:
       -- block
       COMMENT 1 -- ## 2 big
       
@@ -54,9 +54,8 @@ A:
         COPYFROM 1 --$second
         -- write
         OUTBOX
-    JUMP E
-    -- if
-    C:
+    JUMP end01
+    if01:
       -- block
       COMMENT 0 -- ## 1 big
       
@@ -65,12 +64,11 @@ A:
         COPYFROM 0 --$first
         -- write
         OUTBOX
-  E:
+  end01:
   
   -- condition
-  JUMP A
--- break
-B:
+  JUMP loop00
+break00:
 
 DEFINE COMMENT 0
 eJztjyEOwjAYRjtVh2QOiyLIqcplanLBoMiS2YklmLkJRMVkD4DYEZpwCsBw

@@ -10,7 +10,7 @@
   -- tmp -> floor[0]
 
 -- WhileStatementNode
-A:
+loop00:
   -- continue
   -- AssignmentStatementNode
     -- read
@@ -19,26 +19,24 @@ A:
     COPYTO 0 --$tmp
   
   -- IfStatementNode
+  -- 01
     -- condition
       -- EqualsConditionNode
       COPYFROM 0 --$tmp
       -- compare 0
-      JUMPZ C
-    -- else
-    D:
+      JUMPZ if01
+    else01:
       -- block
-    JUMP E
-    -- if
-    C:
+    JUMP end01
+    if01:
       -- block
       -- AssignmentStatementNode
         -- read
         COPYFROM 0 --$tmp
         -- write
         OUTBOX
-  E:
+  end01:
   
   -- condition
-  JUMP A
--- break
-B:
+  JUMP loop00
+break00:

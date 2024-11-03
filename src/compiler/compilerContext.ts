@@ -132,12 +132,16 @@ export class CompilerContext {
     return index;
   }
 
-  createJumpLabel(): string {
-    const label = String.fromCharCode(A_CHAR_CODE + this.jumpCount);
+  createJumpLabelSuffix(): string {
+    if (this.jumpCount >= 100) {
+      throw new Error('Too many jumps!');
+    }
+
+    const suffix = this.jumpCount.toString().padStart(2, '0'); // String.fromCharCode(A_CHAR_CODE + this.jumpCount);
 
     this.jumpCount += 1;
 
-    return label;
+    return suffix;
   }
 
   createCommentIndex(key: unknown): number {

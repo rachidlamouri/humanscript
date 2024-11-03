@@ -11,7 +11,7 @@
   -- tmp -> floor[0]
 
 -- WhileStatementNode
-A:
+loop00:
   -- continue
   -- AssignmentStatementNode
     -- read
@@ -20,13 +20,13 @@ A:
     COPYTO 0 --$tmp
   
   -- IfStatementNode
+  -- 01
     -- condition
       -- LessThanConditionNode
       COPYFROM 0 --$tmp
       -- compare 0
-      JUMPN C
-    -- else
-    D:
+      JUMPN if01
+    else01:
       -- block
       COMMENT 1 -- ## is pos
       
@@ -35,9 +35,8 @@ A:
         COPYFROM 0 --$tmp
         -- write
         OUTBOX
-    JUMP E
-    -- if
-    C:
+    JUMP end01
+    if01:
       -- block
       COMMENT 0 -- ## negate
       
@@ -50,12 +49,11 @@ A:
         SUB 1 --$register
         -- write
         OUTBOX
-  E:
+  end01:
   
   -- condition
-  JUMP A
--- break
-B:
+  JUMP loop00
+break00:
 
 DEFINE COMMENT 0
 eJzt0KFvg0AUx/FD4ZCrm1zlFEEhySk0BtkEU1FBwh9QgUBUIBCYJhMkk5hL

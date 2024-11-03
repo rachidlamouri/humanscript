@@ -15,8 +15,9 @@ export class WhileStatementNode extends Node implements Statement {
   }
 
   compileStatement(context: CompilerContext): Compiled {
-    const continueLabel = context.createJumpLabel();
-    const breakLabel = context.createJumpLabel();
+    const labelSuffix = context.createJumpLabelSuffix();
+    const continueLabel = `loop${labelSuffix}`;
+    const breakLabel = `break${labelSuffix}`;
     const labels: ConditionLabels = {
       trueLabel: continueLabel,
       falseLabel: breakLabel,
@@ -38,7 +39,6 @@ export class WhileStatementNode extends Node implements Statement {
     }
     context.decrementDepth();
     // break
-    result.push(Assembly.DEBUG(context, 'break'));
     result.push(Assembly.LABEL(context, breakLabel));
 
     return result;
