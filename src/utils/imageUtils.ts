@@ -292,6 +292,15 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
 
      X
   `,
+  $: cm`
+      X
+     XXXX
+    X X
+     XXX
+      X X
+    ____
+      X
+  `,
   a: cm`
 
     XX
@@ -375,6 +384,23 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
    X
    X
   `,
+  l: cm`
+   X
+   X
+   X
+   X
+   X
+   X
+    X
+
+  `,
+  m: cm`
+    XXXX
+    X X X
+    X X X
+    X X X
+    X X X
+  `,
   n: cm`
     XXX
     X  X
@@ -413,12 +439,26 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
      X X
       X
   `,
+  u: cm`
+    X  X
+    X  X
+    X  X
+    X  X
+     XXX
+  `,
   v: cm`
     X   X
     X   X
     X   X
      X X
       X
+  `,
+  z: cm`
+    XXXX
+       X
+     XX
+    X
+    XXXX
   `,
 };
 
@@ -450,7 +490,26 @@ const getTextMetadata = (text: string): CharacterMetadata[] => {
   return characters;
 };
 
-const getCharacterPixels = (characters: CharacterMetadata[]) => {
+export enum PixelImageAlignment {
+  Left = 'Left',
+  Center = 'Center',
+}
+
+const getCharacterPixels = (
+  characters: CharacterMetadata[],
+  alignment: PixelImageAlignment,
+) => {
+  const totalLetterWidth = characters.reduce(
+    (sum, character) => sum + character.letterWidth,
+    0,
+  );
+  const totalLetterSpacing = characters.length - 1;
+  const textWidth = totalLetterWidth + totalLetterSpacing;
+  const alignmentOffset =
+    alignment === PixelImageAlignment.Left || PIXEL_COUNT_X - textWidth < 0
+      ? 0
+      : Math.floor((PIXEL_COUNT_X - textWidth) / 2);
+
   let accumulatedPixelWidth: number = 0;
   const pixels = characters.flatMap((character, index) => {
     const adjustedPoints = character.points.map((point) => {
@@ -458,7 +517,10 @@ const getCharacterPixels = (characters: CharacterMetadata[]) => {
       const letterHeightOffset = PIXEL_GRID_CAP_HEIGHT - character.letterHeight;
 
       const adjustedPoint: Point = [
-        (accumulatedPixelWidth + accumulatedLetterSpacing + point[0]) *
+        (alignmentOffset +
+          accumulatedPixelWidth +
+          accumulatedLetterSpacing +
+          point[0]) *
           BRUSH_WIDTH,
         (letterHeightOffset + point[1]) * BRUSH_HEIGHT,
       ];
@@ -474,9 +536,12 @@ const getCharacterPixels = (characters: CharacterMetadata[]) => {
   return pixels;
 };
 
-export const encodeAsPixels = (text: string) => {
+export const encodeAsPixels = (
+  text: string,
+  alignment: PixelImageAlignment,
+) => {
   const textMetadata = getTextMetadata(text);
-  const uncenteredPixels = getCharacterPixels(textMetadata);
+  const uncenteredPixels = getCharacterPixels(textMetadata, alignment);
   const centeredPixels = centerPixels(uncenteredPixels);
   const truncatedPixels = truncatePixels(centeredPixels);
 

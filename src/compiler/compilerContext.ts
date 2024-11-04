@@ -17,6 +17,7 @@ const reservedWords = new Set([
   'outbox',
   'while',
   'if',
+  'labeled',
   RegisterKey.Accumulator,
   RegisterKey.Iterator,
 ]);
@@ -31,10 +32,16 @@ class FloorSlot {
   }
 }
 
+export type FloorBinding = {
+  key: string;
+  label: string;
+  index: number;
+};
+
 export class CompilerContext {
   floor: FloorSlot[] | null = null;
   floorSlotByIndex = new Map<FloorIndex, FloorSlot>();
-  floorIndexByKey = new Map<FloorIndexKey, FloorIndex>();
+  floorBindingByKey = new Map<FloorIndexKey, FloorBinding>();
 
   anchorCount = 0;
 
@@ -69,20 +76,26 @@ export class CompilerContext {
   }
 
   bindReservedRegisterKey(key: RegisterKey): FloorIndex {
-    const existingIndex = this.floorIndexByKey.get(key);
+    const existingBinding = this.floorBindingByKey.get(key);
 
-    if (existingIndex !== undefined) {
-      return existingIndex;
+    if (existingBinding !== undefined) {
+      return existingBinding.index;
     }
 
-    this.performBind(key, null);
+    const label = key === RegisterKey.Accumulator ? '$acc' : '$iter';
+
+    this.performBind(key, label, null);
     const index = this.getFloorIndex(key);
 
     return index;
   }
 
-  private performBind(key: FloorIndexKey, index: FloorIndex | null) {
-    if (this.floorIndexByKey.has(key)) {
+  private performBind(
+    key: FloorIndexKey,
+    label: string,
+    index: FloorIndex | null,
+  ) {
+    if (this.floorBindingByKey.has(key)) {
       throw new Error(`Floor key "${key}" is already bound`);
     }
 
@@ -111,25 +124,33 @@ export class CompilerContext {
     }
 
     slot.bind();
-    this.floorIndexByKey.set(key, slot.index);
+    this.floorBindingByKey.set(key, {
+      key,
+      label,
+      index: slot.index,
+    });
   }
 
-  bindFloorSlot(key: FloorIndexKey, index: FloorIndex | null): void {
+  bindFloorSlot(
+    key: FloorIndexKey,
+    label: string,
+    index: FloorIndex | null,
+  ): void {
     if (reservedWords.has(key)) {
       throw new Error(`Invalid floor key: "${key}" is a reserved word`);
     }
 
-    this.performBind(key, index);
+    this.performBind(key, label, index);
   }
 
   getFloorIndex(key: FloorIndexKey): FloorIndex {
-    const index = this.floorIndexByKey.get(key);
+    const binding = this.floorBindingByKey.get(key);
 
-    if (index === undefined) {
+    if (binding === undefined) {
       throw new Error(`Unknown ${typeof key} identifier: "${key.toString()}"`);
     }
 
-    return index;
+    return binding.index;
   }
 
   createAnchorIdSuffix(): string {

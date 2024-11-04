@@ -65,12 +65,14 @@ loop00:
   JUMP loop00
 break00:
 
+-- init
 DEFINE COMMENT 0
 eJztjSEOwjAYhVtVh52rZIqgeoSGBE9qKpfUTEyQ7BCISQ6A2BGWcIFaUL3C
 bgCuUD64BNlL2i9/3+v790IIKbpKvu+bkqJo+5Qi53K6ijl/Nczikx/m4t5V
 zmWeVsHC6QTrCzxfC51OvrBew8cGOr07FkYDneZ/NNBpeqKBTtMXDQyWvcGS
 D5ZcsPjJ4yfPPnVgT/JwbGDf/t7pSZ6evoVjQ9+iRf+oF12wTK4+;
 
+-- is eq?
 DEFINE COMMENT 1
 eJzt0KEOgkAcx/EjXbNeM0piJh/B+QSMQmSzMEdwo9AMBIKB4AMQ2IgWNl/A
 qhYeQXyCs50eX3gDo/+N++x29/+x+++EEI5IlPNdb9IRtpZvRxhjv0SxN2Md
@@ -78,3 +80,28 @@ ezHcP/b29C6Nsft2tl1jW6Bb4elidRddaNUeXlcYzDd7zunTHl5X9AfzqR+1
 h11Ifx2h9MlJY5Q+OV2IdYRpjNInvwvJqyNMY3weyG0LVBm5eYkqIycvUWXk
 5SU+D+S0BeblpHxg+hre02hveO8Z3Yo5ni6T47zO/Fc345wa8v71r1/UBwdE
 eY4+;
+
+-- first
+DEFINE LABEL 0
+eJztzyEOwjAUxvFO7Qg7whRBLVPIBYXGVFNTgVhSg0MgEBMTE5NzXIBkcmYJ
+CmZ6BLjBcIXyhyug9pLtl+6976XbCCECsY2C9/saBsLX/BkI5/yzjTi7bxUP
+8ZkvHr57C53z52oxzrwqwz5RmTddYZ9YicuceVQZ9sn5iHGDVeu1kryV9K2k
+byV9o9kb7fC+R6PZu8zRaPJGkzea/LpmPm5wPOGhJLeuycUNjifyh/KXx7hB
+1XFf1bGnar//2WF6wXD4fWev6tgbDphe2DfVVP+oF+dKbpA+;
+
+-- second
+DEFINE LABEL 1
+eJzt0KFvg0AUx/FD3X8w3GRRZBKFJKeQpKaS5ExFBQmmvgLRZBWISgQeQ1I5
+cwlqU6SyrpUo5thu39sfsWQvgU8uj/fLPV6FEJ7Y+d73+116wtbLpyeWxT47
+n/Pi6ngXP98f77b7IZfFntfP48YarHAO8fCkCvp9RR/nMGjo1xf6GKxQJ8xH
+KdYxOTLDOiZHJxilKDOsY/J1Ql6Uosyw3JKrCmxzcv09tjk5bU6Ov8dyy7wq
+8HBifn3GvmI+aLCv3N4N9hU5QeP2P7n9z2g6t+8F9RuajrxoQNO5vQc0HXnR
+gKZzew/uvtMcok7Q7X0jr3ygmnC8kqsmHK/kqgnbm/uPj998/K+/WV/ZNZzm;
+
+-- accumulator as $acc
+DEFINE LABEL 2
+eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
+wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
+u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
+LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
+fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;

@@ -24,6 +24,24 @@
       }
     },
     {
+      "begin": "(DEFINE LABEL) (\\d+)",
+      "end": "(;)$",
+      "beginCaptures": {
+        "1": {
+          "name": "support.function.hassembly"
+        },
+        "2": {
+          "name": "constant.numeric.hassembly"
+        }
+      },
+      "contentName": "humanscript",
+      "endCaptures": {
+        "1": {
+          "name": "keyword.operator.hassembly"
+        }
+      }
+    },
+    {
       "match": "INBOX|OUTBOX|COPYFROM|COPYTO|ADD|SUB|COMMENT|BUMPDN|BUMPUP",
       "name": "support.function.hassembly"
     },

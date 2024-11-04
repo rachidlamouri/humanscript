@@ -4,13 +4,14 @@ STATEMENT_LIST  : STATEMENT STATEMENT_LIST | STATEMENT
 
 STATEMENT       : FLOOR_INIT | LET | WHILE | IF | ASSIGN | INC_ASSIGN | DEC_ASSIGN
 FLOOR_INIT      : floor size INT
-LET             : let ID OPT_FLOOR_SLOT
+LET             : let ID OPT_LABEL OPT_FLOOR_SLOT
 WHILE           : while OPT_COND_EXP BLOCK
 IF              : if CONDITION_EXP BLOCK OPT_ELSE
 ASSIGN          : WRITE_REF = READ_EXP
 INC_ASSIGN      : WRITE_REF += 1
 DEC_ASSIGN      : WRITE_REF -= 1
 
+OPT_LABEL       : labeled WORD | ε
 OPT_FLOOR_SLOT  : FLOOR_SLOT | ε
 FLOOR_SLOT      : floor [ POS_INT ]
 
@@ -36,7 +37,7 @@ WRITE_REF       : OUTBOX | ID
 
 INBOX           : inbox
 OUTBOX          : outbox
-ID              : [a-zA-z]+
+ID              : WORD
 
 ZERO_LITERAL    : 0
 VALUE_LIST      : VALUE , VALUE | VALUE
@@ -45,3 +46,4 @@ LETTER          : [A-Z]
 INT             : POS_INT | NEG_INT
 NEG_INT         : -[1-9][0-9]*
 POS_INT         : [1-9][0-9]* | 0
+WORD            : [a-z]+

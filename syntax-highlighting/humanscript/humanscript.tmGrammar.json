@@ -29,6 +29,10 @@
       "name": "storage.type.humanscript"
     },
     {
+      "match": "labeled",
+      "name": "keyword.control.humanscript"
+    },
+    {
       "match": "=|\\+|-|!=|==|>|<",
       "name": "keyword.operator.humanscript"
     },

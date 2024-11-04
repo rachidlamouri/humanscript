@@ -1,9 +1,24 @@
-import { encodeAsPixels } from '../utils/imageUtils';
+import { encodeAsPixels, PixelImageAlignment } from '../utils/imageUtils';
 import { CompiledPart } from './compiledPart';
-import { CompilerContext, FloorIndexKey, RegisterKey } from './compilerContext';
+import {
+  CompilerContext,
+  FloorBinding,
+  FloorIndexKey,
+  RegisterKey,
+} from './compilerContext';
 
-type RegisterConfig = {
-  useAccumulator: boolean;
+const formatImage = (encodedImage: string) => {
+  const chunkSize = 60;
+  const chunkCount = Math.ceil(encodedImage.length / chunkSize);
+
+  const chunks = Array.from({ length: chunkCount }).map((_, index) => {
+    const startIndex = index * chunkSize;
+    return encodedImage.substring(startIndex, startIndex + chunkSize);
+  });
+
+  const serializedChunks = chunks.join('\n');
+
+  return serializedChunks;
 };
 
 /**
@@ -17,7 +32,7 @@ export class Assembly {
   static DEBUG_MAPPING(context: CompilerContext, key: FloorIndexKey) {
     return new CompiledPart(context, () => {
       let destination: string;
-      if (context.floorIndexByKey.has(key)) {
+      if (context.floorBindingByKey.has(key)) {
         const index = context.getFloorIndex(key);
         destination = `floor[${index}]`;
       } else {
@@ -37,21 +52,30 @@ export class Assembly {
   }
 
   static DEFINE_COMMENT(context: CompilerContext, index: number, text: string) {
-    const encodedImage = encodeAsPixels(text);
-
-    const chunkSize = 60;
-    const chunkCount = Math.ceil(encodedImage.length / chunkSize);
-
-    const chunks = Array.from({ length: chunkCount }).map((_, index) => {
-      const startIndex = index * chunkSize;
-      return encodedImage.substring(startIndex, startIndex + chunkSize);
-    });
-
-    const serializedChunks = chunks.join('\n');
+    const encodedImage = encodeAsPixels(text, PixelImageAlignment.Left);
+    const serializedChunks = formatImage(encodedImage);
 
     return new CompiledPart(
       context,
-      `DEFINE COMMENT ${index}\n${serializedChunks};`,
+      `-- ${text}\nDEFINE COMMENT ${index}\n${serializedChunks};`,
+    );
+  }
+
+  static DEFINE_LABEL(context: CompilerContext, binding: FloorBinding) {
+    const encodedImage = encodeAsPixels(
+      binding.label,
+      PixelImageAlignment.Center,
+    );
+    const serializedChunks = formatImage(encodedImage);
+
+    const description =
+      binding.label === binding.key
+        ? binding.label
+        : `${binding.key} as ${binding.label}`;
+
+    return new CompiledPart(
+      context,
+      `-- ${description}\nDEFINE LABEL ${binding.index}\n${serializedChunks};`,
     );
   }
 

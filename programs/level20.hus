@@ -14,8 +14,11 @@
 
 floor size 20
 
-let multiplicand
-let multiplier
+let multiplicand labeled plicand
+let multiplier labeled plier
+
+# unused
+let zero floor[9]
 
 while {
   multiplicand = inbox

@@ -22,6 +22,11 @@
 -- LetStatementNode
   -- multiplier -> floor[1]
 
+-- # unused
+
+-- LetStatementNode
+  -- zero -> floor[9]
+
 -- WhileStatementNode
 JUMP condition00
 loop00:
@@ -80,3 +85,46 @@ loop00:
   condition00:
   JUMP loop00
 break00:
+
+-- multiplicand as plicand
+DEFINE LABEL 0
+eJztkCFvg0AYhg91/wDcZE81kyhkc7+AYCpJMBUVJJh6BKICQTIkAo8hqZwh
+QW0zpLKuSFTn2G7P7T9M7EvgyeW777m790UI4Yij53z/36QjTD1/OmJdzXf0
+WK+2znfxs/98N913ua5mHT1Ne0O1gbmrU8PHFuZuX7CGuasa5qDawNytLlB+
+wGw2rILHFiY7yDlVgL8K8FYBnmSHR4bslyF9GdKXIf3sgEensI3xeSfYxsy1
+MXPeCWYH5nVq71tyTlRD1dgcSjxRDVUD+wKvamBf2Bwam0OJN6qhauDQ2Xdf
+YPIKhw6vP8Khw+uPcOjw+iMcOnz+aN+xkK9euL9ebB43fNkM9QKnK169wOmK
+Vy+wvdl8518//K+/WV9MoqFZ;
+
+-- multiplier as plier
+DEFINE LABEL 1
+eJzt0KEOgkAcx/Ej8Qj3CCRnJBGZiegoRibFYHCj0AkEAuECkUC/wka03GZS
+i6+gT6Dt9PzyDCb/G3z23//+v9tuK4TwxF56n//Z94Sr5csT1rpvL+ntXM1d
+fM83dze9+Na6Po9vG2eYoIpWB6e/RhWNNT2qKOjZwzBBFakJ/SsWD+eQPReY
+x8g9Q0b+kJE7ZOQUO3JkyXlZMpclc1kyr1py0g7Hmrygx7Fmr2ox7TDocazJ
+q1ry0g6DHo0mNz/O73NCo+d3mdBo8owmz2j2//WvX9QbsUtucg++;
+
+-- zero
+DEFINE LABEL 9
+eJztzyEOgzAUxvFWcYQeATmJQi4oJJmZJJlBIEgw+IkKxARicgKPaYLEkKA2
+tStwhLlu3b+7whQvaX9pXvs1LxdCSFEq+dnvgRSudi8prHWrVJytr3YV3/vt
+6rqPwFp37uLn0XnaY5RikP1MKvpG08cuDm/YjfQxSjHIsC7ISSrsc/JUg31O
+Xl1gUqFqsM/5py7ISypUDRpN7uGK4Q2NJv98QaPJM5o8o3nfjX7+CeeB+9GC
+8+DnXnAeeB8tfv7Rzz/hVlv9s96vGG1o;
+
+-- accumulator as $acc
+DEFINE LABEL 2
+eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
+wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
+u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
+LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
+fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;
+
+-- iterator as $iter
+DEFINE LABEL 3
+eJztkKEOglAUhi+JR7iPQDQ5kpGZiI5iZKMamIlmJBgJRAIbkcJmvOVuJrU4
+nwDfANvV63fpPoBng28/5/z/DmcvhPDETnqf98X3hK3FyxPG2Gcn0cbV8Sm+
+88en7V59Y6zOoiyyrFb3LRqGMfQ3UC/XOX1YrYYSDcN41kGDD+pldWIeZhEM
+41n7N8s2ZY82JadN8bcpc7KgLwv2WefsIQs4HuBQzt/JkQU5QwnHA3lBQ87U
+waTGp3uY1PiDBk4d1D1MavKChrypg7p3/6Xc/W7w/nD3VeSHZ3dP5e6myMsU
+/n/965d6A4eafjg+;

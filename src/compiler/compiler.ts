@@ -39,6 +39,7 @@ import { LessThanOrEqualToConditionNode } from './nodes/conditions/lessThanOrEqu
 import { IncremenetAssignmentStatementNode } from './nodes/statements/incrementAssignmentStatementNode';
 import { DecrementAssignmentStatementNode } from './nodes/statements/decrementAssignmentStatementNode';
 import { MultiplicationExpressionNode } from './nodes/expressions/multiplicationExpressionNode';
+import { LabelDefinitionNode } from './nodes/statements/labelDefinitionNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -62,6 +63,7 @@ type Language = {
   incrementAssignmentStatement: IncremenetAssignmentStatementNode;
   decrementAssignmentStatement: DecrementAssignmentStatementNode;
 
+  optionalLabel: string | null;
   optionalFloorSlot: FloorIndex | null;
   floorSlot: FloorIndex;
 
@@ -87,6 +89,7 @@ type Language = {
   outbox: OutboxNode;
   identifier: IdentifierNode;
 
+  word: string;
   positiveInteger: number;
 };
 
@@ -187,9 +190,10 @@ const language = createLanguage<Language>(parserDebugger, {
       P.string('let'),
       P.whitespace,
       l.identifier,
+      l.optionalLabel,
       l.optionalFloorSlot,
     ).map((result) => {
-      return new LetStatementNode(result[2], result[3]);
+      return new LetStatementNode(result[2], result[3], result[4]);
     });
   },
   whileStatement: (l) => {
@@ -277,6 +281,21 @@ const language = createLanguage<Language>(parserDebugger, {
     });
   },
 
+  optionalLabel: (l) => {
+    return P.alt<Language['optionalLabel']>(
+      // -
+      P.seq(
+        // -
+        P.whitespace,
+        P.string('labeled'),
+        P.whitespace,
+        l.word,
+      ).map((result) => {
+        return result[3];
+      }),
+      ul.ε,
+    );
+  },
   optionalFloorSlot: (l) => {
     return P.alt<Language['optionalFloorSlot']>(
       // -
@@ -456,12 +475,15 @@ const language = createLanguage<Language>(parserDebugger, {
       return new OutboxNode();
     });
   },
-  identifier: () => {
-    return P.regex(/[a-zA-z]+/).map((result) => {
+  identifier: (l) => {
+    return l.word.map((result) => {
       return new IdentifierNode(result);
     });
   },
 
+  word: () => {
+    return P.regex(/[a-zA-z]+/);
+  },
   positiveInteger: () => {
     return P.regex(/[1-9][0-9]*|0/).map((result) => {
       const value = Number.parseInt(result, 10);
@@ -488,7 +510,13 @@ export const compile = (code: string): string => {
   const block = language.program.tryParse(code);
 
   const context = new CompilerContext();
-  const compiledParts = block.compile(context);
+  const compiledNodes = block.compile(context);
+  const compiledLabels = [...context.floorBindingByKey.values()].flatMap(
+    (binding) => {
+      return new LabelDefinitionNode(binding).compileStatement(context);
+    },
+  );
+  const compiledParts = [...compiledNodes, ...compiledLabels];
 
   const result = compiledParts.map((part) => part.serialized).join('\n');
 
