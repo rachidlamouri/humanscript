@@ -6,7 +6,7 @@ import { Node } from '../node';
 import { ReadableReference } from '../references/readableReference';
 import { ZeroLiteralNode } from '../zeroLiteralNode';
 import { Comparable } from './comparable';
-import { Condition, ConditionLabels } from './condition';
+import { Condition, ConditionAnchorIds } from './condition';
 
 export class NotEqualsConditionNode extends Node implements Condition {
   jumpsIfTrue = false;
@@ -20,9 +20,9 @@ export class NotEqualsConditionNode extends Node implements Condition {
 
   compileCondition(
     context: CompilerContext,
-    { falseLabel }: ConditionLabels,
+    { falseAnchorId }: ConditionAnchorIds,
   ): Compiled {
-    assertIsNotUndefined(falseLabel);
+    assertIsNotUndefined(falseAnchorId);
 
     const result = [];
 
@@ -30,13 +30,13 @@ export class NotEqualsConditionNode extends Node implements Condition {
     if (this.right instanceof ZeroLiteralNode) {
       result.push(...this.left.compileRead(context));
       result.push(Assembly.DEBUG(context, 'compare 0'));
-      result.push(Assembly.JUMPZ(context, falseLabel));
+      result.push(Assembly.JUMPZ(context, falseAnchorId));
     } else {
       result.push(...this.right.compileRead(context));
       result.push(Assembly.COPYTO(context, RegisterKey.Accumulator));
       result.push(...this.left.compileRead(context));
       result.push(Assembly.SUB(context, RegisterKey.Accumulator));
-      result.push(Assembly.JUMPZ(context, falseLabel));
+      result.push(Assembly.JUMPZ(context, falseAnchorId));
     }
 
     return result;

@@ -6,7 +6,7 @@ import { assertIsNode, Node } from '../node';
 import { ReadableReference } from '../references/readableReference';
 import { ZeroLiteralNode } from '../zeroLiteralNode';
 import { Comparable } from './comparable';
-import { Condition, ConditionLabels } from './condition';
+import { Condition, ConditionAnchorIds } from './condition';
 
 export class GreaterThanOrEqualToConditionNode
   extends Node
@@ -23,9 +23,9 @@ export class GreaterThanOrEqualToConditionNode
 
   compileCondition(
     context: CompilerContext,
-    { falseLabel }: ConditionLabels,
+    { falseAnchorId }: ConditionAnchorIds,
   ): Compiled {
-    assertIsNotUndefined(falseLabel);
+    assertIsNotUndefined(falseAnchorId);
     context.bindReservedRegisterKey(RegisterKey.Accumulator);
 
     const result = [];
@@ -34,7 +34,7 @@ export class GreaterThanOrEqualToConditionNode
     if (this.right instanceof ZeroLiteralNode) {
       result.push(...this.left.compileRead(context));
       result.push(Assembly.DEBUG(context, 'compare 0'));
-      result.push(Assembly.JUMPN(context, falseLabel));
+      result.push(Assembly.JUMPN(context, falseAnchorId));
     } else {
       throw new Error('Not implemented');
     }

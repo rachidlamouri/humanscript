@@ -97,19 +97,19 @@ export class Assembly {
     return new CompiledPart(context, `BUMPDN ${index} --$${key}`);
   }
 
-  static LABEL(context: CompilerContext, label: string) {
-    return new CompiledPart(context, `${label}:`);
+  static ANCHOR(context: CompilerContext, anchorId: string) {
+    return new CompiledPart(context, `${anchorId}:`);
   }
 
-  static JUMP(context: CompilerContext, label: string) {
-    return new CompiledPart(context, `JUMP ${label}`);
+  static JUMP(context: CompilerContext, anchorId: string) {
+    return new CompiledPart(context, `JUMP ${anchorId}`);
   }
 
-  static JUMPZ(context: CompilerContext, label: string) {
-    return new CompiledPart(context, `JUMPZ ${label}`);
+  static JUMPZ(context: CompilerContext, anchorId: string) {
+    return new CompiledPart(context, `JUMPZ ${anchorId}`);
   }
 
-  static JUMPN(context: CompilerContext, label: string) {
-    return new CompiledPart(context, `JUMPN ${label}`);
+  static JUMPN(context: CompilerContext, anchorId: string) {
+    return new CompiledPart(context, `JUMPN ${anchorId}`);
   }
 }

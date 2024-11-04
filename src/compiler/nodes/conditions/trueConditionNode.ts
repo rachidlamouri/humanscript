@@ -3,18 +3,18 @@ import { Assembly } from '../../assembly';
 import { Compiled } from '../../compiled';
 import { CompilerContext } from '../../compilerContext';
 import { Node } from '../node';
-import { Condition, ConditionLabels } from './condition';
+import { Condition, ConditionAnchorIds } from './condition';
 
 export class TrueConditionNode extends Node implements Condition {
   jumpsIfTrue = true;
 
   compileCondition(
     context: CompilerContext,
-    { trueLabel }: ConditionLabels,
+    { trueAnchorId }: ConditionAnchorIds,
   ): Compiled {
-    assertIsNotUndefined(trueLabel);
+    assertIsNotUndefined(trueAnchorId);
 
-    return [Assembly.JUMP(context, trueLabel)];
+    return [Assembly.JUMP(context, trueAnchorId)];
   }
 
   flatten(accumulator: Node[]): void {

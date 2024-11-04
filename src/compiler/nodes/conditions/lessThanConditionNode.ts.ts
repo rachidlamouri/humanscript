@@ -6,7 +6,7 @@ import { assertIsNode, Node } from '../node';
 import { ReadableReference } from '../references/readableReference';
 import { ZeroLiteralNode } from '../zeroLiteralNode';
 import { Comparable } from './comparable';
-import { Condition, ConditionLabels } from './condition';
+import { Condition, ConditionAnchorIds } from './condition';
 
 export class LessThanConditionNode extends Node implements Condition {
   jumpsIfTrue = true;
@@ -20,9 +20,9 @@ export class LessThanConditionNode extends Node implements Condition {
 
   compileCondition(
     context: CompilerContext,
-    { trueLabel }: ConditionLabels,
+    { trueAnchorId }: ConditionAnchorIds,
   ): Compiled {
-    assertIsNotUndefined(trueLabel);
+    assertIsNotUndefined(trueAnchorId);
     context.bindReservedRegisterKey(RegisterKey.Accumulator);
 
     const result = [];
@@ -31,13 +31,13 @@ export class LessThanConditionNode extends Node implements Condition {
     if (this.right instanceof ZeroLiteralNode) {
       result.push(...this.left.compileRead(context));
       result.push(Assembly.DEBUG(context, 'compare 0'));
-      result.push(Assembly.JUMPN(context, trueLabel));
+      result.push(Assembly.JUMPN(context, trueAnchorId));
     } else {
       result.push(...this.right.compileRead(context));
       result.push(Assembly.COPYTO(context, RegisterKey.Accumulator));
       result.push(...this.left.compileRead(context));
       result.push(Assembly.SUB(context, RegisterKey.Accumulator));
-      result.push(Assembly.JUMPN(context, trueLabel));
+      result.push(Assembly.JUMPN(context, trueAnchorId));
     }
 
     return result;

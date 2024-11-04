@@ -36,7 +36,7 @@ export class CompilerContext {
   floorSlotByIndex = new Map<FloorIndex, FloorSlot>();
   floorIndexByKey = new Map<FloorIndexKey, FloorIndex>();
 
-  jumpCount = 0;
+  anchorCount = 0;
 
   commentIndexByKey = new Map<unknown, number>();
 
@@ -132,14 +132,14 @@ export class CompilerContext {
     return index;
   }
 
-  createJumpLabelSuffix(): string {
-    if (this.jumpCount >= 100) {
-      throw new Error('Too many jumps!');
+  createAnchorIdSuffix(): string {
+    if (this.anchorCount >= 100) {
+      throw new Error('Too many anchors!');
     }
 
-    const suffix = this.jumpCount.toString().padStart(2, '0'); // String.fromCharCode(A_CHAR_CODE + this.jumpCount);
+    const suffix = this.anchorCount.toString().padStart(2, '0'); // String.fromCharCode(A_CHAR_CODE + this.jumpCount);
 
-    this.jumpCount += 1;
+    this.anchorCount += 1;
 
     return suffix;
   }
