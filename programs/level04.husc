@@ -12,8 +12,8 @@
 -- # cleaned later.
 
 -- FloorInitNode
-  -- accumulator -> null
-  -- iterator -> null
+  -- $accumulator -> null
+  -- $iterator -> null
 
 -- LetStatementNode
   -- tmp -> floor[0]

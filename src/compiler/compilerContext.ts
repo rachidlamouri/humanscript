@@ -5,8 +5,8 @@ export type FloorIndex = number;
 export type FloorIndexKey = IdentifierNode['name'];
 
 export enum RegisterKey {
-  Accumulator = 'accumulator',
-  Iterator = 'iterator',
+  Accumulator = '$accumulator',
+  Iterator = '$iterator',
 }
 
 const reservedWords = new Set([

@@ -13,8 +13,8 @@
 -- # floor to edit.
 
 -- FloorInitNode
-  -- accumulator -> floor[2]
-  -- iterator -> floor[3]
+  -- $accumulator -> floor[2]
+  -- $iterator -> floor[3]
 
 -- LetStatementNode
   -- multiplicand -> floor[0]
@@ -47,12 +47,12 @@ loop00:
     -- MultiplicationExpressionNode
       -- zero the accumulator
       COPYFROM 0 --$multiplicand
-      COPYTO 2 --$accumulator
-      SUB 2 --$accumulator
-      COPYTO 2 --$accumulator
+      COPYTO 2 --$$accumulator
+      SUB 2 --$$accumulator
+      COPYTO 2 --$$accumulator
       -- set the iterator
       COPYFROM 1 --$multiplier
-      COPYTO 3 --$iterator
+      COPYTO 3 --$$iterator
       -- multiply
       -- WhileStatementNode
       JUMP condition01
@@ -60,25 +60,25 @@ loop00:
         -- AssignmentStatementNode
           -- read
           -- AdditionExpressionNode
-          COPYFROM 2 --$accumulator
-          COPYTO 2 --$accumulator
+          COPYFROM 2 --$$accumulator
+          COPYTO 2 --$$accumulator
           COPYFROM 0 --$multiplicand
-          ADD 2 --$accumulator
+          ADD 2 --$$accumulator
           -- write
-          COPYTO 2 --$accumulator
+          COPYTO 2 --$$accumulator
         
         -- DecrementAssignmentStatementNode
-        BUMPDN 3 --$iterator
+        BUMPDN 3 --$$iterator
         
         condition01:
         -- GreaterThanConditionNode
-        COPYFROM 3 --$iterator
+        COPYFROM 3 --$$iterator
         -- compare 0
         JUMPZ break01
         JUMPN break01
         JUMP loop01
       break01:
-      COPYFROM 2 --$accumulator
+      COPYFROM 2 --$$accumulator
     -- write
     OUTBOX
   
@@ -112,7 +112,7 @@ tStwhLlu3b+7whQvaX9pXvs1LxdCSFEq+dnvgRSudi8prHWrVJytr3YV3/vt
 Xl1gUqFqsM/5py7ISypUDRpN7uGK4Q2NJv98QaPJM5o8o3nfjX7+CeeB+9GC
 8+DnXnAeeB8tfv7Rzz/hVlv9s96vGG1o;
 
--- accumulator as $acc
+-- $accumulator as $acc
 DEFINE LABEL 2
 eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
 wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
@@ -120,7 +120,7 @@ u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
 LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
 fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;
 
--- iterator as $iter
+-- $iterator as $iter
 DEFINE LABEL 3
 eJztkKEOglAUhi+JR7iPQDQ5kpGZiI5iZKMamIlmJBgJRAIbkcJmvOVuJrU4
 nwDfANvV63fpPoBng28/5/z/DmcvhPDETnqf98X3hK3FyxPG2Gcn0cbV8Sm+

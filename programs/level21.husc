@@ -12,8 +12,8 @@
 -- # each string.
 
 -- FloorInitNode
-  -- accumulator -> floor[2]
-  -- iterator -> null
+  -- $accumulator -> floor[2]
+  -- $iterator -> null
 
 -- LetStatementNode
   -- zero -> floor[5]
@@ -50,9 +50,9 @@ loop00:
       -- read
       -- AdditionExpressionNode
       COPYFROM 0 --$sum
-      COPYTO 2 --$accumulator
+      COPYTO 2 --$$accumulator
       COPYFROM 1 --$tmp
-      ADD 2 --$accumulator
+      ADD 2 --$$accumulator
       -- write
       COPYTO 0 --$sum
     
@@ -121,7 +121,7 @@ eJztzSEOwjAYhuFW7Qg7QiWSE5AqJG6SBItogsFVTExMTOwAFSSTM0t2gVnA
 oTb0eot5hdrQ7y3mFWrDf95iXuHc8M/QonL01z0qR2/do3L0zQ0OLSpHn3LJ
 HU8PsWTJn+UFfRRj8A++;
 
--- accumulator as $acc
+-- $accumulator as $acc
 DEFINE LABEL 2
 eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
 wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/

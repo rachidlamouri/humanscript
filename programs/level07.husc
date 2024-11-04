@@ -9,8 +9,8 @@
 -- # it continues to the next line.
 
 -- FloorInitNode
-  -- accumulator -> null
-  -- iterator -> null
+  -- $accumulator -> null
+  -- $iterator -> null
 
 -- LetStatementNode
   -- tmp -> floor[0]

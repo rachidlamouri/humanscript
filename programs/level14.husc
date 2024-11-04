@@ -13,8 +13,8 @@
 -- # the next line.
 
 -- FloorInitNode
-  -- accumulator -> floor[2]
-  -- iterator -> null
+  -- $accumulator -> floor[2]
+  -- $iterator -> null
 
 -- LetStatementNode
   -- first -> floor[0]
@@ -42,9 +42,9 @@ loop00:
     -- condition
       -- GreaterThanConditionNode
       COPYFROM 0 --$first
-      COPYTO 2 --$accumulator
+      COPYTO 2 --$$accumulator
       COPYFROM 1 --$second
-      SUB 2 --$accumulator
+      SUB 2 --$$accumulator
       JUMPN if01
     else01:
       -- block
@@ -104,7 +104,7 @@ KdYxOTLDOiZHJxilKDOsY/J1Ql6Uosyw3JKrCmxzcv09tjk5bU6Ov8dyy7wq
 8HBifn3GvmI+aLCv3N4N9hU5QeP2P7n9z2g6t+8F9RuajrxoQNO5vQc0HXnR
 gKZzew/uvtMcok7Q7X0jr3ygmnC8kqsmHK/kqgnbm/uPj998/K+/WV/ZNZzm;
 
--- accumulator as $acc
+-- $accumulator as $acc
 DEFINE LABEL 2
 eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
 wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/

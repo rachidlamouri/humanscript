@@ -14,8 +14,8 @@
 -- # right back to the floor. BUMP!
 
 -- FloorInitNode
-  -- accumulator -> floor[1]
-  -- iterator -> null
+  -- $accumulator -> floor[1]
+  -- $iterator -> null
 
 -- LetStatementNode
   -- count -> floor[0]
@@ -94,7 +94,7 @@ WbK/qVGWdJoaZUmnqXGs6HQbVC0dY1G1dIxF1dIxFlVLx1j8fKVzOaKxqH0+
 5xv2Z9SerguoPV0XUHu6LqD2+fwB5bBdI73Vez73gOMNu+nvef4PA71uyv/h
 Ru8xj/nPfAMb4oAJ;
 
--- accumulator as $acc
+-- $accumulator as $acc
 DEFINE LABEL 1
 eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
 wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/

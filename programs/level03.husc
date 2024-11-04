@@ -13,8 +13,8 @@
 -- # you could pick them up...
 
 -- FloorInitNode
-  -- accumulator -> null
-  -- iterator -> null
+  -- $accumulator -> null
+  -- $iterator -> null
 
 -- LetStatementNode
   -- b -> floor[4]

@@ -11,8 +11,8 @@
 -- # you're currently holding.
 
 -- FloorInitNode
-  -- accumulator -> floor[0]
-  -- iterator -> null
+  -- $accumulator -> floor[0]
+  -- $iterator -> null
 
 -- WhileStatementNode
 JUMP condition00
@@ -21,9 +21,9 @@ loop00:
     -- read
     -- AdditionExpressionNode
     INBOX
-    COPYTO 0 --$accumulator
+    COPYTO 0 --$$accumulator
     INBOX
-    ADD 0 --$accumulator
+    ADD 0 --$$accumulator
     -- write
     OUTBOX
   
@@ -31,7 +31,7 @@ loop00:
   JUMP loop00
 break00:
 
--- accumulator as $acc
+-- $accumulator as $acc
 DEFINE LABEL 0
 eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
 wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
