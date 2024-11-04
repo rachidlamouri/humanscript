@@ -1,0 +1,31 @@
+# Cumulative Countdown
+#
+# For each thing in the INBOX,
+# OUTBOX the sum of itself plus
+# all numbers down to zero. For
+# example, if INBOX is 3,
+# OUTBOX should be 6, because
+# 3+2+1 = 6.
+
+floor size 6
+
+let zero floor[5]
+let tmp
+let counter labeled count
+let sum
+
+while {
+  ## init
+  tmp = inbox
+  counter = tmp
+  sum = zero
+
+  ## sum
+  while (counter > 0) {
+    sum = sum + counter
+
+    counter -= 1
+  }
+
+  outbox = sum
+}

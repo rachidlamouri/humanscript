@@ -1,0 +1,140 @@
+-- # Cumulative Countdown
+-- # 
+-- # For each thing in the INBOX,
+-- # OUTBOX the sum of itself plus
+-- # all numbers down to zero. For
+-- # example, if INBOX is 3,
+-- # OUTBOX should be 6, because
+-- # 3+2+1 = 6.
+
+-- FloorInitNode
+  -- $accumulator -> floor[3]
+  -- $iterator -> null
+
+-- LetStatementNode
+  -- zero -> floor[5]
+
+-- LetStatementNode
+  -- tmp -> floor[0]
+
+-- LetStatementNode
+  -- counter -> floor[1]
+
+-- LetStatementNode
+  -- sum -> floor[2]
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  COMMENT 0 -- ## init
+  
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$tmp
+  
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 0 --$tmp
+    -- write
+    COPYTO 1 --$counter
+  
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 5 --$zero
+    -- write
+    COPYTO 2 --$sum
+  
+  COMMENT 1 -- ## sum
+  
+  -- WhileStatementNode
+  JUMP condition01
+  loop01:
+    -- AssignmentStatementNode
+      -- read
+      -- AdditionExpressionNode
+      COPYFROM 2 --$sum
+      COPYTO 3 --$$accumulator
+      COPYFROM 1 --$counter
+      ADD 3 --$$accumulator
+      -- write
+      COPYTO 2 --$sum
+    
+    -- DecrementAssignmentStatementNode
+    BUMPDN 1 --$counter
+    
+    condition01:
+    -- GreaterThanConditionNode
+    COPYFROM 1 --$counter
+    -- compare 0
+    JUMPZ break01
+    JUMPN break01
+    JUMP loop01
+  break01:
+  
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 2 --$sum
+    -- write
+    OUTBOX
+  
+  condition00:
+  JUMP loop00
+break00:
+
+-- init
+DEFINE COMMENT 0
+eJztjSEOwjAYhVtVh52rZIqgeoSGBE9qKpfUTEyQ7BCISQ6A2BGWcIFaUL3C
+bgCuUD64BNlL2i9/3+v790IIKbpKvu+bkqJo+5Qi53K6ijl/Nczikx/m4t5V
+zmWeVsHC6QTrCzxfC51OvrBew8cGOr07FkYDneZ/NNBpeqKBTtMXDQyWvcGS
+D5ZcsPjJ4yfPPnVgT/JwbGDf/t7pSZ6evoVjQ9+iRf+oF12wTK4+;
+
+-- sum
+DEFINE COMMENT 1
+eJztzSEOwjAYhuFOzSGpQ24StVQhyVT1ElJJgqmYWFIzj0BM7gAIjrCEC9SC
+6hV2BFyhvBwCsS9ZnzR/9/0HIUQmWpl9zkeeiZTtKxMxpq+V3OMvwyy+74c5
+TZ95jOl+XgeTbDZYFjit6o75dGGOZVFemY935ths0Ff8rzT6ih6l0Vf0KI2+
+ok9pHHf0nPaoNAZD3+2IzmLdYTD0O4uyx2DY4yzKHoNhn7MoewyGfc6i7HHJ
+kn/MGzmyXLo+;
+
+-- zero
+DEFINE LABEL 5
+eJztzyEOgzAUxvFWcYQeATmJQi4oJJmZJJlBIEgw+IkKxARicgKPaYLEkKA2
+tStwhLlu3b+7whQvaX9pXvs1LxdCSFEq+dnvgRSudi8prHWrVJytr3YV3/vt
+6rqPwFp37uLn0XnaY5RikP1MKvpG08cuDm/YjfQxSjHIsC7ISSrsc/JUg31O
+Xl1gUqFqsM/5py7ISypUDRpN7uGK4Q2NJv98QaPJM5o8o3nfjX7+CeeB+9GC
+8+DnXnAeeB8tfv7Rzz/hVlv9s96vGG1o;
+
+-- tmp
+DEFINE LABEL 0
+eJztzSEOwjAYhuFW7Qg7QiWSE5AqJG6SBItogsFVTExMTOwAFSSTM0t2gVnA
+7AgdJxiuUF64A2Jf0j752+ZrJoSQ4pjK935NpIhZPaUIIa5jyhy+KSfxeV9O
+8faWhBDnZHfY4JhF11ttmHHM8LL/nXcFKsc5jlndR7WhJz2jt9gVqA093mJe
+oTb0eot5hdrQ7y3mFWrDf95iXuHc8M/QonL01z0qR2/do3L0zQ0OLSpHn3LJ
+HU8PsWTJn+UFfRRj8A++;
+
+-- counter as count
+DEFINE LABEL 1
+eJzt0CFuwzAYQGEH+Qg+glE1VBUNVjtBWGClkoCCqiFhAwYFBQY+gEGkwZJK
+vkCkoTUkKgxabtAxb97z+A7QX0o+OYmf5ByEEIXYqeLn/iELkebpqxAxpmun
+WMc8p1n8fn+a09urjDGt++VYJd0z3hcv++R2jffF5Yja8xz7pQvsw7Fif7dB
+WbK/qVGWdJoaZUmnqXGs6HQbVC0dY1G1dIxF1dIxFlVLx1j8fKVzOaKxqH0+
+5xv2Z9SerguoPV0XUHu6LqD2+fwB5bBdI73Vez73gOMNu+nvef4PA71uyv/h
+Ru8xj/nPfAMb4oAJ;
+
+-- sum
+DEFINE LABEL 2
+eJztzSEOwjAYhuFO7Qg7wiSSI1QhSRMyuQNMVOKQFZMVlRNLKjFNegEsqB2B
+3aC4Qnk5BGJfsj5p/u77T0KISgxN9TnvdSVKdq9K5Fy+oeGefxlX8X0/rmX6
+qHMu9/q4dMWlw7nH/UFq5sEwx7lvJ+Y2MselQ6n5PxiUmp5gUGp6gkGp6QsG
+mzM9zwsGg8rR106YPN6uqBz9yaONqBx7kkcbUTn2JY82onLsSx5txC1b/jFv
+1vFoQA++;
+
+-- $accumulator as $acc
+DEFINE LABEL 3
+eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
+wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
+u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
+LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
+fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;
