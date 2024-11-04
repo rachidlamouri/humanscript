@@ -24,58 +24,78 @@
 -- LetStatementNode
   -- tmp -> floor[1]
 
--- AssignmentStatementNode
-  -- read
-  COPYFROM 5 --$zero
-  -- write
-  COPYTO 0 --$sum
-
 -- WhileStatementNode
 JUMP condition00
 loop00:
+  COMMENT 0 -- ## init
+  
   -- AssignmentStatementNode
     -- read
     INBOX
     -- write
     COPYTO 1 --$tmp
   
-  -- IfStatementNode
-  -- 01
-    -- condition
-      -- NotEqualsConditionNode
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 5 --$zero
+    -- write
+    COPYTO 0 --$sum
+  
+  COMMENT 1 -- ## sum dis
+  
+  -- WhileStatementNode
+  JUMP condition01
+  loop01:
+    -- AssignmentStatementNode
+      -- read
+      -- AdditionExpressionNode
+      COPYFROM 0 --$sum
+      COPYTO 2 --$accumulator
       COPYFROM 1 --$tmp
-      -- compare 0
-      JUMPZ else01
-    if01:
-      -- block
-      -- AssignmentStatementNode
-        -- read
-        -- AdditionExpressionNode
-        COPYFROM 0 --$sum
-        COPYTO 2 --$accumulator
-        COPYFROM 1 --$tmp
-        ADD 2 --$accumulator
-        -- write
-        COPYTO 0 --$sum
-    JUMP end01
-    else01:
-      -- block
-      -- AssignmentStatementNode
-        -- read
-        COPYFROM 0 --$sum
-        -- write
-        OUTBOX
-      
-      -- AssignmentStatementNode
-        -- read
-        COPYFROM 5 --$zero
-        -- write
-        COPYTO 0 --$sum
-  end01:
+      ADD 2 --$accumulator
+      -- write
+      COPYTO 0 --$sum
+    
+    -- AssignmentStatementNode
+      -- read
+      INBOX
+      -- write
+      COPYTO 1 --$tmp
+    
+    condition01:
+    -- NotEqualsConditionNode
+    COPYFROM 1 --$tmp
+    -- compare 0
+    JUMPZ break01
+    JUMP loop01
+  break01:
+  
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 0 --$sum
+    -- write
+    OUTBOX
   
   condition00:
   JUMP loop00
 break00:
+
+-- init
+DEFINE COMMENT 0
+eJztjSEOwjAYhVtVh52rZIqgeoSGBE9qKpfUTEyQ7BCISQ6A2BGWcIFaUL3C
+bgCuUD64BNlL2i9/3+v790IIKbpKvu+bkqJo+5Qi53K6ijl/Nczikx/m4t5V
+zmWeVsHC6QTrCzxfC51OvrBew8cGOr07FkYDneZ/NNBpeqKBTtMXDQyWvcGS
+D5ZcsPjJ4yfPPnVgT/JwbGDf/t7pSZ6evoVjQ9+iRf+oF12wTK4+;
+
+-- sum dis
+DEFINE COMMENT 1
+eJzt0KFvg0AUx/FD4SZ3rrKoZYqgJpsqNOZkE8yJiiZn8BMTnauoRJBUYppM
+YrBdzaUS1/4FzN3Gvq9/xJJdAp+Qx/td3ntXSkVqraOf9ymO1HSevyIVwvSs
+Nd9Bzvaqfv/fXqfqZxzC9P366M1kMcNkjseH5Yb68Y06JvOkpr77oI7FDPuU
+/izHPiUny7FPycly7FPyshx3L+SUC8xy9Ia8ZoXO4nKD3pDvLOoKveEeZ1FX
+6A33OYu6Qm+4z1nUlczVjk9YLlD2VXPPeJD5Wiz2Ml8r+9uT37eY1OSOh3u+
+zN2RX3b0lR3/l53s4SJ7GGQPN4zPMu+FvmaQuW/0x+d7PzYD/p+/fb4BXaGd
+lA++;
 
 -- zero
 DEFINE LABEL 5

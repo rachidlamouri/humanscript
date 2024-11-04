@@ -17,14 +17,16 @@ let zero floor[5]
 let sum
 let tmp
 
-sum = zero
-
 while {
+  ## init
   tmp = inbox
-  if (tmp != 0) {
+  sum = zero
+
+  ## sum dis
+  while (tmp != 0) {
     sum = sum + tmp
-  } else {
-    outbox = sum
-    sum = zero
+    tmp = inbox
   }
+
+  outbox = sum
 }
