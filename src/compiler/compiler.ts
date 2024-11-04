@@ -57,17 +57,14 @@ type Language = {
   letStatement: LetStatementNode;
   whileStatement: WhileStatementNode;
   ifStatement: IfStatementNode;
-  optionalElseStatement: BlockNode | null;
   elseStatement: BlockNode;
   assignmentStatement: AssignmentStatementNode;
   incrementAssignmentStatement: IncremenetAssignmentStatementNode;
   decrementAssignmentStatement: DecrementAssignmentStatementNode;
 
-  optionalLabel: string | null;
-  optionalFloorSlot: FloorIndex | null;
+  labelDefinition: string | null;
   floorSlot: FloorIndex;
 
-  optionalConditionExpression: Condition;
   conditionExpression: Condition;
   condition: Condition;
   block: BlockNode;
@@ -190,8 +187,8 @@ const language = createLanguage<Language>(parserDebugger, {
       P.string('let'),
       P.whitespace,
       l.identifier,
-      l.optionalLabel,
-      l.optionalFloorSlot,
+      ul.sopt(l.labelDefinition),
+      ul.sopt(l.floorSlot),
     ).map((result) => {
       return new LetStatementNode(result[2], result[3], result[4]);
     });
@@ -200,11 +197,12 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.seq(
       // -
       P.string('while'),
-      l.optionalConditionExpression,
+      ul.sopt(l.conditionExpression),
       P.whitespace,
       l.block,
     ).map((result) => {
-      return new WhileStatementNode(result[1], result[3]);
+      const condition = result[1] ?? new TrueConditionNode();
+      return new WhileStatementNode(condition, result[3]);
     });
   },
   ifStatement: (l) => {
@@ -215,22 +213,11 @@ const language = createLanguage<Language>(parserDebugger, {
       l.conditionExpression,
       P.whitespace,
       l.block,
-      l.optionalElseStatement,
+      ul.sopt(l.elseStatement),
     ).map((result) => {
       const elseBlock = result[5] ?? new BlockNode([]);
       return new IfStatementNode(result[2], result[4], elseBlock);
     });
-  },
-  optionalElseStatement: (l) => {
-    return P.alt<Language['optionalElseStatement']>(
-      // -
-      P.seq(
-        // -
-        P.whitespace,
-        l.elseStatement,
-      ).map((result) => result[1]),
-      ul.ε,
-    );
   },
   elseStatement: (l) => {
     return P.seq(
@@ -281,33 +268,15 @@ const language = createLanguage<Language>(parserDebugger, {
     });
   },
 
-  optionalLabel: (l) => {
-    return P.alt<Language['optionalLabel']>(
+  labelDefinition: (l) => {
+    return P.seq(
       // -
-      P.seq(
-        // -
-        P.whitespace,
-        P.string('labeled'),
-        P.whitespace,
-        l.word,
-      ).map((result) => {
-        return result[3];
-      }),
-      ul.ε,
-    );
-  },
-  optionalFloorSlot: (l) => {
-    return P.alt<Language['optionalFloorSlot']>(
-      // -
-      P.seq(
-        // -
-        P.whitespace,
-        l.floorSlot,
-      ).map((result) => {
-        return result[1];
-      }),
-      ul.ε,
-    );
+      P.string('labeled'),
+      P.whitespace,
+      l.word,
+    ).map((result) => {
+      return result[2];
+    });
   },
   floorSlot: (l) => {
     return P.seq(
@@ -321,18 +290,6 @@ const language = createLanguage<Language>(parserDebugger, {
     });
   },
 
-  optionalConditionExpression: (l) => {
-    return P.alt<Language['optionalConditionExpression']>(
-      P.seq(
-        // -
-        P.whitespace,
-        l.conditionExpression,
-      ).map((result) => result[1]),
-      ul.ε.map(() => {
-        return new TrueConditionNode();
-      }),
-    );
-  },
   conditionExpression: (l) => {
     return P.seq(
       P.string('('),

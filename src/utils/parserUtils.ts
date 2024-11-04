@@ -1,5 +1,6 @@
 import P from 'parsimmon';
 import { debug } from '../utils/debug';
+import { assertHasExactlyZeroOrOne } from './assertHasZeroOrOne';
 
 type ParserResultType<TParser extends P.Parser<unknown>> =
   TParser extends P.Parser<infer TResult> ? TResult : never;
@@ -114,13 +115,41 @@ type UtilLanguage = {
   ε: null;
 };
 
-const utilLanguage = createLanguage<UtilLanguage>(parserDebugger, {
-  kebab: () => {
-    return P.regex(KEBAB);
+const utilLanguage = {
+  ...createLanguage<UtilLanguage>(parserDebugger, {
+    kebab: () => {
+      return P.regex(KEBAB);
+    },
+    ε: () => {
+      return P.string('').result(null);
+    },
+  }),
+  /** Optional: Makes a parser optional */
+  opt: <TParser extends P.Parser<unknown>>(
+    parser: TParser,
+  ): P.Parser<ParserResultType<TParser> | null> => {
+    type ResultType = ParserResultType<typeof parser>;
+
+    return (parser as P.Parser<ResultType>).times(0, 1).map((result) => {
+      assertHasExactlyZeroOrOne(result);
+
+      const value: ResultType | null = result[0] ?? null;
+      return value;
+    });
   },
-  ε: () => {
-    return P.string('').result(null);
+  /** Spaced Optional: Creates an optional parser for whitespace followed by the original parser result */
+  sopt: <TParser extends P.Parser<unknown>>(
+    parser: TParser,
+  ): P.Parser<ParserResultType<TParser> | null> => {
+    type ResultType = ParserResultType<typeof parser>;
+
+    return utilLanguage
+      .opt(P.seq(P.whitespace, parser as P.Parser<ResultType>))
+      .map((result) => {
+        const value = result?.[1] ?? null;
+        return value;
+      });
   },
-});
+};
 
 export const ul = utilLanguage;
