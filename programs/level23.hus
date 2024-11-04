@@ -1,0 +1,35 @@
+# The Littlest Number
+#
+# For each zero terminated string
+# in the INBOX, send to the
+# OUTBOX only the SMALLEST
+# number you've seen in that
+# string. You will never be given
+# an empty string. Reset and
+# repeat for each string.
+#
+# What's a "zero terminated
+# string"? Go ask your boss on
+# the previous floor!
+
+floor size 8
+
+let tmp
+let smol
+
+while {
+  ## init
+  tmp = inbox
+  smol = tmp
+
+  ## find lil
+  while (tmp != 0) {
+    if (tmp < smol) {
+      smol = tmp
+    }
+
+    tmp = inbox
+  }
+
+  outbox = smol
+}

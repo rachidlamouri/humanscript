@@ -1,0 +1,130 @@
+-- # The Littlest Number
+-- # 
+-- # For each zero terminated string
+-- # in the INBOX, send to the
+-- # OUTBOX only the SMALLEST
+-- # number you've seen in that
+-- # string. You will never be given
+-- # an empty string. Reset and
+-- # repeat for each string.
+-- # 
+-- # What's a "zero terminated
+-- # string"? Go ask your boss on
+-- # the previous floor!
+
+-- FloorInitNode
+  -- accumulator -> floor[2]
+  -- iterator -> null
+
+-- LetStatementNode
+  -- tmp -> floor[0]
+
+-- LetStatementNode
+  -- smol -> floor[1]
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  COMMENT 0 -- ## init
+  
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$tmp
+  
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 0 --$tmp
+    -- write
+    COPYTO 1 --$smol
+  
+  COMMENT 1 -- ## find lil
+  
+  -- WhileStatementNode
+  JUMP condition01
+  loop01:
+    -- IfStatementNode
+    -- 02
+      -- condition
+        -- LessThanConditionNode
+        COPYFROM 1 --$smol
+        COPYTO 2 --$accumulator
+        COPYFROM 0 --$tmp
+        SUB 2 --$accumulator
+        JUMPN if02
+      else02:
+        -- block
+      JUMP end02
+      if02:
+        -- block
+        -- AssignmentStatementNode
+          -- read
+          COPYFROM 0 --$tmp
+          -- write
+          COPYTO 1 --$smol
+    end02:
+    
+    -- AssignmentStatementNode
+      -- read
+      INBOX
+      -- write
+      COPYTO 0 --$tmp
+    
+    condition01:
+    -- NotEqualsConditionNode
+    COPYFROM 0 --$tmp
+    -- compare 0
+    JUMPZ break01
+    JUMP loop01
+  break01:
+  
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 1 --$smol
+    -- write
+    OUTBOX
+  
+  condition00:
+  JUMP loop00
+break00:
+
+-- init
+DEFINE COMMENT 0
+eJztjSEOwjAYhVtVh52rZIqgeoSGBE9qKpfUTEyQ7BCISQ6A2BGWcIFaUL3C
+bgCuUD64BNlL2i9/3+v790IIKbpKvu+bkqJo+5Qi53K6ijl/Nczikx/m4t5V
+zmWeVsHC6QTrCzxfC51OvrBew8cGOr07FkYDneZ/NNBpeqKBTtMXDQyWvcGS
+D5ZcsPjJ4yfPPnVgT/JwbGDf/t7pSZ6evoVjQ9+iRf+oF12wTK4+;
+
+-- find lil
+DEFINE COMMENT 1
+eJztkCFuwzAUhh0UFriwwhlNQ5FPYAUNTiXmJgUFkUqKZjAwUOgDmO0CkXKB
+SEbbSI7g3qBj3rwvO0X7pOST9b/3PdkvQohK7Nvq9/9RV6LU43clci7fvuWc
+1zqdxV//6VzSzzrncn69uzwUbjdwbKwulPdwbBYD+4F+uN3AsRnfoAzQT4Vz
+x/zckc8d+dyRW41XPcH6GVqNdzHQauYXA63GsxhoNb7FwOS4R3LsTw5vP+Br
+jzA5eNjhTQ4edniTg/2Atz3++6EM7JFhfa/AHhnwyoBPBjyXd+b8RL+fyP1E
+7idyFfGqSJ+K6ztFvCoypyJz9Rdzt7rO+gG03ob0;
+
+-- tmp
+DEFINE LABEL 0
+eJztzSEOwjAYhuFW7Qg7QiWSE5AqJG6SBItogsFVTExMTOwAFSSTM0t2gVnA
+7AgdJxiuUF64A2Jf0j752+ZrJoSQ4pjK935NpIhZPaUIIa5jyhy+KSfxeV9O
+8faWhBDnZHfY4JhF11ttmHHM8LL/nXcFKsc5jlndR7WhJz2jt9gVqA093mJe
+oTb0eot5hdrQ7y3mFWrDf95iXuHc8M/QonL01z0qR2/do3L0zQ0OLSpHn3LJ
+HU8PsWTJn+UFfRRj8A++;
+
+-- smol
+DEFINE LABEL 1
+eJzt0CEOwjAUxvFO7Qg9whRB7gRkCklmpqmpQJDU1CErkIjJucmZJsiZJShQ
+OwLcYLhC+e8MqL1k/aV5fd9LthdCJOIgk+95TxMRa/1ORAjxO0juYa7zS/ze
+n1+x+0hDiPd8O1bRdIdjhWpTHOl7Rx/HKmvoX670Md2h0cwXR5QWnyc0mlxp
+0Ts0mnxp0Ts0mn3SondoNPukRe8wa9gztVjW5A8dljW5Q4dlTd7QYdaQM7Wo
++mmFaoPz/+nJUz05qmc+vzG31FL/qA+zdW+Z;
+
+-- accumulator as $acc
+DEFINE LABEL 2
+eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
+wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
+u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
+LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
+fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;
