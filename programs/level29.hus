@@ -1,0 +1,37 @@
+# Storage Floor
+#
+# Imagine each thing in the
+# INBOX is an address. And each
+# address refers to a tile 0-9 on
+# the floor. Your task: For each
+# address in the INBOX, pick up
+# the letter at that address and
+# OUTBOX it.
+#
+# Congratulations! You can now
+# access tiles on the floor
+# INDIRECTLY! Observe this
+# example to see how it works,
+# compared to what you've been
+# doing so far:
+
+floor size 15
+
+let n floor[0]
+let k floor[1]
+let a floor[2]
+let e floor[3]
+let r floor[4]
+let d floor[5]
+let o floor[6]
+let l floor[7]
+let y floor[8]
+let j floor[9]
+let eight floor[12]
+
+let tmp
+
+while {
+  tmp = inbox
+  outbox = floor[tmp]
+}

@@ -40,6 +40,7 @@ import { IncremenetAssignmentStatementNode } from './nodes/statements/incrementA
 import { DecrementAssignmentStatementNode } from './nodes/statements/decrementAssignmentStatementNode';
 import { MultiplicationExpressionNode } from './nodes/expressions/multiplicationExpressionNode';
 import { LabelDefinitionNode } from './nodes/statements/labelDefinitionNode';
+import { IndirectFloorSlotNode } from './nodes/references/indirectFloorSlotNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -63,7 +64,8 @@ type Language = {
   decrementAssignmentStatement: DecrementAssignmentStatementNode;
 
   labelDefinition: string | null;
-  floorSlot: FloorIndex;
+  directFloorSlot: FloorIndex;
+  indirectFloorSlot: IndirectFloorSlotNode;
 
   conditionExpression: Condition;
   condition: Condition;
@@ -188,7 +190,7 @@ const language = createLanguage<Language>(parserDebugger, {
       P.whitespace,
       l.identifier,
       ul.sopt(l.labelDefinition),
-      ul.sopt(l.floorSlot),
+      ul.sopt(l.directFloorSlot),
     ).map((result) => {
       return new LetStatementNode(result[2], result[3], result[4]);
     });
@@ -278,7 +280,7 @@ const language = createLanguage<Language>(parserDebugger, {
       return result[2];
     });
   },
-  floorSlot: (l) => {
+  directFloorSlot: (l) => {
     return P.seq(
       //-
       P.string('floor'),
@@ -287,6 +289,17 @@ const language = createLanguage<Language>(parserDebugger, {
       P.string(']'),
     ).map((result) => {
       return result[2];
+    });
+  },
+  indirectFloorSlot: (l) => {
+    return P.seq(
+      //-
+      P.string('floor'),
+      P.string('['),
+      l.identifier,
+      P.string(']'),
+    ).map((result) => {
+      return new IndirectFloorSlotNode(result[2]);
     });
   },
 
@@ -403,6 +416,7 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.alt<Language['readableReference']>(
       // -
       l.inbox,
+      l.indirectFloorSlot,
       l.identifier,
     );
   },
@@ -432,14 +446,14 @@ const language = createLanguage<Language>(parserDebugger, {
       return new OutboxNode();
     });
   },
-  identifier: (l) => {
-    return l.word.map((result) => {
+  identifier: () => {
+    return P.regex(/[a-z][a-z0-9]*/).map((result) => {
       return new IdentifierNode(result);
     });
   },
 
   word: () => {
-    return P.regex(/[a-zA-z]+/);
+    return P.regex(/[a-z]+/);
   },
   positiveInteger: () => {
     return P.regex(/[1-9][0-9]*|0/).map((result) => {

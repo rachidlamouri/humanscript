@@ -1,0 +1,151 @@
+-- # Storage Floor
+-- # 
+-- # Imagine each thing in the
+-- # INBOX is an address. And each
+-- # address refers to a tile 0-9 on
+-- # the floor. Your task: For each
+-- # address in the INBOX, pick up
+-- # the letter at that address and
+-- # OUTBOX it.
+-- # 
+-- # Congratulations! You can now
+-- # access tiles on the floor
+-- # INDIRECTLY! Observe this
+-- # example to see how it works,
+-- # compared to what you've been
+-- # doing so far:
+
+-- FloorInitNode
+  -- $accumulator -> null
+  -- $iterator -> null
+
+-- LetStatementNode
+  -- n -> floor[0]
+
+-- LetStatementNode
+  -- k -> floor[1]
+
+-- LetStatementNode
+  -- a -> floor[2]
+
+-- LetStatementNode
+  -- e -> floor[3]
+
+-- LetStatementNode
+  -- r -> floor[4]
+
+-- LetStatementNode
+  -- d -> floor[5]
+
+-- LetStatementNode
+  -- o -> floor[6]
+
+-- LetStatementNode
+  -- l -> floor[7]
+
+-- LetStatementNode
+  -- y -> floor[8]
+
+-- LetStatementNode
+  -- j -> floor[9]
+
+-- LetStatementNode
+  -- eight -> floor[12]
+
+-- LetStatementNode
+  -- tmp -> floor[10]
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 10 --$tmp
+  
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM [10] --$floor[$tmp]
+    -- write
+    OUTBOX
+  
+  condition00:
+  JUMP loop00
+break00:
+
+-- n
+DEFINE LABEL 0
+eJxTY2BgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxxWuux4Do580Qens3hBavcS8B0e2TIbR4zfZuCB9Ci9eoL4bwIbR4zfRd
+ED6EHgWjYBTQHgAA+9It1A++;
+
+-- k
+DEFINE LABEL 1
+eJzTYWBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxxWu+60LodFcQ3T4ZQovXXI+B8CG0eI17CYh+3gyht3dDaPGa7d0QdRBa
+vEZ9MYQPocVrpu+C8CH0KBgFo4B6AADkajIe;
+
+-- a
+DEFINE LABEL 2
+eJzTYmBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxnzenu4Lo7d0Qun3y9RiIuHsJRBxCt0+G0OI127shfAgtXqO+GMKH0M+b
+p++C6IPQ7ZMh9CgYBaOA+gAAhYczjw++;
+
+-- e
+DEFINE LABEL 3
+eJzTYGBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxnzdfjwHR27shtHiNewmIbp8MocVrtndD1EHo7d0Qun0yhBavUV8MkZ++
+CyIPodsnQ+hRMApGAe0AAC3+MsY+;
+
+-- r
+DEFINE LABEL 4
+eJxTYGBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxxWuux4Do7d0Qun0yhBavcS8B0c+bIbR4zfZuCK2+GEJP38UwCkbBKBhQ
+AAC6FCcj;
+
+-- d
+DEFINE LABEL 5
+eJzTYmBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfx2yd/14XQ6a4Q+noMiH7e7F4Cord3Q+j2yRBavGZ7N4QPocVr1BdD+BD6
+efP0XRB9ELp9MoQeBaNgFFAfAACF1zOP;
+
+-- o
+DEFINE LABEL 6
+eJxTYWBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxnzdfjwHR27shtHiNewmIbp8MocVrtndD+BBavEZ9MYQPoZ83T98F0Q+h
+R8EoGAX0AwBrWy0L;
+
+-- l
+DEFINE LABEL 7
+eJyTY2BgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxnzd/14XQ6a4Q+noMhHYvgdDbuyG0+mIQvb17+i6GUTAKRsGgAABeGSjp;
+
+-- y
+DEFINE LABEL 8
+eJzTYmBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxxWu+64Lo9skQWrwm3RXCh9DiNddjIHwI/bzZvQREb++G0O2TYfT2bgit
+vhiibvouiDoIPQpGwSigPgAAMm8yrg++;
+
+-- j
+DEFINE LABEL 9
+eJxTYGBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxt3e3i0HodFcIfT0GQruXQOjt3SBavEZ9MYQPoZ83T9/FMApGwSgYUAAA
+R2so+Q++;
+
+-- eight
+DEFINE LABEL 12
+eJztkCEOwjAUhjvVI+wISNQyhVympjHzNROIJTO4igoEomICieMCJMiZJSiY
+2REKJwBXKN84AJ6XbF+69+97bWshRCRWcfR+X2QkQs2fkfA+PKuYtZ9qexOf
+/PYWulfpfVi3i7EMVBnsk7wOTAvYJ8cNOagymBawT2Z7+u2JPkwLOJYqg+TH
+kvxY0s9r5sZr6DRsKuY7DZuK/52GeY0nXkOnv8TrtBzINXdy0Fj2YyxzjMVv
+LN7lDs720Fi8jwM0Fv/jMJ23w6c6fO0Jn+qmezxDOXy/T/fY4ZMDTM/4/vWv
+X+oFBVN+1w++;
+
+-- tmp
+DEFINE LABEL 10
+eJztzSEOwjAYhuFW7Qg7QiWSE5AqJG6SBItogsFVTExMTOwAFSSTM0t2gVnA
+7AgdJxiuUF64A2Jf0j752+ZrJoSQ4pjK935NpIhZPaUIIa5jyhy+KSfxeV9O
+8faWhBDnZHfY4JhF11ttmHHM8LL/nXcFKsc5jlndR7WhJz2jt9gVqA093mJe
+oTb0eot5hdrQ7y3mFWrDf95iXuHc8M/QonL01z0qR2/do3L0zQ0OLSpHn3LJ
+HU8PsWTJn+UFfRRj8A++;

@@ -12,8 +12,8 @@ INC_ASSIGN      : WRITE_REF += 1
 DEC_ASSIGN      : WRITE_REF -= 1
 
 OPT_LABEL       : labeled WORD | ε
-OPT_FLOOR_SLOT  : FLOOR_SLOT | ε
-FLOOR_SLOT      : floor [ POS_INT ]
+OPT_FLOOR_SLOT  : DIR_FLOOR_SLOT | ε
+DIR_FLOOR_SLOT  : floor [ POS_INT ]
 
 OPT_ELSE        : ELSE | ε
 ELSE            : else BLOCK
@@ -31,13 +31,14 @@ SUBTRACTION_EXP : READ_REF - READ_REF
 MULT_EXP        : ID * ID
 NEG_EXP         : - READ_REF
 
-READ_REF        : INBOX | ID
+READ_REF        : INBOX | ID | IND_FLOOR_SLOT
 RIGHT_COMPARABLE: READ_REF | ZERO_LITERAL
 WRITE_REF       : OUTBOX | ID
 
 INBOX           : inbox
 OUTBOX          : outbox
 ID              : WORD
+IND_FLOOR_SLOT  : floor [ ID ]
 
 ZERO_LITERAL    : 0
 VALUE_LIST      : VALUE , VALUE | VALUE

@@ -258,6 +258,15 @@ const getCharacterMetadata = (
 const cm = getCharacterMetadata;
 
 const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
+  0: cm`
+     XXX
+    X   X
+    X  XX
+    X X X
+    XX  X
+    X   X
+     XXX
+  `,
   1: cm`
     X
    XX
@@ -291,6 +300,15 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
      X
 
      X
+  `,
+  '!': cm`
+    X
+    X
+    X
+    X
+    X
+
+    X
   `,
   $: cm`
       X
@@ -360,6 +378,14 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
       X
     XX
   `,
+  h: cm`
+    X
+    X
+    X
+    XXX
+    X  X
+    X  X
+  `,
   i: cm`
     X
 
@@ -367,6 +393,48 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
     X
     X
     X
+  `,
+  j: cm`
+      X
+
+      X
+      X
+      X
+      X
+    X X
+     X
+  `,
+  k: cm`
+    X
+    X  X
+    X  X
+    XXX
+    X  X
+    X  X
+    X  X
+  `,
+  l: cm`
+   X
+   X
+   X
+   X
+   X
+   X
+    X
+  `,
+  m: cm`
+    XXXX
+    X X X
+    X X X
+    X X X
+    X X X
+  `,
+  n: cm`
+    XXX
+    X  X
+    X  X
+    X  X
+    X  X
   `,
   o: cm`
     XX
@@ -383,30 +451,6 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
    _
    X
    X
-  `,
-  l: cm`
-   X
-   X
-   X
-   X
-   X
-   X
-    X
-
-  `,
-  m: cm`
-    XXXX
-    X X X
-    X X X
-    X X X
-    X X X
-  `,
-  n: cm`
-    XXX
-    X  X
-    X  X
-    X  X
-    X  X
   `,
   q: cm`
     XX
@@ -452,6 +496,29 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
     X   X
      X X
       X
+  `,
+  w: cm`
+    X   X
+    X   X
+    X X X
+    X X X
+     X X
+  `,
+  x: cm`
+    X  X
+    X  X
+     XX
+    X  X
+    X  X
+  `,
+  y: cm`
+    X  X
+    X  X
+    X  X
+     XXX
+       X
+       X
+     XX
   `,
   z: cm`
     XXXX

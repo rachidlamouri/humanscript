@@ -1,0 +1,48 @@
+# String Storage Floor
+#
+# Each thing in the INBOX is an
+# address of a tile on the floor.
+# For each address provided in
+# the INBOX, OUTBOX the
+# requested item from the floor
+# and ALL FOLLOWING items on
+# the floor until you reach a
+# ZERO. Repeat!
+
+floor size 25
+
+let g floor[0]
+let e0 floor[1]
+let t00 floor[2]
+let z000 floor[3]
+let t01 floor[4]
+let h floor[5]
+let z001 floor[6]
+let t10 floor[7]
+let a00 floor[8]
+let r floor[9]
+let z010 floor[10]
+let a01 floor[11]
+let w floor[12]
+let a10 floor[13]
+let k floor[14]
+let e1 floor[15]
+let z011 floor[16]
+let i floor[17]
+let s floor[18]
+let z100 floor[19]
+let x00 floor[20]
+let x01 floor[21]
+let x10 floor[22]
+let z101 floor[23]
+
+let tmp
+
+while {
+  tmp = inbox
+
+  while (floor[tmp] != 0) {
+    outbox = floor[tmp]
+    tmp += 1
+  }
+}

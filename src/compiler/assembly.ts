@@ -96,6 +96,11 @@ export class Assembly {
     return new CompiledPart(context, `COPYFROM ${index} --$${key}`);
   }
 
+  static COPYFROM_REF(context: CompilerContext, key: FloorIndexKey) {
+    const index = context.getFloorIndex(key);
+    return new CompiledPart(context, `COPYFROM [${index}] --$floor[$${key}]`);
+  }
+
   static COPYTO(context: CompilerContext, key: FloorIndexKey) {
     const index = context.getFloorIndex(key);
     return new CompiledPart(context, `COPYTO ${index} --$${key}`);
