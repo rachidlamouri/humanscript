@@ -37,12 +37,12 @@
       "name": "keyword.operator.humanscript"
     },
     {
-      "match": "\\d+",
-      "name": "constant.numeric.humanscript"
+      "match": "[a-z][a-z0-9]*",
+      "name": "variable.other.humanscript"
     },
     {
-      "match": "[a-z]+",
-      "name": "variable.other.humanscript"
+      "match": "\\d+",
+      "name": "constant.numeric.humanscript"
     }
   ]
 }
