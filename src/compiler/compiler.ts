@@ -97,10 +97,10 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.seq(
       // -
       P.optWhitespace,
-      l.statementList,
+      ul.opt(l.statementList),
       P.optWhitespace,
     ).map((result) => {
-      const initialStatements = result[1];
+      const initialStatements = result[1] ?? [];
       const tempBlock = new BlockNode(initialStatements);
 
       const flattenedAst: Node[] = [];
