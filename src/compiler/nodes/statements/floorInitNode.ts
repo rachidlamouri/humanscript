@@ -5,12 +5,15 @@ import { Statement } from './statement';
 import { Assembly } from '../../assembly';
 
 export class FloorInitNode extends Node implements Statement {
-  constructor(public size: number) {
+  constructor(
+    public size: number,
+    public reservedSize: number,
+  ) {
     super();
   }
 
   compileStatement(context: CompilerContext): Compiled {
-    context.initFloor(this.size);
+    context.initFloor(this.size, this.reservedSize);
 
     const result: Compiled = [];
     result.push(Assembly.DEBUG(context, this.className));

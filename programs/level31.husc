@@ -1,0 +1,135 @@
+-- # String Reverse
+-- # 
+-- # For each zero terminated string
+-- # in the INBOX, reverse it and
+-- # put the result in the OUTBOX.
+-- # Repeat!
+
+-- FloorInitNode
+  -- $accumulator -> floor[12]
+  -- $iterator -> null
+
+-- LetStatementNode
+  -- tmp -> floor[10]
+
+-- LetStatementNode
+  -- zero -> floor[14]
+
+-- LetStatementNode
+  -- index -> floor[11]
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  COMMENT 0 -- ## init
+  
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 14 --$zero
+    -- write
+    COPYTO 11 --$index
+  
+  COMMENT 1 -- ## read
+  
+  -- WhileStatementNode
+  JUMP condition01
+  loop01:
+    -- AssignmentStatementNode
+      -- read
+      COPYFROM 10 --$tmp
+      -- write
+      COPYTO [11] --$index
+    
+    -- IncrementAssignmentExpressionNode
+    BUMPUP 11 --$index
+    
+    condition01:
+    -- NotEqualsConditionNode
+    -- ReadableAssignmentExpressionNode
+      -- read
+      INBOX
+      -- write
+      COPYTO 10 --$tmp
+    -- compare 0
+    JUMPZ break01
+    JUMP loop01
+  break01:
+  
+  COMMENT 2 -- ## rev
+  
+  -- WhileStatementNode
+  JUMP condition02
+  loop02:
+    -- AssignmentStatementNode
+      -- read
+      COPYFROM [11] --$floor[$index]
+      -- write
+      OUTBOX
+    
+    condition02:
+    -- GreaterThanOrEqualToConditionNode
+    -- DecrementAssignmentExpressionNode
+    BUMPDN 11 --$index
+    -- compare 0
+    JUMPN break02
+    JUMP loop02
+  break02:
+  
+  condition00:
+  JUMP loop00
+break00:
+
+-- init
+DEFINE COMMENT 0
+eJztjSEOwjAYhVtVh52rZIqgeoSGBE9qKpfUTEyQ7BCISQ6A2BGWcIFaUL3C
+bgCuUD64BNlL2i9/3+v790IIKbpKvu+bkqJo+5Qi53K6ijl/Nczikx/m4t5V
+zmWeVsHC6QTrCzxfC51OvrBew8cGOr07FkYDneZ/NNBpeqKBTtMXDQyWvcGS
+D5ZcsPjJ4yfPPnVgT/JwbGDf/t7pSZ6evoVjQ9+iRf+oF12wTK4+;
+
+-- read
+DEFINE COMMENT 1
+eJzt0KEOgkAcx/Ej2YjajJKciZGI7BL5CpGNQjDcxgMYDASDgXDRwCOw+QJU
+TTwCvIG20/OLb2D0t8FnN/78bvuXQghP7Ffe+31beMJl9/SEte7ZrzjbOadJ
+fOZPk/t6X1jrzp0/ZE61xmCDnS+187jEzu9qDC7YXJ1NzHyRYB8yH6XYh/zX
+xFgkGKXYh/Q1MX1FglGKbV4kzqpEqbmnzemvSpQah4xeqXHI6Jca25zeqkSp
+UZnHFrlHmXkP9byHMyqD44F+ZXA80K/MvJ+a3uP524///PPLvAC6+3Cq;
+
+-- rev
+DEFINE COMMENT 2
+eJztzCEOwjAUxvFWzU1Sh2QStUxNLktIpjGVJDOIiSWYeQRisgdAcIQmXGAW
+VK+wI+AKjz+nIPuS9peXvn47pZRWndGf+5FoJdm+tIpRTmeY4y/jrL774yyv
+zyRGmX0arLhfY7ZBn9a9eF6hT/0Fsyu6u+hK9tsKp5z9osEp558rsa2waHDK
+6XMlfW2FRYPB0msGDJZeM2Cw9JgBbwf66h5PR3qWLPnHvAHuME3B;
+
+-- tmp
+DEFINE LABEL 10
+eJztzSEOwjAYhuFW7Qg7QiWSE5AqJG6SBItogsFVTExMTOwAFSSTM0t2gVnA
+7AgdJxiuUF64A2Jf0j752+ZrJoSQ4pjK935NpIhZPaUIIa5jyhy+KSfxeV9O
+8faWhBDnZHfY4JhF11ttmHHM8LL/nXcFKsc5jlndR7WhJz2jt9gVqA093mJe
+oTb0eot5hdrQ7y3mFWrDf95iXuHc8M/QonL01z0qR2/do3L0zQ0OLSpHn3LJ
+HU8PsWTJn+UFfRRj8A++;
+
+-- zero
+DEFINE LABEL 14
+eJztzyEOgzAUxvFWcYQeATmJQi4oJJmZJJlBIEgw+IkKxARicgKPaYLEkKA2
+tStwhLlu3b+7whQvaX9pXvs1LxdCSFEq+dnvgRSudi8prHWrVJytr3YV3/vt
+6rqPwFp37uLn0XnaY5RikP1MKvpG08cuDm/YjfQxSjHIsC7ISSrsc/JUg31O
+Xl1gUqFqsM/5py7ISypUDRpN7uGK4Q2NJv98QaPJM5o8o3nfjX7+CeeB+9GC
+8+DnXnAeeB8tfv7Rzz/hVlv9s96vGG1o;
+
+-- index
+DEFINE LABEL 11
+eJzt0CFuwzAYQGEH+Qg5QlA1NPUEVtBgFWJuUlAQqaTMIGCgIMAgMCwXmGQ4
+MmmoDfER3BtkzKv7sgOM95ecT5aTF8mtEKIQh7K4Py+yEHlefgqRUl6Hkn1a
+53wTj/fPt3x6lSnl/derUfjxjtWIzmeNCjq7fUO5Q6PqNhs0GsX3QaNRdIJG
+o+gFjdEuG+T/0dKtW3rlCaPF455utHjc040W65ZuefrrYzPQrUbsenrLhF1P
+rxmwGnGZsOvpNwO9asRlQufXe5nRebpyXu/lk872G52nJ2d0no6c8TnP+c/8
+AqRSgSU+;
+
+-- $accumulator as $acc
+DEFINE LABEL 12
+eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
+wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
+u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
+LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
+fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;

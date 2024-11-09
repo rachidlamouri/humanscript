@@ -1,0 +1,28 @@
+# String Reverse
+#
+# For each zero terminated string
+# in the INBOX, reverse it and
+# put the result in the OUTBOX.
+# Repeat!
+
+floor size 15 reserve 10
+
+let tmp
+let zero floor[14]
+let index
+
+while {
+  ## init
+  index = zero
+
+  ## read
+  while (tmp = inbox != 0) {
+    floor[index] = tmp
+    index += 1
+  }
+
+  ## rev
+  while (index -= 1 >= 0) {
+    outbox = floor[index]
+  }
+}

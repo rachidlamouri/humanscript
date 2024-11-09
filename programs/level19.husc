@@ -47,7 +47,7 @@ loop00:
           -- write
           OUTBOX
         
-        -- DecrementAssignmentStatementNode
+        -- DecrementAssignmentExpressionNode
         BUMPDN 0 --$count
         
         condition02:
@@ -69,7 +69,7 @@ loop00:
           -- write
           OUTBOX
         
-        -- IncremenetAssignmentStatementNode
+        -- IncrementAssignmentExpressionNode
         BUMPUP 0 --$count
         
         condition03:

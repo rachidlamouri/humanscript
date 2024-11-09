@@ -25,7 +25,10 @@ const reservedWords = new Set([
 class FloorSlot {
   isBound = false;
 
-  constructor(public index: number) {}
+  constructor(
+    public index: number,
+    public isReserved: boolean,
+  ) {}
 
   bind() {
     this.isBound = true;
@@ -63,13 +66,14 @@ export class CompilerContext {
     return this.floor?.length ?? 0;
   }
 
-  initFloor(floorSize: number): void {
+  initFloor(floorSize: number, reservedSize: number): void {
     if (this.floor !== null) {
       throw new Error('Floor has already been initialized');
     }
 
     this.floor = Array.from({ length: floorSize }).map((_, index) => {
-      const slot = new FloorSlot(index);
+      const isReserved = index < reservedSize;
+      const slot = new FloorSlot(index, isReserved);
       this.floorSlotByIndex.set(index, slot);
       return slot;
     });
@@ -102,7 +106,9 @@ export class CompilerContext {
     let slot: FloorSlot;
 
     if (index === null) {
-      const nextUnboundSlot = this.floor?.find((slot) => !slot.isBound);
+      const nextUnboundSlot = this.floor?.find(
+        (slot) => !slot.isReserved && !slot.isBound,
+      );
 
       if (nextUnboundSlot === undefined) {
         throw new Error(

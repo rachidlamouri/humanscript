@@ -1,3 +1,14 @@
+-- # String Storage Floor
+-- # 
+-- # Each thing in the INBOX is an
+-- # address of a tile on the floor.
+-- # For each address provided in
+-- # the INBOX, OUTBOX the
+-- # requested item from the floor
+-- # and ALL FOLLOWING items on
+-- # the floor until you reach a
+-- # ZERO. Repeat!
+
 -- FloorInitNode
   -- $accumulator -> null
   -- $iterator -> null
@@ -95,7 +106,7 @@ loop00:
       -- write
       OUTBOX
     
-    -- IncremenetAssignmentStatementNode
+    -- IncrementAssignmentExpressionNode
     BUMPUP 24 --$tmp
     
     condition01:

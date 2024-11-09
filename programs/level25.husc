@@ -61,7 +61,7 @@ loop00:
       -- write
       COPYTO 2 --$sum
     
-    -- DecrementAssignmentStatementNode
+    -- DecrementAssignmentExpressionNode
     BUMPDN 1 --$counter
     
     condition01:

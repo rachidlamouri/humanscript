@@ -106,6 +106,11 @@ export class Assembly {
     return new CompiledPart(context, `COPYTO ${index} --$${key}`);
   }
 
+  static COPYTO_REF(context: CompilerContext, key: FloorIndexKey) {
+    const index = context.getFloorIndex(key);
+    return new CompiledPart(context, `COPYTO [${index}] --$${key}`);
+  }
+
   static ADD(context: CompilerContext, key: RegisterKey) {
     const index = context.bindReservedRegisterKey(key);
     return new CompiledPart(context, `ADD ${index} --$${key}`);

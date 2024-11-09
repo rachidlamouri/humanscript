@@ -4,6 +4,7 @@ import { Node } from '../node';
 import { Statement } from './statement';
 import { Assembly } from '../../assembly';
 import { IdentifierNode } from '../references/identifierNode';
+import { Readable } from '../references/readable';
 
 export class DecrementAssignmentStatementNode
   extends Node
@@ -26,5 +27,14 @@ export class DecrementAssignmentStatementNode
     accumulator.push(this);
 
     this.identifier.flatten(accumulator);
+  }
+}
+
+export class DecrementAssignmentExpressionNode
+  extends DecrementAssignmentStatementNode
+  implements Readable
+{
+  compileRead(context: CompilerContext): Compiled {
+    return this.compileStatement(context);
   }
 }

@@ -3,17 +3,16 @@ import { Assembly } from '../../assembly';
 import { Compiled } from '../../compiled';
 import { CompilerContext, RegisterKey } from '../../compilerContext';
 import { Node } from '../node';
-import { ReadableReference } from '../references/readableReference';
 import { ZeroLiteralNode } from '../zeroLiteralNode';
-import { Comparable } from './comparable';
+import { LeftComparable, RightComparable } from './comparable';
 import { Condition, ConditionAnchorIds } from './condition';
 
 export class NotEqualsConditionNode extends Node implements Condition {
   jumpsIfTrue = false;
 
   constructor(
-    public left: ReadableReference,
-    public right: Comparable,
+    public left: LeftComparable,
+    public right: RightComparable,
   ) {
     super();
   }

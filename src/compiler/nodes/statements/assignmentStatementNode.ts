@@ -5,6 +5,7 @@ import { Compiled } from '../../compiled';
 import { assertIsNode, Node } from '../node';
 import { Statement } from './statement';
 import { Assembly } from '../../assembly';
+import { Readable } from '../references/readable';
 
 export class AssignmentStatementNode extends Node implements Statement {
   constructor(
@@ -35,5 +36,14 @@ export class AssignmentStatementNode extends Node implements Statement {
 
     this.writeable.flatten(accumulator);
     this.readable.flatten(accumulator);
+  }
+}
+
+export class ReadableAssignmentExpressionNode
+  extends AssignmentStatementNode
+  implements Readable
+{
+  compileRead(context: CompilerContext): Compiled {
+    return this.compileStatement(context);
   }
 }

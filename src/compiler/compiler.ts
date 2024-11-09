@@ -1,5 +1,8 @@
 import P from 'parsimmon';
-import { AssignmentStatementNode } from './nodes/statements/assignmentStatementNode';
+import {
+  AssignmentStatementNode,
+  ReadableAssignmentExpressionNode,
+} from './nodes/statements/assignmentStatementNode';
 import { createLanguage, parserDebugger, ul } from '../utils/parserUtils';
 import { assertIsArray } from '../utils/assertIsArray';
 import { assertIsStatement, Statement } from './nodes/statements/statement';
@@ -26,7 +29,8 @@ import { NotEqualsConditionNode } from './nodes/conditions/notEqualsConditionNod
 import { Condition } from './nodes/conditions/condition';
 import {
   BinaryComparisonConstructor,
-  Comparable,
+  LeftComparable,
+  RightComparable,
 } from './nodes/conditions/comparable';
 import { ZeroLiteralNode } from './nodes/zeroLiteralNode';
 import { TrueConditionNode } from './nodes/conditions/trueConditionNode';
@@ -36,8 +40,14 @@ import { NegationExpressionNode } from './nodes/expressions/negationExpressionNo
 import { AdditiveExpressionNode } from './nodes/expressions/additiveExpressionNode';
 import { GreaterThanOrEqualToConditionNode } from './nodes/conditions/greaterThanOrEqualToConditionNode';
 import { LessThanOrEqualToConditionNode } from './nodes/conditions/lessThanOrEqualToConditionNode';
-import { IncremenetAssignmentStatementNode } from './nodes/statements/incrementAssignmentStatementNode';
-import { DecrementAssignmentStatementNode } from './nodes/statements/decrementAssignmentStatementNode';
+import {
+  IncrementAssignmentExpressionNode,
+  IncrementAssignmentStatementNode,
+} from './nodes/statements/incrementAssignmentStatementNode';
+import {
+  DecrementAssignmentExpressionNode,
+  DecrementAssignmentStatementNode,
+} from './nodes/statements/decrementAssignmentStatementNode';
 import { MultiplicationExpressionNode } from './nodes/expressions/multiplicationExpressionNode';
 import { LabelDefinitionNode } from './nodes/statements/labelDefinitionNode';
 import { IndirectFloorSlotNode } from './nodes/references/indirectFloorSlotNode';
@@ -48,6 +58,7 @@ type Language = {
   program: BlockNode;
 
   floorInit: FloorInitNode;
+  floorReservation: number;
 
   statementList: Statement[];
   recursiveStatementList: NestedStatementNodeList;
@@ -60,7 +71,7 @@ type Language = {
   ifStatement: IfStatementNode;
   elseStatement: BlockNode;
   assignmentStatement: AssignmentStatementNode;
-  incrementAssignmentStatement: IncremenetAssignmentStatementNode;
+  incrementAssignmentStatement: IncrementAssignmentStatementNode;
   decrementAssignmentStatement: DecrementAssignmentStatementNode;
 
   labelDefinition: string | null;
@@ -80,9 +91,14 @@ type Language = {
   multiplicationExpression: MultiplicationExpressionNode;
   negationExpression: NegationExpressionNode;
 
+  leftComparable: LeftComparable;
+  rightComparable: RightComparable;
+
   readableReference: ReadableReference;
-  comparable: Comparable;
   writeableReference: WriteableReference;
+  readableAssignmentExpression: ReadableAssignmentExpressionNode;
+  incrementAssignmentExpression: IncrementAssignmentExpressionNode;
+  decrementAssignmentExpression: DecrementAssignmentExpressionNode;
 
   inbox: InboxNode;
   outbox: OutboxNode;
@@ -128,10 +144,22 @@ const language = createLanguage<Language>(parserDebugger, {
       P.string('size'),
       P.whitespace,
       l.positiveInteger,
+      ul.sopt(l.floorReservation),
     ).map((result) => {
-      return new FloorInitNode(result[4]);
+      return new FloorInitNode(result[4], result[5] ?? 0);
     });
   },
+  floorReservation: (l) => {
+    return P.seq(
+      // -
+      P.string('reserve'),
+      P.whitespace,
+      l.positiveInteger,
+    ).map((result) => {
+      return result[2];
+    });
+  },
+
   statementList: (l) => {
     return l.recursiveStatementList.map((result) => {
       const statementList: Statement[] = [];
@@ -246,28 +274,10 @@ const language = createLanguage<Language>(parserDebugger, {
     });
   },
   incrementAssignmentStatement: (l) => {
-    return P.seq(
-      // -
-      l.identifier,
-      P.whitespace,
-      P.string('+='),
-      P.whitespace,
-      P.string('1'),
-    ).map((result) => {
-      return new IncremenetAssignmentStatementNode(result[0]);
-    });
+    return l.incrementAssignmentExpression;
   },
   decrementAssignmentStatement: (l) => {
-    return P.seq(
-      // -
-      l.identifier,
-      P.whitespace,
-      P.string('-='),
-      P.whitespace,
-      P.string('1'),
-    ).map((result) => {
-      return new DecrementAssignmentStatementNode(result[0]);
-    });
+    return l.decrementAssignmentExpression;
   },
 
   labelDefinition: (l) => {
@@ -316,7 +326,7 @@ const language = createLanguage<Language>(parserDebugger, {
   },
   condition: (l) => {
     return P.seq(
-      l.readableReference,
+      l.leftComparable,
       P.optWhitespace,
       P.alt<BinaryComparisonConstructor>(
         // -
@@ -328,7 +338,7 @@ const language = createLanguage<Language>(parserDebugger, {
         P.string('<').result(LessThanConditionNode),
       ),
       P.optWhitespace,
-      l.comparable,
+      l.rightComparable,
     ).map((result) => {
       const left = result[0];
       const Constructor = result[2];
@@ -412,6 +422,23 @@ const language = createLanguage<Language>(parserDebugger, {
     });
   },
 
+  leftComparable: (l) => {
+    return P.alt<LeftComparable>(
+      l.incrementAssignmentExpression,
+      l.decrementAssignmentExpression,
+      l.readableAssignmentExpression,
+      l.readableReference,
+    );
+  },
+  rightComparable: (l) => {
+    return P.alt<RightComparable>(
+      P.string('0').map(() => {
+        return new ZeroLiteralNode();
+      }),
+      l.readableReference,
+    );
+  },
+
   readableReference: (l) => {
     return P.alt<Language['readableReference']>(
       // -
@@ -420,20 +447,48 @@ const language = createLanguage<Language>(parserDebugger, {
       l.identifier,
     );
   },
-  comparable: (l) => {
-    return P.alt<Comparable>(
-      P.string('0').map(() => {
-        return new ZeroLiteralNode();
-      }),
-      l.readableReference,
-    );
-  },
   writeableReference: (l) => {
     return P.alt<Language['writeableReference']>(
       // -
       l.outbox,
+      l.indirectFloorSlot,
       l.identifier,
     );
+  },
+  readableAssignmentExpression: (l) => {
+    return P.seq(
+      l.identifier,
+      P.whitespace,
+      P.string('='),
+      P.whitespace,
+      l.readableReference,
+    ).map((result) => {
+      return new ReadableAssignmentExpressionNode(result[0], result[4]);
+    });
+  },
+  incrementAssignmentExpression: (l) => {
+    return P.seq(
+      // -
+      l.identifier,
+      P.whitespace,
+      P.string('+='),
+      P.whitespace,
+      P.string('1'),
+    ).map((result) => {
+      return new IncrementAssignmentExpressionNode(result[0]);
+    });
+  },
+  decrementAssignmentExpression: (l) => {
+    return P.seq(
+      // -
+      l.identifier,
+      P.whitespace,
+      P.string('-='),
+      P.whitespace,
+      P.string('1'),
+    ).map((result) => {
+      return new DecrementAssignmentExpressionNode(result[0]);
+    });
   },
 
   inbox: () => {

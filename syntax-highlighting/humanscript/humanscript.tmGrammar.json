@@ -6,15 +6,25 @@
       "name": "comment.line.number-sign.humanscript"
     },
     {
-      "match": "(floor)\\s+(size)",
+      "match": "(floor)\\s+(size)\\s+(\\d+)(\\s+(reserve))?",
       "captures": {
         "1": {
           "name": "support.constant.humanscript"
         },
         "2": {
           "name": "keyword.control.humanscript"
+        },
+        "3": {
+          "name": "constant.numeric.humanscript"
+        },
+        "5": {
+          "name": "keyword.control.humanscript"
         }
       }
+    },
+    {
+      "match": "reserve",
+      "name": "keyword.control.humanscript"
     },
     {
       "match": "inbox|outbox|floor",
