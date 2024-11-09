@@ -1,0 +1,36 @@
+# Duplicate Removal
+#
+# Send everything from the
+# INBOX to the OUTBOX, unless
+# you've seen the same value
+# before. Discard any duplicates.
+
+floor size 15 reserve 10
+
+let start at floor[0]
+let zero at floor[14]
+
+let tmp
+let index
+
+## start
+start = zero
+
+while {
+  ## init
+  index = zero
+  tmp = inbox
+
+  ## search
+  while (floor[index] != 0 && tmp != floor[index]) {
+    index += 1
+  }
+
+  if (floor[index] == 0) {
+    ## out
+    floor[index] = tmp
+    index += 1
+    floor[index] = zero
+    outbox = tmp
+  }
+}
