@@ -1,11 +1,11 @@
 -- # Multiplication Workshop
--- # 
+-- #
 -- # For each two things in the
 -- # INBOX, multiply them, and
 -- # OUTBOX the result. Don't
 -- # worry about negative numbers
 -- # for now.
--- # 
+-- #
 -- # You got... LABELS! They can
 -- # help you remember the
 -- # purpose of each tile on the
@@ -35,13 +35,13 @@ loop00:
     INBOX
     -- write
     COPYTO 0 --$multiplicand
-  
+
   -- AssignmentStatementNode
     -- read
     INBOX
     -- write
     COPYTO 1 --$multiplier
-  
+
   -- AssignmentStatementNode
     -- read
     -- MultiplicationExpressionNode
@@ -66,10 +66,10 @@ loop00:
           ADD 2 --$$accumulator
           -- write
           COPYTO 2 --$$accumulator
-        
+
         -- DecrementAssignmentStatementNode
         BUMPDN 3 --$$iterator
-        
+
         condition01:
         -- GreaterThanConditionNode
         COPYFROM 3 --$$iterator
@@ -81,7 +81,7 @@ loop00:
       COPYFROM 2 --$$accumulator
     -- write
     OUTBOX
-  
+
   condition00:
   JUMP loop00
 break00:

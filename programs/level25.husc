@@ -1,5 +1,5 @@
 -- # Cumulative Countdown
--- # 
+-- #
 -- # For each thing in the INBOX,
 -- # OUTBOX the sum of itself plus
 -- # all numbers down to zero. For
@@ -27,27 +27,27 @@
 JUMP condition00
 loop00:
   COMMENT 0 -- ## init
-  
+
   -- AssignmentStatementNode
     -- read
     INBOX
     -- write
     COPYTO 0 --$tmp
-  
+
   -- AssignmentStatementNode
     -- read
     COPYFROM 0 --$tmp
     -- write
     COPYTO 1 --$counter
-  
+
   -- AssignmentStatementNode
     -- read
     COPYFROM 5 --$zero
     -- write
     COPYTO 2 --$sum
-  
+
   COMMENT 1 -- ## sum
-  
+
   -- WhileStatementNode
   JUMP condition01
   loop01:
@@ -60,10 +60,10 @@ loop00:
       ADD 3 --$$accumulator
       -- write
       COPYTO 2 --$sum
-    
+
     -- DecrementAssignmentExpressionNode
     BUMPDN 1 --$counter
-    
+
     condition01:
     -- GreaterThanConditionNode
     COPYFROM 1 --$counter
@@ -72,13 +72,13 @@ loop00:
     JUMPN break01
     JUMP loop01
   break01:
-  
+
   -- AssignmentStatementNode
     -- read
     COPYFROM 2 --$sum
     -- write
     OUTBOX
-  
+
   condition00:
   JUMP loop00
 break00:

@@ -1,5 +1,5 @@
 -- # Inventory Report
--- # 
+-- #
 -- # For each thing in the INBOX,
 -- # send to the OUTBOX the total
 -- # number of matching items on
@@ -25,27 +25,27 @@
 JUMP condition00
 loop00:
   COMMENT 0 -- ## init
-  
+
   -- AssignmentStatementNode
     -- read
     INBOX
     -- write
     COPYTO 15 --$tmp
-  
+
   -- AssignmentStatementNode
     -- read
     COPYFROM 14 --$zero
     -- write
     COPYTO 16 --$index
-  
+
   -- AssignmentStatementNode
     -- read
     COPYFROM 14 --$zero
     -- write
     COPYTO 17 --$count
-  
+
   COMMENT 1 -- ## count
-  
+
   -- WhileStatementNode
   JUMP condition01
   loop01:
@@ -66,10 +66,10 @@ loop00:
         -- IncrementAssignmentExpressionNode
         BUMPUP 17 --$count
     end02:
-    
+
     -- IncrementAssignmentExpressionNode
     BUMPUP 16 --$index
-    
+
     condition01:
     -- NotEqualsConditionNode
     COPYFROM [16] --$floor[$index]
@@ -77,15 +77,15 @@ loop00:
     JUMPZ break01
     JUMP loop01
   break01:
-  
+
   COMMENT 2 -- ## done
-  
+
   -- AssignmentStatementNode
     -- read
     COPYFROM 17 --$count
     -- write
     OUTBOX
-  
+
   condition00:
   JUMP loop00
 break00:

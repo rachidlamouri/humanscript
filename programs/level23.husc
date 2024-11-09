@@ -1,5 +1,5 @@
 -- # The Littlest Number
--- # 
+-- #
 -- # For each zero terminated string
 -- # in the INBOX, send to the
 -- # OUTBOX only the SMALLEST
@@ -7,7 +7,7 @@
 -- # string. You will never be given
 -- # an empty string. Reset and
 -- # repeat for each string.
--- # 
+-- #
 -- # What's a "zero terminated
 -- # string"? Go ask your boss on
 -- # the previous floor!
@@ -26,21 +26,21 @@
 JUMP condition00
 loop00:
   COMMENT 0 -- ## init
-  
+
   -- AssignmentStatementNode
     -- read
     INBOX
     -- write
     COPYTO 0 --$tmp
-  
+
   -- AssignmentStatementNode
     -- read
     COPYFROM 0 --$tmp
     -- write
     COPYTO 1 --$smol
-  
+
   COMMENT 1 -- ## find lil
-  
+
   -- WhileStatementNode
   JUMP condition01
   loop01:
@@ -64,13 +64,13 @@ loop00:
           -- write
           COPYTO 1 --$smol
     end02:
-    
+
     -- AssignmentStatementNode
       -- read
       INBOX
       -- write
       COPYTO 0 --$tmp
-    
+
     condition01:
     -- NotEqualsConditionNode
     COPYFROM 0 --$tmp
@@ -78,13 +78,13 @@ loop00:
     JUMPZ break01
     JUMP loop01
   break01:
-  
+
   -- AssignmentStatementNode
     -- read
     COPYFROM 1 --$smol
     -- write
     OUTBOX
-  
+
   condition00:
   JUMP loop00
 break00:

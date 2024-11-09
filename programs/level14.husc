@@ -1,11 +1,11 @@
 -- # Maximization Room
--- # 
+-- #
 -- # Grab TWO things from the
 -- # INBOX, and put only the
 -- # BIGGER of the two in the
 -- # OUTBOX. If they are equal, just
 -- # pick either one. Repeat!
--- # 
+-- #
 -- # You got a new command!
 -- # Jumps only if the thing you're
 -- # holding is negative. (Less than
@@ -30,13 +30,13 @@ loop00:
     INBOX
     -- write
     COPYTO 0 --$first
-  
+
   -- AssignmentStatementNode
     -- read
     INBOX
     -- write
     COPYTO 1 --$second
-  
+
   -- IfStatementNode
   -- 01
     -- condition
@@ -49,7 +49,7 @@ loop00:
     else01:
       -- block
       COMMENT 1 -- ## 2 big
-      
+
       -- AssignmentStatementNode
         -- read
         COPYFROM 1 --$second
@@ -59,14 +59,14 @@ loop00:
     if01:
       -- block
       COMMENT 0 -- ## 1 big
-      
+
       -- AssignmentStatementNode
         -- read
         COPYFROM 0 --$first
         -- write
         OUTBOX
   end01:
-  
+
   condition00:
   JUMP loop00
 break00:

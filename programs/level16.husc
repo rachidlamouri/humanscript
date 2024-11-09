@@ -1,5 +1,5 @@
 -- # Absolute Positivity
--- # 
+-- #
 -- # Send each thing from the
 -- # INBOX to the OUTBOX. BUT, if
 -- # a number is negative, first
@@ -20,7 +20,7 @@ loop00:
     INBOX
     -- write
     COPYTO 0 --$tmp
-  
+
   -- IfStatementNode
   -- 01
     -- condition
@@ -31,7 +31,7 @@ loop00:
     else01:
       -- block
       COMMENT 1 -- ## is pos
-      
+
       -- AssignmentStatementNode
         -- read
         COPYFROM 0 --$tmp
@@ -41,7 +41,7 @@ loop00:
     if01:
       -- block
       COMMENT 0 -- ## negate
-      
+
       -- AssignmentStatementNode
         -- read
         -- NegationExpressionNode
@@ -52,7 +52,7 @@ loop00:
         -- write
         OUTBOX
   end01:
-  
+
   condition00:
   JUMP loop00
 break00:

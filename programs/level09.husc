@@ -1,5 +1,5 @@
 -- # Zero Preservation Initiative
--- # 
+-- #
 -- # Send only the ZEROs to the
 -- # OUTBOX.
 
@@ -18,7 +18,7 @@ loop00:
     INBOX
     -- write
     COPYTO 0 --$tmp
-  
+
   -- IfStatementNode
   -- 01
     -- condition
@@ -37,7 +37,7 @@ loop00:
         -- write
         OUTBOX
   end01:
-  
+
   condition00:
   JUMP loop00
 break00:

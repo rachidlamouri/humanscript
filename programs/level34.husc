@@ -1,5 +1,5 @@
 -- # Vowel Incinerator
--- # 
+-- #
 -- # Send everything from the
 -- # INBOX to the OUTBOX, except
 -- # for vowels.
@@ -37,7 +37,7 @@ loop00:
     INBOX
     -- write
     COPYTO 6 --$tmp
-  
+
   -- IfStatementNode
   -- 01
     -- condition
@@ -82,7 +82,7 @@ loop00:
         -- write
         OUTBOX
   end01:
-  
+
   condition00:
   JUMP loop00
 break00:

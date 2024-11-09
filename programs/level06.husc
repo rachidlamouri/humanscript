@@ -1,10 +1,10 @@
 -- # Rainy Summer
--- # 
+-- #
 -- # For each two things in the
 -- # INBOX, add them together,
 -- # and put the result in the
 -- # OUTBOX.
--- # 
+-- #
 -- # You got a new command! It
 -- # ADDS the contents of a tile on
 -- # the floor to whatever value
@@ -26,7 +26,7 @@ loop00:
     ADD 0 --$$accumulator
     -- write
     OUTBOX
-  
+
   condition00:
   JUMP loop00
 break00:

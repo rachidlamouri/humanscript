@@ -1,11 +1,11 @@
 -- # Equalization Room
--- # 
+-- #
 -- # Get two things from the
 -- # INBOX. If they are EQUAL, put
 -- # ONE of them in the OUTBOX.
 -- # Discard non-equal pairs.
 -- # Repeat!
--- # 
+-- #
 -- # You got... COMMENTS! You
 -- # can use them, if you like, to
 -- # mark sections of your
@@ -25,21 +25,21 @@
 JUMP condition00
 loop00:
   COMMENT 0 -- ## init
-  
+
   -- AssignmentStatementNode
     -- read
     INBOX
     -- write
     COPYTO 0 --$first
-  
+
   -- AssignmentStatementNode
     -- read
     INBOX
     -- write
     COPYTO 1 --$second
-  
+
   COMMENT 1 -- ## is eq?
-  
+
   -- IfStatementNode
   -- 01
     -- condition
@@ -60,7 +60,7 @@ loop00:
         -- write
         OUTBOX
   end01:
-  
+
   condition00:
   JUMP loop00
 break00:

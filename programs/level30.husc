@@ -1,5 +1,5 @@
 -- # String Storage Floor
--- # 
+-- #
 -- # Each thing in the INBOX is an
 -- # address of a tile on the floor.
 -- # For each address provided in
@@ -96,7 +96,7 @@ loop00:
     INBOX
     -- write
     COPYTO 24 --$tmp
-  
+
   -- WhileStatementNode
   JUMP condition01
   loop01:
@@ -105,10 +105,10 @@ loop00:
       COPYFROM [24] --$floor[$tmp]
       -- write
       OUTBOX
-    
+
     -- IncrementAssignmentExpressionNode
     BUMPUP 24 --$tmp
-    
+
     condition01:
     -- NotEqualsConditionNode
     COPYFROM [24] --$floor[$tmp]
@@ -116,7 +116,7 @@ loop00:
     JUMPZ break01
     JUMP loop01
   break01:
-  
+
   condition00:
   JUMP loop00
 break00:

@@ -591,7 +591,9 @@ export const compile = (code: string): string => {
   );
   const compiledParts = [...compiledNodes, ...compiledLabels];
 
-  const result = compiledParts.map((part) => part.serialized).join('\n');
+  const result = compiledParts
+    .map((part) => part.serialized.trimEnd())
+    .join('\n');
 
   return result;
 };

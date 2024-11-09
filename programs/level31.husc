@@ -1,5 +1,5 @@
 -- # String Reverse
--- # 
+-- #
 -- # For each zero terminated string
 -- # in the INBOX, reverse it and
 -- # put the result in the OUTBOX.
@@ -22,15 +22,15 @@
 JUMP condition00
 loop00:
   COMMENT 0 -- ## init
-  
+
   -- AssignmentStatementNode
     -- read
     COPYFROM 14 --$zero
     -- write
     COPYTO 11 --$index
-  
+
   COMMENT 1 -- ## read
-  
+
   -- WhileStatementNode
   JUMP condition01
   loop01:
@@ -39,10 +39,10 @@ loop00:
       COPYFROM 10 --$tmp
       -- write
       COPYTO [11] --$index
-    
+
     -- IncrementAssignmentExpressionNode
     BUMPUP 11 --$index
-    
+
     condition01:
     -- NotEqualsConditionNode
     -- ReadableAssignmentExpressionNode
@@ -54,9 +54,9 @@ loop00:
     JUMPZ break01
     JUMP loop01
   break01:
-  
+
   COMMENT 2 -- ## rev
-  
+
   -- WhileStatementNode
   JUMP condition02
   loop02:
@@ -65,7 +65,7 @@ loop00:
       COPYFROM [11] --$floor[$index]
       -- write
       OUTBOX
-    
+
     condition02:
     -- GreaterThanOrEqualToConditionNode
     -- DecrementAssignmentExpressionNode
@@ -74,7 +74,7 @@ loop00:
     JUMPN break02
     JUMP loop02
   break02:
-  
+
   condition00:
   JUMP loop00
 break00:

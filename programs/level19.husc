@@ -1,11 +1,11 @@
 -- # Countdown
--- # 
+-- #
 -- # For each number in the INBOX,
 -- # send that number to the
 -- # OUTBOX, followed by all
 -- # numbers down to (or up to)
 -- # zero. It's a countdown!
--- # 
+-- #
 -- # You got new commands! They
 -- # add ONE or subtract ONE from
 -- # an item on the floor. The result
@@ -28,7 +28,7 @@ loop00:
     INBOX
     -- write
     COPYTO 0 --$count
-  
+
   -- IfStatementNode
   -- 01
     -- condition
@@ -46,10 +46,10 @@ loop00:
           COPYFROM 0 --$count
           -- write
           OUTBOX
-        
+
         -- DecrementAssignmentExpressionNode
         BUMPDN 0 --$count
-        
+
         condition02:
         -- GreaterThanOrEqualToConditionNode
         COPYFROM 0 --$count
@@ -68,10 +68,10 @@ loop00:
           COPYFROM 0 --$count
           -- write
           OUTBOX
-        
+
         -- IncrementAssignmentExpressionNode
         BUMPUP 0 --$count
-        
+
         condition03:
         -- LessThanOrEqualToConditionNode
         COPYFROM 0 --$count
@@ -80,7 +80,7 @@ loop00:
         JUMPZ loop03
       break03:
   end01:
-  
+
   condition00:
   JUMP loop00
 break00:
