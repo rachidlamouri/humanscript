@@ -9,7 +9,7 @@
 
 floor size 6
 
-let zero floor[5]
+let zero at floor[5]
 let tmp
 let counter labeled count
 let sum

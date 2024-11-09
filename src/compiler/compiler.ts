@@ -293,12 +293,14 @@ const language = createLanguage<Language>(parserDebugger, {
   directFloorSlot: (l) => {
     return P.seq(
       //-
+      P.string('at'),
+      P.whitespace,
       P.string('floor'),
       P.string('['),
       l.positiveInteger,
       P.string(']'),
     ).map((result) => {
-      return result[2];
+      return result[4];
     });
   },
   indirectFloorSlot: (l) => {

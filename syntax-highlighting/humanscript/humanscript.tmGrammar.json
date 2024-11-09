@@ -23,7 +23,7 @@
       }
     },
     {
-      "match": "reserve",
+      "match": "reserve|at",
       "name": "keyword.control.humanscript"
     },
     {

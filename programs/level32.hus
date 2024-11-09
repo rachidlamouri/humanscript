@@ -7,7 +7,7 @@
 
 floor size 20 reserve 15
 
-let zero floor[14]
+let zero at floor[14]
 let tmp
 let index
 let count

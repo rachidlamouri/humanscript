@@ -16,7 +16,7 @@ DEC_ASSIGN      : WRITE_REF -= 1
 
 OPT_LABEL       : labeled WORD | ε
 OPT_FLOOR_SLOT  : DIR_FLOOR_SLOT | ε
-DIR_FLOOR_SLOT  : floor [ POS_INT ]
+DIR_FLOOR_SLOT  : at floor [ POS_INT ]
 
 OPT_ELSE        : ELSE | ε
 ELSE            : else BLOCK
