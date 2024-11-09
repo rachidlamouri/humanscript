@@ -1,0 +1,32 @@
+# Inventory Report
+#
+# For each thing in the INBOX,
+# send to the OUTBOX the total
+# number of matching items on
+# the FLOOR.
+
+floor size 20 reserve 15
+
+let zero floor[14]
+let tmp
+let index
+let count
+
+while {
+  ## init
+  tmp = inbox
+  index = zero
+  count = zero
+
+  ## count
+  while (floor[index] != 0) {
+    if (floor[index] == tmp) {
+      count += 1
+    }
+
+    index += 1
+  }
+
+  ## done
+  outbox = count
+}

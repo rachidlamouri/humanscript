@@ -1,0 +1,157 @@
+-- # Inventory Report
+-- # 
+-- # For each thing in the INBOX,
+-- # send to the OUTBOX the total
+-- # number of matching items on
+-- # the FLOOR.
+
+-- FloorInitNode
+  -- $accumulator -> floor[18]
+  -- $iterator -> null
+
+-- LetStatementNode
+  -- zero -> floor[14]
+
+-- LetStatementNode
+  -- tmp -> floor[15]
+
+-- LetStatementNode
+  -- index -> floor[16]
+
+-- LetStatementNode
+  -- count -> floor[17]
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  COMMENT 0 -- ## init
+  
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 15 --$tmp
+  
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 14 --$zero
+    -- write
+    COPYTO 16 --$index
+  
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 14 --$zero
+    -- write
+    COPYTO 17 --$count
+  
+  COMMENT 1 -- ## count
+  
+  -- WhileStatementNode
+  JUMP condition01
+  loop01:
+    -- IfStatementNode
+    -- 02
+      -- condition
+        -- EqualsConditionNode
+        COPYFROM 15 --$tmp
+        COPYTO 18 --$$accumulator
+        COPYFROM [16] --$floor[$index]
+        SUB 18 --$$accumulator
+        JUMPZ if02
+      else02:
+        -- block
+      JUMP end02
+      if02:
+        -- block
+        -- IncrementAssignmentExpressionNode
+        BUMPUP 17 --$count
+    end02:
+    
+    -- IncrementAssignmentExpressionNode
+    BUMPUP 16 --$index
+    
+    condition01:
+    -- NotEqualsConditionNode
+    COPYFROM [16] --$floor[$index]
+    -- compare 0
+    JUMPZ break01
+    JUMP loop01
+  break01:
+  
+  COMMENT 2 -- ## done
+  
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 17 --$count
+    -- write
+    OUTBOX
+  
+  condition00:
+  JUMP loop00
+break00:
+
+-- init
+DEFINE COMMENT 0
+eJztjSEOwjAYhVtVh52rZIqgeoSGBE9qKpfUTEyQ7BCISQ6A2BGWcIFaUL3C
+bgCuUD64BNlL2i9/3+v790IIKbpKvu+bkqJo+5Qi53K6ijl/Nczikx/m4t5V
+zmWeVsHC6QTrCzxfC51OvrBew8cGOr07FkYDneZ/NNBpeqKBTtMXDQyWvcGS
+D5ZcsPjJ4yfPPnVgT/JwbGDf/t7pSZ6evoVjQ9+iRf+oF12wTK4+;
+
+-- count
+DEFINE COMMENT 1
+eJzt0CFuwzAYQGEHlRW2rHCFQ1FQYWQUHGI4yWSgwGoPYBBQUFAQEFhQaTAk
+UmBJ6IZ8BPcGG/PqPo/vAP2l5JOT+EnOTgiRie0yu98/Z5mI8/qTiRDitV2y
+DmmON/H4/niLb79mIcR1s3AqWq9wmEsTXb/gMB8OuD7zHJtFO7IP2w37dYlT
+zv6iwimnU1Q45XSKCtsNHV2iU3SkQafoSINO0ZEGnaIjDV7e6OzfURr0Np3z
+gM0JvaVbd+gt3bpDb+nWHXqbzt/h1OsS6X1/pHP32I6or3/P03/o6elr+g8j
+vec85z/zC5BQfwo+;
+
+-- done
+DEFINE COMMENT 2
+eJzt0KEOgkAYwPEj2YzajJCciZGM7BKZctGNYjDc5gMQCAQDgUA0+Ai3+QJU
+TfcI+AbaTs//PYLRb4PfvgH/7dgLISJxWEaf+20WCT+bVySc89dhye7CnB7i
++/7p4Z/eZ875PYmfa6xytMrbLKT2litMYjRz07KjmSdndmwW/ZXvMImx39Kt
+chxTelmBY0ovK3BM6WUF9ls6VY5W0bns8LhHq+hJjVbRkxqtoic1WkVPajRt
+OH+HUx3+w4BTHc7dYtNhOeBU0zUtvaYL/2PA//znl/MGDotv5w++;
+
+-- zero
+DEFINE LABEL 14
+eJztzyEOgzAUxvFWcYQeATmJQi4oJJmZJJlBIEgw+IkKxARicgKPaYLEkKA2
+tStwhLlu3b+7whQvaX9pXvs1LxdCSFEq+dnvgRSudi8prHWrVJytr3YV3/vt
+6rqPwFp37uLn0XnaY5RikP1MKvpG08cuDm/YjfQxSjHIsC7ISSrsc/JUg31O
+Xl1gUqFqsM/5py7ISypUDRpN7uGK4Q2NJv98QaPJM5o8o3nfjX7+CeeB+9GC
+8+DnXnAeeB8tfv7Rzz/hVlv9s96vGG1o;
+
+-- tmp
+DEFINE LABEL 15
+eJztzSEOwjAYhuFW7Qg7QiWSE5AqJG6SBItogsFVTExMTOwAFSSTM0t2gVnA
+7AgdJxiuUF64A2Jf0j752+ZrJoSQ4pjK935NpIhZPaUIIa5jyhy+KSfxeV9O
+8faWhBDnZHfY4JhF11ttmHHM8LL/nXcFKsc5jlndR7WhJz2jt9gVqA093mJe
+oTb0eot5hdrQ7y3mFWrDf95iXuHc8M/QonL01z0qR2/do3L0zQ0OLSpHn3LJ
+HU8PsWTJn+UFfRRj8A++;
+
+-- index
+DEFINE LABEL 16
+eJzt0CFuwzAYQGEH+Qg5QlA1NPUEVtBgFWJuUlAQqaTMIGCgIMAgMCwXmGQ4
+MmmoDfER3BtkzKv7sgOM95ecT5aTF8mtEKIQh7K4Py+yEHlefgqRUl6Hkn1a
+53wTj/fPt3x6lSnl/derUfjxjtWIzmeNCjq7fUO5Q6PqNhs0GsX3QaNRdIJG
+o+gFjdEuG+T/0dKtW3rlCaPF455utHjc040W65ZuefrrYzPQrUbsenrLhF1P
+rxmwGnGZsOvpNwO9asRlQufXe5nRebpyXu/lk872G52nJ2d0no6c8TnP+c/8
+AqRSgSU+;
+
+-- count
+DEFINE LABEL 17
+eJzt0CFuwzAYQGEH+Qg+glE1VBUNVjtBWGClkoCCqiFhAwYFBQY+gEGkwZJK
+vkCkoTUkKgxabtAxb97z+A7QX0o+OYmf5ByEEIXYqeLn/iELkebpqxAxpmun
+WMc8p1n8fn+a09urjDGt++VYJd0z3hcv++R2jffF5Yja8xz7pQvsw7Fif7dB
+WbK/qVGWdJoaZUmnqXGs6HQbVC0dY1G1dIxF1dIxFlVLx1j8fKVzOaKxqH0+
+5xv2Z9SerguoPV0XUHu6LqD2+fwB5bBdI73Vez73gOMNu+nvef4PA71uyv/h
+Ru8xj/nPfAMb4oAJ;
+
+-- $accumulator as $acc
+DEFINE LABEL 18
+eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
+wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
+u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
+LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
+fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;
