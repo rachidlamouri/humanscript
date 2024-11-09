@@ -1,0 +1,25 @@
+# Vowel Incinerator
+#
+# Send everything from the
+# INBOX to the OUTBOX, except
+# for vowels.
+
+floor size 10 reserve 6
+
+let a at floor[0]
+let e at floor[1]
+let i at floor[2]
+let o at floor[3]
+let u at floor[4]
+let zero at floor[5]
+
+let tmp
+
+while {
+  tmp = inbox
+
+  if (tmp != a && tmp != e && tmp != i && tmp != o && tmp != u) {
+     outbox = tmp
+  }
+}
+

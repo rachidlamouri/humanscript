@@ -51,6 +51,7 @@ import {
 import { MultiplicationExpressionNode } from './nodes/expressions/multiplicationExpressionNode';
 import { LabelDefinitionNode } from './nodes/statements/labelDefinitionNode';
 import { IndirectFloorSlotNode } from './nodes/references/indirectFloorSlotNode';
+import { AndConditionNode } from './nodes/conditions/andConditionNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -79,6 +80,8 @@ type Language = {
   indirectFloorSlot: IndirectFloorSlotNode;
 
   conditionExpression: Condition;
+  conditionList: Condition;
+  conditionListPrime: Condition | null;
   condition: Condition;
   block: BlockNode;
 
@@ -319,12 +322,54 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.seq(
       P.string('('),
       P.optWhitespace,
-      l.condition,
+      l.conditionList,
       P.optWhitespace,
       P.string(')'),
     ).map((result) => {
       return result[2];
     });
+  },
+  conditionList: (l) => {
+    return P.seq(
+      //-
+      l.condition,
+      l.conditionListPrime,
+    ).map((result) => {
+      const left = result[0];
+      const right = result[1];
+
+      if (right === null) {
+        return left;
+      }
+
+      return new AndConditionNode(left, right);
+    });
+  },
+  conditionListPrime: (l) => {
+    return ul
+      .sopt(
+        P.seq(
+          // -
+          P.string('&&'),
+          P.whitespace,
+          l.condition,
+          l.conditionListPrime,
+        ),
+      )
+      .map((result) => {
+        if (result === null) {
+          return null;
+        }
+
+        const left = result[2];
+        const right = result[3];
+
+        if (right === null) {
+          return left;
+        }
+
+        return new AndConditionNode(left, right);
+      });
   },
   condition: (l) => {
     return P.seq(

@@ -150,6 +150,10 @@ export class CompilerContext {
   }
 
   getFloorIndex(key: FloorIndexKey): FloorIndex {
+    if (key === RegisterKey.Accumulator || key === RegisterKey.Iterator) {
+      return this.bindReservedRegisterKey(key);
+    }
+
     const binding = this.floorBindingByKey.get(key);
 
     if (binding === undefined) {

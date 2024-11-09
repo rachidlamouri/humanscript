@@ -43,7 +43,7 @@
       "name": "keyword.control.humanscript"
     },
     {
-      "match": "=|\\+|-|!=|==|>|<",
+      "match": "=|\\+|-|!=|==|>|<|&&",
       "name": "keyword.operator.humanscript"
     },
     {

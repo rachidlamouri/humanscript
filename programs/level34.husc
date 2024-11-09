@@ -1,0 +1,141 @@
+-- # Vowel Incinerator
+-- # 
+-- # Send everything from the
+-- # INBOX to the OUTBOX, except
+-- # for vowels.
+
+-- FloorInitNode
+  -- $accumulator -> floor[7]
+  -- $iterator -> null
+
+-- LetStatementNode
+  -- a -> floor[0]
+
+-- LetStatementNode
+  -- e -> floor[1]
+
+-- LetStatementNode
+  -- i -> floor[2]
+
+-- LetStatementNode
+  -- o -> floor[3]
+
+-- LetStatementNode
+  -- u -> floor[4]
+
+-- LetStatementNode
+  -- zero -> floor[5]
+
+-- LetStatementNode
+  -- tmp -> floor[6]
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 6 --$tmp
+  
+  -- IfStatementNode
+  -- 01
+    -- condition
+      -- NotEqualsConditionNode
+      COPYFROM 0 --$a
+      COPYTO 7 --$$accumulator
+      COPYFROM 6 --$tmp
+      SUB 7 --$$accumulator
+      JUMPZ else01
+      -- NotEqualsConditionNode
+      COPYFROM 1 --$e
+      COPYTO 7 --$$accumulator
+      COPYFROM 6 --$tmp
+      SUB 7 --$$accumulator
+      JUMPZ else01
+      -- NotEqualsConditionNode
+      COPYFROM 2 --$i
+      COPYTO 7 --$$accumulator
+      COPYFROM 6 --$tmp
+      SUB 7 --$$accumulator
+      JUMPZ else01
+      -- NotEqualsConditionNode
+      COPYFROM 3 --$o
+      COPYTO 7 --$$accumulator
+      COPYFROM 6 --$tmp
+      SUB 7 --$$accumulator
+      JUMPZ else01
+      -- NotEqualsConditionNode
+      COPYFROM 4 --$u
+      COPYTO 7 --$$accumulator
+      COPYFROM 6 --$tmp
+      SUB 7 --$$accumulator
+      JUMPZ else01
+    else01:
+      -- block
+    JUMP end01
+    if01:
+      -- block
+      -- AssignmentStatementNode
+        -- read
+        COPYFROM 6 --$tmp
+        -- write
+        OUTBOX
+  end01:
+  
+  condition00:
+  JUMP loop00
+break00:
+
+-- a
+DEFINE LABEL 0
+eJzTYmBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxnzenu4Lo7d0Qun3y9RiIuHsJRBxCt0+G0OI127shfAgtXqO+GMKH0M+b
+p++C6IPQ7ZMh9CgYBaOA+gAAhYczjw++;
+
+-- e
+DEFINE LABEL 1
+eJzTYGBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxnzdfjwHR27shtHiNewmIbp8MocVrtndD1EHo7d0Qun0yhBavUV8MkZ++
+CyIPodsnQ+hRMApGAe0AAC3+MsY+;
+
+-- i
+DEFINE LABEL 2
+eJyTYGBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxnzenu0Lo7d0QWn0xhJ6+i2EUjIJRMKgBAJQtIbs+;
+
+-- o
+DEFINE LABEL 3
+eJxTYWBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxnzdfjwHR27shtHiNewmIbp8MocVrtndD+BBavEZ9MYQPoZ83T98F0Q+h
+R8EoGAX0AwBrWy0L;
+
+-- u
+DEFINE LABEL 4
+eJxTY2BgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxxWuux4Do9skQWrzGvQTCh9DiNdu7IXwILV6jvhjCh9DPm6fvAtHbuyF0
++2QIPQpGwSigPQAABI4ueQ++;
+
+-- zero
+DEFINE LABEL 5
+eJztzyEOgzAUxvFWcYQeATmJQi4oJJmZJJlBIEgw+IkKxARicgKPaYLEkKA2
+tStwhLlu3b+7whQvaX9pXvs1LxdCSFEq+dnvgRSudi8prHWrVJytr3YV3/vt
+6rqPwFp37uLn0XnaY5RikP1MKvpG08cuDm/YjfQxSjHIsC7ISSrsc/JUg31O
+Xl1gUqFqsM/5py7ISypUDRpN7uGK4Q2NJv98QaPJM5o8o3nfjX7+CeeB+9GC
+8+DnXnAeeB8tfv7Rzz/hVlv9s96vGG1o;
+
+-- tmp
+DEFINE LABEL 6
+eJztzSEOwjAYhuFW7Qg7QiWSE5AqJG6SBItogsFVTExMTOwAFSSTM0t2gVnA
+7AgdJxiuUF64A2Jf0j752+ZrJoSQ4pjK935NpIhZPaUIIa5jyhy+KSfxeV9O
+8faWhBDnZHfY4JhF11ttmHHM8LL/nXcFKsc5jlndR7WhJz2jt9gVqA093mJe
+oTb0eot5hdrQ7y3mFWrDf95iXuHc8M/QonL01z0qR2/do3L0zQ0OLSpHn3LJ
+HU8PsWTJn+UFfRRj8A++;
+
+-- $accumulator as $acc
+DEFINE LABEL 7
+eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
+wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
+u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
+LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
+fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;
