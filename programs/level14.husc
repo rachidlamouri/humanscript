@@ -55,7 +55,7 @@ loop00:
         COPYFROM 1 --$second
         -- write
         OUTBOX
-    JUMP end01
+      JUMP end01
     if01:
       -- block
       COMMENT 0 -- ## 1 big

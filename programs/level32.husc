@@ -60,7 +60,7 @@ loop00:
         JUMPZ if02
       else02:
         -- block
-      JUMP end02
+        JUMP end02
       if02:
         -- block
         -- IncrementAssignmentExpressionNode

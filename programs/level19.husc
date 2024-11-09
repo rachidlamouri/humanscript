@@ -57,7 +57,7 @@ loop00:
         JUMPN break02
         JUMP loop02
       break02:
-    JUMP end01
+      JUMP end01
     else01:
       -- block
       -- WhileStatementNode

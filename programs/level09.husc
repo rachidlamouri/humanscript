@@ -28,7 +28,7 @@ loop00:
       JUMPZ if01
     else01:
       -- block
-    JUMP end01
+      JUMP end01
     if01:
       -- block
       -- AssignmentStatementNode

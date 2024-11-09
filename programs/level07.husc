@@ -38,7 +38,7 @@ loop00:
         COPYFROM 0 --$tmp
         -- write
         OUTBOX
-    JUMP end01
+      JUMP end01
     else01:
       -- block
   end01:

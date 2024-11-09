@@ -63,7 +63,9 @@ export class IfStatementNode extends Node implements Statement {
     result.push(Assembly.DEBUG(context, 'block'));
     context.decrementDepth();
     result.push(...fallthroughBlock);
+    context.incrementDepth();
     result.push(Assembly.JUMP(context, endAnchorId));
+    context.decrementDepth();
     // jump-to
     result.push(Assembly.ANCHOR(context, jumpToAnchorId));
     context.incrementDepth();
