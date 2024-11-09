@@ -25,7 +25,6 @@ export class GreaterThanOrEqualToConditionNode
     { falseAnchorId }: ConditionAnchorIds,
   ): Compiled {
     assertIsNotUndefined(falseAnchorId);
-    context.bindReservedRegisterKey(RegisterKey.Accumulator);
 
     const result = [];
 

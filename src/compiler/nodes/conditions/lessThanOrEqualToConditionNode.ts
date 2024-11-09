@@ -22,7 +22,6 @@ export class LessThanOrEqualToConditionNode extends Node implements Condition {
     { trueAnchorId }: ConditionAnchorIds,
   ): Compiled {
     assertIsNotUndefined(trueAnchorId);
-    context.bindReservedRegisterKey(RegisterKey.Accumulator);
 
     const result = [];
 

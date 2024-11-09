@@ -6,7 +6,7 @@
 -- # Repeat!
 
 -- FloorInitNode
-  -- $accumulator -> floor[12]
+  -- $accumulator -> null
   -- $iterator -> null
 
 -- LetStatementNode
@@ -125,11 +125,3 @@ MmmoDfER3BtkzKv7sgOM95ecT5aTF8mtEKIQh7K4Py+yEHlefgqRUl6Hkn1a
 o+gFjdEuG+T/0dKtW3rlCaPF455utHjc040W65ZuefrrYzPQrUbsenrLhF1P
 rxmwGnGZsOvpNwO9asRlQufXe5nRebpyXu/lk872G52nJ2d0no6c8TnP+c/8
 AqRSgSU+;
-
--- $accumulator as $acc
-DEFINE LABEL 12
-eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
-wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
-u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
-LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
-fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;

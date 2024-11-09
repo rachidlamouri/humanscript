@@ -14,8 +14,6 @@ export class AdditionExpressionNode extends Node implements ReadableExpression {
   }
 
   compileExpression(context: CompilerContext): Compiled {
-    context.bindReservedRegisterKey(RegisterKey.Accumulator);
-
     const result = [
       Assembly.DEBUG(context, this.className),
       ...this.left.compileRead(context),

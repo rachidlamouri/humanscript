@@ -112,12 +112,12 @@ export class Assembly {
   }
 
   static ADD(context: CompilerContext, key: RegisterKey) {
-    const index = context.bindReservedRegisterKey(key);
+    const index = context.getFloorIndex(key);
     return new CompiledPart(context, `ADD ${index} --$${key}`);
   }
 
   static SUB(context: CompilerContext, key: RegisterKey) {
-    const index = context.bindReservedRegisterKey(key);
+    const index = context.getFloorIndex(key);
     return new CompiledPart(context, `SUB ${index} --$${key}`);
   }
 

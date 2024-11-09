@@ -17,8 +17,6 @@ export class SubtractionExpressionNode
   }
 
   compileExpression(context: CompilerContext): Compiled {
-    context.bindReservedRegisterKey(RegisterKey.Accumulator);
-
     const result = [
       Assembly.DEBUG(context, this.className),
       ...this.right.compileRead(context),

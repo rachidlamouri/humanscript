@@ -23,7 +23,6 @@ export class GreaterThanConditionNode extends Node implements Condition {
   ): Compiled {
     assertIsNotUndefined(trueAnchorId);
     assertIsNotUndefined(falseAnchorId);
-    context.bindReservedRegisterKey(RegisterKey.Accumulator);
 
     const result = [];
 

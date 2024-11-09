@@ -4,7 +4,7 @@
 -- # OUTBOX.
 
 -- FloorInitNode
-  -- $accumulator -> floor[1]
+  -- $accumulator -> null
   -- $iterator -> null
 
 -- LetStatementNode
@@ -49,11 +49,3 @@ eJztzSEOwjAYhuFW7Qg7QiWSE5AqJG6SBItogsFVTExMTOwAFSSTM0t2gVnA
 8faWhBDnZHfY4JhF11ttmHHM8LL/nXcFKsc5jlndR7WhJz2jt9gVqA093mJe
 oTb0eot5hdrQ7y3mFWrDf95iXuHc8M/QonL01z0qR2/do3L0zQ0OLSpHn3LJ
 HU8PsWTJn+UFfRRj8A++;
-
--- $accumulator as $acc
-DEFINE LABEL 1
-eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
-wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
-u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
-LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
-fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;

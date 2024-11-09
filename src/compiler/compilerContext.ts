@@ -79,7 +79,7 @@ export class CompilerContext {
     });
   }
 
-  bindReservedRegisterKey(key: RegisterKey): FloorIndex {
+  private bindReservedRegisterKey(key: RegisterKey): FloorIndex {
     const existingBinding = this.floorBindingByKey.get(key);
 
     if (existingBinding !== undefined) {

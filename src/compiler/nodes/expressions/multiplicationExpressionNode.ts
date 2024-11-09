@@ -28,9 +28,6 @@ export class MultiplicationExpressionNode
   }
 
   compileExpression(context: CompilerContext): Compiled {
-    context.bindReservedRegisterKey(RegisterKey.Accumulator);
-    context.bindReservedRegisterKey(RegisterKey.Iterator);
-
     const iterator = new IteratorNode();
     const accumulator = new AccumulatorNode();
 
