@@ -1,0 +1,70 @@
+-- # Scavenger Chain
+-- #
+-- # Each pair on the floor contains:
+-- # 1. data
+-- # 2. the address of another one
+-- # of the pairs
+-- #
+-- # A scrambled chain! Each thing
+-- # in the INBOX is an address of
+-- # one of the pairs. OUTBOX the
+-- # data for that pair, and also the
+-- # data in all following pairs in
+-- # the chain. The chain ends when
+-- # you reach a negative address.
+-- # Repeat until the INBOX is
+-- # empty.
+
+-- FloorInitNode
+  -- $accumulator -> null
+  -- $iterator -> null
+
+-- LetStatementNode
+  -- address -> floor[5]
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 5 --$address
+
+  -- WhileStatementNode
+  JUMP condition01
+  loop01:
+    -- AssignmentStatementNode
+      -- read
+      COPYFROM [5] --$floor[$address]
+      -- write
+      OUTBOX
+
+    -- IncrementAssignmentExpressionNode
+    BUMPUP 5 --$address
+
+    -- AssignmentStatementNode
+      -- read
+      COPYFROM [5] --$floor[$address]
+      -- write
+      COPYTO 5 --$address
+
+    condition01:
+    -- GreaterThanOrEqualToConditionNode
+    COPYFROM 5 --$address
+    -- compare 0
+    JUMPN break01
+    JUMP loop01
+  break01:
+
+  condition00:
+  JUMP loop00
+break00:
+
+-- address as addr
+DEFINE LABEL 5
+eJztkCEOwjAYRjvVI/QIVQQ5hVymkAsGSTKzEMQSTP3EBAIxgazA1yxBYpqg
+QHEFbgCuUN52AyRfsr787fq+pGshRCI2KvmsV5mImOkrESHEb6OYw5DdQ3z/
+3z3i6U2GEOcyK7PIdA5lcV+yn9fsQ1nAbta3zLCbacsMy6w7cQ/KAirznEB6
+lKFnW+HNa6gMPK7wKwOPK/zKwG2FN69HP9SWHm3p0ZaeZo93cYDawr7Fry3s
+W/zawmaPd3EY/dC74Z3OML1A74Z3OkHv8HqHzzvu//PPL/IGI1NvZg++;

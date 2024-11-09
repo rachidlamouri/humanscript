@@ -16,7 +16,7 @@ import { WriteableReference } from './nodes/references/writeableReference';
 import { IdentifierNode } from './nodes/references/identifierNode';
 import { FloorInitNode } from './nodes/statements/floorInitNode';
 import { ReadableExpression } from './nodes/expressions/readableExpression';
-import { CompilerContext, FloorIndex } from './compilerContext';
+import { CompilerContext, FloorIndex, FloorRange } from './compilerContext';
 import { IfStatementNode } from './nodes/statements/ifStatementNode';
 import { HumanscriptCommentNode } from './nodes/statements/humanScriptCommentNode';
 import { SubtractionExpressionNode } from './nodes/expressions/subtractionExpressionNode';
@@ -59,7 +59,11 @@ type Language = {
   program: BlockNode;
 
   floorInit: FloorInitNode;
-  floorReservation: number;
+  floorReservation: FloorRange[];
+  floorReservationValue: FloorRange[];
+  floorRangeList: FloorRange[];
+  floorRange: FloorRange;
+  zeroStartFloorRange: FloorRange;
 
   statementList: Statement[];
   recursiveStatementList: NestedStatementNodeList;
@@ -149,7 +153,7 @@ const language = createLanguage<Language>(parserDebugger, {
       l.positiveInteger,
       ul.sopt(l.floorReservation),
     ).map((result) => {
-      return new FloorInitNode(result[4], result[5] ?? 0);
+      return new FloorInitNode(result[4], result[5] ?? []);
     });
   },
   floorReservation: (l) => {
@@ -157,9 +161,45 @@ const language = createLanguage<Language>(parserDebugger, {
       // -
       P.string('reserve'),
       P.whitespace,
-      l.positiveInteger,
+      l.floorReservationValue,
     ).map((result) => {
       return result[2];
+    });
+  },
+  floorReservationValue: (l) => {
+    return P.alt<Language['floorReservationValue']>(
+      l.floorRangeList,
+      l.zeroStartFloorRange.map((range) => [range]),
+    );
+  },
+  floorRangeList: (l) => {
+    return P.alt<Language['floorRangeList']>(
+      P.seq(
+        l.floorRange,
+        P.optWhitespace,
+        P.string(','),
+        P.optWhitespace,
+        l.floorRangeList,
+      ).map((result) => {
+        return [result[0], ...result[4]];
+      }),
+      l.floorRange.map((range) => [range]),
+    );
+  },
+  floorRange: (l) => {
+    return P.seq(
+      l.positiveInteger,
+      P.optWhitespace,
+      P.string('-'),
+      P.optWhitespace,
+      l.positiveInteger,
+    ).map((result) => {
+      return [result[0], result[4]];
+    });
+  },
+  zeroStartFloorRange: (l) => {
+    return l.positiveInteger.map((index) => {
+      return [0, index - 1];
     });
   },
 

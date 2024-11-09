@@ -1,4 +1,8 @@
-import { CompilerContext, RegisterKey } from '../../compilerContext';
+import {
+  CompilerContext,
+  FloorRange,
+  RegisterKey,
+} from '../../compilerContext';
 import { Compiled } from '../../compiled';
 import { Node } from '../node';
 import { Statement } from './statement';
@@ -7,13 +11,13 @@ import { Assembly } from '../../assembly';
 export class FloorInitNode extends Node implements Statement {
   constructor(
     public size: number,
-    public reservedSize: number,
+    public reservation: FloorRange[],
   ) {
     super();
   }
 
   compileStatement(context: CompilerContext): Compiled {
-    context.initFloor(this.size, this.reservedSize);
+    context.initFloor(this.size, this.reservation);
 
     const result: Compiled = [];
     result.push(Assembly.DEBUG(context, this.className));

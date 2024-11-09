@@ -1,0 +1,30 @@
+# Scavenger Chain
+#
+# Each pair on the floor contains:
+# 1. data
+# 2. the address of another one
+# of the pairs
+#
+# A scrambled chain! Each thing
+# in the INBOX is an address of
+# one of the pairs. OUTBOX the
+# data for that pair, and also the
+# data in all following pairs in
+# the chain. The chain ends when
+# you reach a negative address.
+# Repeat until the INBOX is
+# empty.
+
+floor size 25 reserve 0-4, 10-14, 20-24
+
+let address labeled addr
+
+while {
+  address = inbox
+
+  while (address >= 0) {
+    outbox = floor[address]
+    address += 1
+    address = floor[address]
+  }
+}

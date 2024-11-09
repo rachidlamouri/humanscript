@@ -23,6 +23,17 @@
       }
     },
     {
+      "match": "(\\d+)-(\\d+)",
+      "captures": {
+        "1": {
+          "name": "constant.numeric.humanscript"
+        },
+        "2": {
+          "name": "constant.numeric.humanscript"
+        }
+      }
+    },
+    {
       "match": "reserve|at",
       "name": "keyword.control.humanscript"
     },

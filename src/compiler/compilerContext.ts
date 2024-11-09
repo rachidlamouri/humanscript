@@ -1,6 +1,9 @@
 import { assertIsNotUndefined } from '../utils/assertIsNotUndefined';
 import { IdentifierNode } from './nodes/references/identifierNode';
+
 export type FloorIndex = number;
+
+export type FloorRange = [inclusiveStart: FloorIndex, inclusiveEnd: FloorIndex];
 
 export type FloorIndexKey = IdentifierNode['name'];
 
@@ -66,13 +69,29 @@ export class CompilerContext {
     return this.floor?.length ?? 0;
   }
 
-  initFloor(floorSize: number, reservedSize: number): void {
+  initFloor(floorSize: number, reservation: FloorRange[]): void {
     if (this.floor !== null) {
       throw new Error('Floor has already been initialized');
     }
 
+    reservation.forEach(([start, end]) => {
+      if (end < start) {
+        throw new Error(`Invalid reservation range ${start}-${end}`);
+      }
+    });
+
+    const reservedIndices = new Set(
+      reservation.flatMap((range) => {
+        return Array.from({ length: range[1] - range[0] + 1 }).map(
+          (_, index) => {
+            return range[0] + index;
+          },
+        );
+      }),
+    );
+
     this.floor = Array.from({ length: floorSize }).map((_, index) => {
-      const isReserved = index < reservedSize;
+      const isReserved = reservedIndices.has(index);
       const slot = new FloorSlot(index, isReserved);
       this.floorSlotByIndex.set(index, slot);
       return slot;
