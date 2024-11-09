@@ -1,0 +1,36 @@
+# Re-Coordinator
+#
+# Each number in the INBOX is
+# an address of a tile on the
+# floor. Send to the OUTBOX the
+# coordinates of that tile, column
+# first, row second.
+#
+# For example, an address of 6
+# has coordinates 2, 1. You may
+# ask your boss for more
+# examples.
+
+floor size 16 reserve 3-3
+
+let zero at floor[14]
+let four at floor[15]
+
+let tmp
+let column
+let row
+
+while {
+  ## init
+  tmp = inbox
+
+  ## column
+  column = tmp % four
+
+  ## row
+  row = tmp ~/ four
+
+  ## out
+  outbox = column
+  outbox = row
+}

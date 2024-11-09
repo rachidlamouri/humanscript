@@ -41,3 +41,15 @@ export class IteratorNode extends IdentifierNode {
     super(RegisterKey.Iterator);
   }
 }
+
+export class QuotientNode extends IdentifierNode {
+  constructor() {
+    super(RegisterKey.Quotient);
+  }
+}
+
+export class RemainderNode extends IdentifierNode {
+  constructor() {
+    super(RegisterKey.Remainder);
+  }
+}

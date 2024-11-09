@@ -52,6 +52,12 @@ import { MultiplicationExpressionNode } from './nodes/expressions/multiplication
 import { LabelDefinitionNode } from './nodes/statements/labelDefinitionNode';
 import { IndirectFloorSlotNode } from './nodes/references/indirectFloorSlotNode';
 import { AndConditionNode } from './nodes/conditions/andConditionNode';
+import { FlooredDivisionExpressionNode } from './nodes/expressions/flooredDivisionExpressionNode';
+import { ModuloExpressionNode } from './nodes/expressions/moduloExpressionNode';
+import {
+  MultiplicativeExpressionNode,
+  MultiplicativeExpressionNodeConstructor,
+} from './nodes/expressions/multiplicativeExpressionNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -92,10 +98,10 @@ type Language = {
   readableExpression: ReadableExpression;
   mathExpression:
     | AdditiveExpressionNode
-    | MultiplicationExpressionNode
+    | MultiplicativeExpressionNode
     | NegationExpressionNode;
   additiveExpression: AdditiveExpressionNode;
-  multiplicationExpression: MultiplicationExpressionNode;
+  multiplicativeExpression: MultiplicativeExpressionNode;
   negationExpression: NegationExpressionNode;
 
   leftComparable: LeftComparable;
@@ -458,7 +464,7 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.alt<Language['mathExpression']>(
       // -
       l.additiveExpression,
-      l.multiplicationExpression,
+      l.multiplicativeExpression,
       l.negationExpression,
     );
   },
@@ -486,16 +492,21 @@ const language = createLanguage<Language>(parserDebugger, {
       }
     });
   },
-  multiplicationExpression: (l) => {
+  multiplicativeExpression: (l) => {
     return P.seq(
       // -
       l.identifier,
       P.optWhitespace,
-      P.string('*'),
+      P.alt<MultiplicativeExpressionNodeConstructor>(
+        P.string('*').result(MultiplicationExpressionNode),
+        P.string('~/').result(FlooredDivisionExpressionNode),
+        P.string('%').result(ModuloExpressionNode),
+      ),
       P.optWhitespace,
       l.identifier,
     ).map((result) => {
-      return new MultiplicationExpressionNode(result[0], result[4]);
+      const Constructor = result[2];
+      return new Constructor(result[0], result[4]);
     });
   },
   negationExpression: (l) => {

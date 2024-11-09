@@ -10,7 +10,20 @@ export type FloorIndexKey = IdentifierNode['name'];
 export enum RegisterKey {
   Accumulator = '$accumulator',
   Iterator = '$iterator',
+  Quotient = '$quotient',
+  Remainder = '$remainder',
 }
+
+const isRegisterKey = (value: string): value is RegisterKey => {
+  return Object.values<string>(RegisterKey).includes(value);
+};
+
+const shorthandLengthByKey: Record<RegisterKey, number> = {
+  [RegisterKey.Accumulator]: 4,
+  [RegisterKey.Iterator]: 5,
+  [RegisterKey.Quotient]: 5,
+  [RegisterKey.Remainder]: 4,
+};
 
 const reservedWords = new Set([
   // -
@@ -105,7 +118,7 @@ export class CompilerContext {
       return existingBinding.index;
     }
 
-    const label = key === RegisterKey.Accumulator ? '$acc' : '$iter';
+    const label = key.substring(0, shorthandLengthByKey[key]);
 
     this.performBind(key, label, null);
     const index = this.getFloorIndex(key);
@@ -169,7 +182,7 @@ export class CompilerContext {
   }
 
   getFloorIndex(key: FloorIndexKey): FloorIndex {
-    if (key === RegisterKey.Accumulator || key === RegisterKey.Iterator) {
+    if (isRegisterKey(key)) {
       return this.bindReservedRegisterKey(key);
     }
 
