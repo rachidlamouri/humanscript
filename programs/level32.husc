@@ -51,20 +51,21 @@ loop00:
   loop01:
     -- IfStatementNode
     -- start02
-      -- condition
+      -- condition02
         -- EqualsConditionNode
         COPYFROM 15 --$tmp
         COPYTO 18 --$$accumulator
         COPYFROM [16] --$floor[$index]
         SUB 18 --$$accumulator
         JUMPZ if02
-      else02:
-        -- block
-        JUMP end02
+        JUMP else02
       if02:
         -- block
         -- IncrementAssignmentExpressionNode
         BUMPUP 17 --$count
+        JUMP end02
+      else02:
+        -- block
     end02:
 
     -- IncrementAssignmentExpressionNode

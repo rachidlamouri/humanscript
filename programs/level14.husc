@@ -39,23 +39,14 @@ loop00:
 
   -- IfStatementNode
   -- start01
-    -- condition
+    -- condition01
       -- GreaterThanConditionNode
       COPYFROM 0 --$first
       COPYTO 2 --$$accumulator
       COPYFROM 1 --$second
       SUB 2 --$$accumulator
       JUMPN if01
-    else01:
-      -- block
-      COMMENT 1 -- ## 2 big
-
-      -- AssignmentStatementNode
-        -- read
-        COPYFROM 1 --$second
-        -- write
-        OUTBOX
-      JUMP end01
+      JUMP else01
     if01:
       -- block
       COMMENT 0 -- ## 1 big
@@ -63,6 +54,16 @@ loop00:
       -- AssignmentStatementNode
         -- read
         COPYFROM 0 --$first
+        -- write
+        OUTBOX
+      JUMP end01
+    else01:
+      -- block
+      COMMENT 1 -- ## 2 big
+
+      -- AssignmentStatementNode
+        -- read
+        COPYFROM 1 --$second
         -- write
         OUTBOX
   end01:

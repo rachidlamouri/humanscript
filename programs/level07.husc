@@ -26,11 +26,12 @@ loop00:
 
   -- IfStatementNode
   -- start01
-    -- condition
+    -- condition01
       -- NotEqualsConditionNode
       COPYFROM 0 --$tmp
       -- compare 0
       JUMPZ else01
+      JUMP if01
     if01:
       -- block
       -- AssignmentStatementNode

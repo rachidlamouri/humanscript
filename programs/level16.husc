@@ -23,21 +23,12 @@ loop00:
 
   -- IfStatementNode
   -- start01
-    -- condition
+    -- condition01
       -- LessThanConditionNode
       COPYFROM 0 --$tmp
       -- compare 0
       JUMPN if01
-    else01:
-      -- block
-      COMMENT 1 -- ## is pos
-
-      -- AssignmentStatementNode
-        -- read
-        COPYFROM 0 --$tmp
-        -- write
-        OUTBOX
-      JUMP end01
+      JUMP else01
     if01:
       -- block
       COMMENT 0 -- ## negate
@@ -49,6 +40,16 @@ loop00:
         COPYTO 1 --$$accumulator
         SUB 1 --$$accumulator
         SUB 1 --$$accumulator
+        -- write
+        OUTBOX
+      JUMP end01
+    else01:
+      -- block
+      COMMENT 1 -- ## is pos
+
+      -- AssignmentStatementNode
+        -- read
+        COPYFROM 0 --$tmp
         -- write
         OUTBOX
   end01:

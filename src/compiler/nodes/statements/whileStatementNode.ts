@@ -4,7 +4,7 @@ import { Node } from '../node';
 import { Statement } from './statement';
 import { Assembly } from '../../assembly';
 import { BlockNode } from './blockNode';
-import { Condition, ConditionAnchorIds } from '../conditions/condition';
+import { Condition, ConditionContext } from '../conditions/condition';
 
 export class WhileStatementNode extends Node implements Statement {
   constructor(
@@ -19,9 +19,11 @@ export class WhileStatementNode extends Node implements Statement {
     const continueAnchorId = `loop${anchorIdSuffix}`;
     const conditionAnchorId = `condition${anchorIdSuffix}`;
     const breakAnchorId = `break${anchorIdSuffix}`;
-    const anchors: ConditionAnchorIds = {
+    const anchors: ConditionContext = {
       trueAnchorId: continueAnchorId,
       falseAnchorId: breakAnchorId,
+      anchorIdSuffix,
+      anchorDepth: 0,
     };
 
     const result: Compiled = [];
@@ -35,9 +37,6 @@ export class WhileStatementNode extends Node implements Statement {
     // condition
     result.push(Assembly.ANCHOR(context, conditionAnchorId));
     result.push(...this.condition.compileCondition(context, anchors));
-    if (!this.condition.jumpsIfTrue) {
-      result.push(Assembly.JUMP(context, continueAnchorId));
-    }
     context.decrementDepth();
     // break
     result.push(Assembly.ANCHOR(context, breakAnchorId));

@@ -5,11 +5,9 @@ import { CompilerContext, RegisterKey } from '../../compilerContext';
 import { Node } from '../node';
 import { ZeroLiteralNode } from '../zeroLiteralNode';
 import { LeftComparable, RightComparable } from './comparable';
-import { Condition, ConditionAnchorIds } from './condition';
+import { Condition, ConditionContext } from './condition';
 
 export class NotEqualsConditionNode extends Node implements Condition {
-  jumpsIfTrue = false;
-
   constructor(
     public left: LeftComparable,
     public right: RightComparable,
@@ -19,10 +17,8 @@ export class NotEqualsConditionNode extends Node implements Condition {
 
   compileCondition(
     context: CompilerContext,
-    { falseAnchorId }: ConditionAnchorIds,
+    { trueAnchorId, falseAnchorId }: ConditionContext,
   ): Compiled {
-    assertIsNotUndefined(falseAnchorId);
-
     const result = [];
 
     result.push(Assembly.DEBUG(context, this.className));
@@ -30,12 +26,14 @@ export class NotEqualsConditionNode extends Node implements Condition {
       result.push(...this.left.compileRead(context));
       result.push(Assembly.DEBUG(context, 'compare 0'));
       result.push(Assembly.JUMPZ(context, falseAnchorId));
+      result.push(Assembly.JUMP(context, trueAnchorId));
     } else {
       result.push(...this.right.compileRead(context));
       result.push(Assembly.COPYTO(context, RegisterKey.Accumulator));
       result.push(...this.left.compileRead(context));
       result.push(Assembly.SUB(context, RegisterKey.Accumulator));
       result.push(Assembly.JUMPZ(context, falseAnchorId));
+      result.push(Assembly.JUMP(context, trueAnchorId));
     }
 
     return result;

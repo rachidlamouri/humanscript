@@ -1,11 +1,10 @@
+import { Assembly } from '../../assembly';
 import { Compiled } from '../../compiled';
 import { CompilerContext } from '../../compilerContext';
 import { assertIsNode, Node } from '../node';
-import { Condition, ConditionAnchorIds } from './condition';
+import { Condition, ConditionContext } from './condition';
 
 export class AndConditionNode extends Node implements Condition {
-  jumpsIfTrue = true;
-
   constructor(
     public left: Condition,
     public right: Condition,
@@ -15,11 +14,30 @@ export class AndConditionNode extends Node implements Condition {
 
   compileCondition(
     context: CompilerContext,
-    anchorIds: ConditionAnchorIds,
+    {
+      trueAnchorId,
+      falseAnchorId,
+      anchorIdSuffix,
+      anchorDepth,
+    }: ConditionContext,
   ): Compiled {
+    const subconditionSuffix = anchorDepth.toString().padStart(2, '0');
+    const fallthroughAnchorId = `condition${anchorIdSuffix}sub${subconditionSuffix}`;
+
     return [
-      ...this.left.compileCondition(context, anchorIds),
-      ...this.right.compileCondition(context, anchorIds),
+      ...this.left.compileCondition(context, {
+        trueAnchorId: fallthroughAnchorId,
+        falseAnchorId: falseAnchorId,
+        anchorIdSuffix,
+        anchorDepth: anchorDepth + 1,
+      }),
+      Assembly.ANCHOR(context, fallthroughAnchorId),
+      ...this.right.compileCondition(context, {
+        trueAnchorId,
+        falseAnchorId,
+        anchorIdSuffix,
+        anchorDepth: anchorDepth + 1,
+      }),
     ];
   }
 

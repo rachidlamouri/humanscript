@@ -31,11 +31,12 @@ loop00:
 
   -- IfStatementNode
   -- start01
-    -- condition
+    -- condition01
       -- GreaterThanOrEqualToConditionNode
       COPYFROM 0 --$count
       -- compare 0
       JUMPN else01
+      JUMP if01
     if01:
       -- block
       -- WhileStatementNode
@@ -78,6 +79,7 @@ loop00:
         -- compare 0
         JUMPN loop03
         JUMPZ loop03
+        JUMP break03
       break03:
   end01:
 

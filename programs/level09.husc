@@ -21,14 +21,12 @@ loop00:
 
   -- IfStatementNode
   -- start01
-    -- condition
+    -- condition01
       -- EqualsConditionNode
       COPYFROM 0 --$tmp
       -- compare 0
       JUMPZ if01
-    else01:
-      -- block
-      JUMP end01
+      JUMP else01
     if01:
       -- block
       -- AssignmentStatementNode
@@ -36,6 +34,9 @@ loop00:
         COPYFROM 0 --$tmp
         -- write
         OUTBOX
+      JUMP end01
+    else01:
+      -- block
   end01:
 
   condition00:

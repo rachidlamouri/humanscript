@@ -5,14 +5,12 @@ import { CompilerContext, RegisterKey } from '../../compilerContext';
 import { assertIsNode, Node } from '../node';
 import { ZeroLiteralNode } from '../zeroLiteralNode';
 import { LeftComparable, RightComparable } from './comparable';
-import { Condition, ConditionAnchorIds } from './condition';
+import { Condition, ConditionContext } from './condition';
 
 export class GreaterThanOrEqualToConditionNode
   extends Node
   implements Condition
 {
-  jumpsIfTrue = false;
-
   constructor(
     public left: LeftComparable,
     public right: RightComparable,
@@ -22,10 +20,8 @@ export class GreaterThanOrEqualToConditionNode
 
   compileCondition(
     context: CompilerContext,
-    { falseAnchorId }: ConditionAnchorIds,
+    { trueAnchorId, falseAnchorId }: ConditionContext,
   ): Compiled {
-    assertIsNotUndefined(falseAnchorId);
-
     const result = [];
 
     result.push(Assembly.DEBUG(context, this.className));
@@ -33,6 +29,7 @@ export class GreaterThanOrEqualToConditionNode
       result.push(...this.left.compileRead(context));
       result.push(Assembly.DEBUG(context, 'compare 0'));
       result.push(Assembly.JUMPN(context, falseAnchorId));
+      result.push(Assembly.JUMP(context, trueAnchorId));
     } else {
       throw new Error('Not implemented');
     }
