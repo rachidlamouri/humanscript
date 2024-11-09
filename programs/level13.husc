@@ -41,7 +41,7 @@ loop00:
   COMMENT 1 -- ## is eq?
 
   -- IfStatementNode
-  -- 01
+  -- start01
     -- condition
       -- EqualsConditionNode
       COPYFROM 1 --$second

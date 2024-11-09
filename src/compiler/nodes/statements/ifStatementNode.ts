@@ -50,7 +50,7 @@ export class IfStatementNode extends Node implements Statement {
 
     const result: Compiled = [];
     result.push(Assembly.DEBUG(context, this.className));
-    result.push(Assembly.DEBUG(context, anchorIdSuffix));
+    result.push(Assembly.DEBUG(context, `start${anchorIdSuffix}`));
     context.incrementDepth();
     // condition
     result.push(Assembly.DEBUG(context, 'condition'));

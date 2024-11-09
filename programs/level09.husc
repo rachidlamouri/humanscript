@@ -20,7 +20,7 @@ loop00:
     COPYTO 0 --$tmp
 
   -- IfStatementNode
-  -- 01
+  -- start01
     -- condition
       -- EqualsConditionNode
       COPYFROM 0 --$tmp

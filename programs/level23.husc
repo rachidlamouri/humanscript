@@ -45,7 +45,7 @@ loop00:
   JUMP condition01
   loop01:
     -- IfStatementNode
-    -- 02
+    -- start02
       -- condition
         -- LessThanConditionNode
         COPYFROM 1 --$smol

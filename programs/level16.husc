@@ -22,7 +22,7 @@ loop00:
     COPYTO 0 --$tmp
 
   -- IfStatementNode
-  -- 01
+  -- start01
     -- condition
       -- LessThanConditionNode
       COPYFROM 0 --$tmp

@@ -50,7 +50,7 @@ loop00:
   JUMP condition01
   loop01:
     -- IfStatementNode
-    -- 02
+    -- start02
       -- condition
         -- EqualsConditionNode
         COPYFROM 15 --$tmp

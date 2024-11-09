@@ -39,7 +39,7 @@ loop00:
     COPYTO 6 --$tmp
 
   -- IfStatementNode
-  -- 01
+  -- start01
     -- condition
       -- NotEqualsConditionNode
       COPYFROM 0 --$a

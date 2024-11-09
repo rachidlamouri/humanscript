@@ -30,7 +30,7 @@ loop00:
     COPYTO 0 --$count
 
   -- IfStatementNode
-  -- 01
+  -- start01
     -- condition
       -- GreaterThanOrEqualToConditionNode
       COPYFROM 0 --$count

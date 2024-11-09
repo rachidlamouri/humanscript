@@ -38,7 +38,7 @@ loop00:
     COPYTO 1 --$second
 
   -- IfStatementNode
-  -- 01
+  -- start01
     -- condition
       -- GreaterThanConditionNode
       COPYFROM 0 --$first
