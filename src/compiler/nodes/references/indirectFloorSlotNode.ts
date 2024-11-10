@@ -2,7 +2,6 @@ import { Assembly } from '../../assembly';
 import { Compiled } from '../../compiled';
 import { CompilerContext } from '../../compilerContext';
 import { Node } from '../node';
-import { IdentifierNode } from './identifierNode';
 import { ReadableReference } from './readableReference';
 import { WriteableReference } from './writeableReference';
 
@@ -10,12 +9,12 @@ export class IndirectFloorSlotNode
   extends Node
   implements ReadableReference, WriteableReference
 {
-  constructor(public identifier: IdentifierNode) {
+  constructor(public key: string) {
     super();
   }
 
   compileRead(context: CompilerContext): Compiled {
-    return [Assembly.COPYFROM_REF(context, this.identifier.name)];
+    return [Assembly.COPYFROM_REF(context, this.key)];
   }
 
   compileExpression(context: CompilerContext): Compiled {
@@ -23,7 +22,7 @@ export class IndirectFloorSlotNode
   }
 
   compileWrite(context: CompilerContext): Compiled {
-    return [Assembly.COPYTO_REF(context, this.identifier.name)];
+    return [Assembly.COPYTO_REF(context, this.key)];
   }
 
   flatten(accumulator: Node[]): void {

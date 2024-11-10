@@ -15,14 +15,15 @@ import { BlockNode } from '../statements/blockNode';
 import { DecrementAssignmentStatementNode } from '../statements/decrementAssignmentStatementNode';
 import { AdditionExpressionNode } from './additionExpressionNode';
 import { AssignmentStatementNode } from '../statements/assignmentStatementNode';
+import { FloorReferenceNode } from '../references/floorReferenceNode';
 
 export class MultiplicationExpressionNode
   extends Node
   implements ReadableExpression
 {
   constructor(
-    public multiplicand: IdentifierNode,
-    public multiplier: IdentifierNode,
+    public multiplicand: FloorReferenceNode,
+    public multiplier: FloorReferenceNode,
   ) {
     super();
   }

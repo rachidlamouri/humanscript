@@ -3,6 +3,7 @@ import { Compiled } from '../../compiled';
 import { CompilerContext, RegisterKey } from '../../compilerContext';
 import { GreaterThanOrEqualToConditionNode } from '../conditions/greaterThanOrEqualToConditionNode';
 import { assertIsNode, Node } from '../node';
+import { FloorReferenceNode } from '../references/floorReferenceNode';
 import {
   IdentifierNode,
   QuotientNode,
@@ -21,8 +22,8 @@ export abstract class DivisionExpressionNode
   implements ReadableExpression
 {
   constructor(
-    public dividend: IdentifierNode,
-    public divisor: IdentifierNode,
+    public dividend: FloorReferenceNode,
+    public divisor: FloorReferenceNode,
   ) {
     super();
   }

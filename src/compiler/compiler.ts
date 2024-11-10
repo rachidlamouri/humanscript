@@ -377,9 +377,9 @@ const language = createLanguage<Language>(parserDebugger, {
       // -
       P.string('labeled'),
       P.whitespace,
-      l.identifier,
+      l.word,
     ).map((result) => {
-      return result[2].name;
+      return result[2];
     });
   },
   directFloorSlot: (l) => {
@@ -400,7 +400,7 @@ const language = createLanguage<Language>(parserDebugger, {
       //-
       P.string('floor'),
       P.string('['),
-      l.identifier,
+      l.word,
       P.string(']'),
     ).map((result) => {
       return new IndirectFloorSlotNode(result[2]);
@@ -583,7 +583,7 @@ const language = createLanguage<Language>(parserDebugger, {
   multiplicativeExpression: (l) => {
     return P.seq(
       // -
-      l.identifier,
+      l.floorReference,
       P.optWhitespace,
       P.alt<MultiplicativeExpressionNodeConstructor>(
         P.string('*').result(MultiplicationExpressionNode),
@@ -591,7 +591,7 @@ const language = createLanguage<Language>(parserDebugger, {
         P.string('%').result(ModuloExpressionNode),
       ),
       P.optWhitespace,
-      l.identifier,
+      l.floorReference,
     ).map((result) => {
       const Constructor = result[2];
       return new Constructor(result[0], result[4]);
@@ -693,14 +693,14 @@ const language = createLanguage<Language>(parserDebugger, {
       l.identifier,
     );
   },
-  identifier: () => {
-    return P.regex(/[a-z][a-z0-9]*/).map((result) => {
+  identifier: (l) => {
+    return l.word.map((result) => {
       return new IdentifierNode(result);
     });
   },
 
   word: () => {
-    return P.regex(/[a-z]+/);
+    return P.regex(/[a-z][a-z0-9]*/);
   },
   positiveInteger: () => {
     return P.regex(/[1-9][0-9]*|0/).map((result) => {
