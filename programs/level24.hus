@@ -1,0 +1,22 @@
+# Mod Module
+#
+# For each two things in the
+# INBOX, OUTBOX the
+# remainder that would result if
+# you had divided the first by
+# the second. Don't worry, you
+# don't actually have to divide.
+# And don't worry about
+# negative numbers for now.
+
+floor size 10
+
+let first
+let second
+
+while {
+  first = inbox
+  second = inbox
+
+  outbox = first % second
+}

@@ -29,7 +29,13 @@ export class LessThanOrEqualToConditionNode extends Node implements Condition {
       result.push(Assembly.JUMPZ(context, trueAnchorId));
       result.push(Assembly.JUMP(context, falseAnchorId));
     } else {
-      throw new Error('Not implemented');
+      result.push(...this.right.compileRead(context));
+      result.push(Assembly.COPYTO(context, RegisterKey.Accumulator));
+      result.push(...this.left.compileRead(context));
+      result.push(Assembly.SUB(context, RegisterKey.Accumulator));
+      result.push(Assembly.JUMPN(context, trueAnchorId));
+      result.push(Assembly.JUMPZ(context, trueAnchorId));
+      result.push(Assembly.JUMP(context, falseAnchorId));
     }
 
     return result;

@@ -1,0 +1,27 @@
+# Small Divide
+#
+# For each two things in the
+# INBOX, how many times does
+# the second fully fit into the
+# first? Don't worry about
+# negative numbers, divide by
+# zero, or remainders.
+#
+# Self improvement tip: This
+# might be a good time to
+# practice copying and pasting
+# from a previous assignment!
+
+floor size 10
+
+let zero at floor[9]
+
+let first
+let second
+
+while {
+  first = inbox
+  second = inbox
+
+  outbox = first ~/ second
+}

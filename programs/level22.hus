@@ -1,0 +1,49 @@
+# Fibonacci Visitor
+#
+# For each thing in the INBOX,
+# send to the OUTBOX the full
+# Fibonacci Sequence up to, but
+# not exceeding that value. For
+# example, if INBOX is 10,
+# OUTBOX should be 1 1 23 5 8.
+# What's a Fibonacci Sequence?
+# Ask your boss, or a friendly
+# search box.
+#
+# 1 1 2 3 5 8 13 21 34 55 89 ...
+
+floor size 10 reserve 3-4
+
+let zero at floor[9]
+let one at floor[8]
+
+let first
+let second
+let next
+let tmp
+
+
+## init
+one = zero
+one += 1
+
+while {
+  ## loop
+  tmp = inbox
+
+  ## one one
+  first = one
+  second = one
+  outbox = first
+  outbox = second
+
+  ## rest
+  while (first == one || next <= tmp) {
+    next = first + second
+    if (next <= tmp) {
+      outbox = next
+    }
+    first = second
+    second = next
+  }
+}

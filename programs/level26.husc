@@ -1,0 +1,142 @@
+-- # Small Divide
+-- #
+-- # For each two things in the
+-- # INBOX, how many times does
+-- # the second fully fit into the
+-- # first? Don't worry about
+-- # negative numbers, divide by
+-- # zero, or remainders.
+-- #
+-- # Self improvement tip: This
+-- # might be a good time to
+-- # practice copying and pasting
+-- # from a previous assignment!
+
+-- FloorInitNode
+  -- $accumulator -> floor[4]
+  -- $iterator -> null
+
+-- LetStatementNode
+  -- zero -> floor[9]
+
+-- LetStatementNode
+  -- first -> floor[0]
+
+-- LetStatementNode
+  -- second -> floor[1]
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$first
+
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 1 --$second
+
+  -- AssignmentStatementNode
+    -- read
+    -- FlooredDivisionExpressionNode
+      -- set the remainder
+      COPYFROM 0 --$first
+      COPYTO 2 --$$remainder
+      -- zero the floored quotient
+      COPYFROM 0 --$first
+      COPYTO 3 --$$quotient
+      SUB 3 --$$quotient
+      COPYTO 3 --$$quotient
+      -- divide
+      -- WhileStatementNode
+      JUMP condition01
+      loop01:
+        -- AssignmentStatementNode
+          -- read
+          -- SubtractionExpressionNode
+          COPYFROM 1 --$second
+          COPYTO 4 --$$accumulator
+          COPYFROM 2 --$$remainder
+          SUB 4 --$$accumulator
+          -- write
+          COPYTO 2 --$$remainder
+
+        -- IncrementAssignmentStatementNode
+        BUMPUP 3 --$$quotient
+
+        condition01:
+        -- GreaterThanOrEqualToConditionNode
+        COPYFROM 2 --$$remainder
+        -- compare 0
+        JUMPN break01
+        JUMP loop01
+      break01:
+      -- adjust quotient
+      BUMPDN 3 --$$quotient
+      -- adjust remainder
+      COPYFROM 1 --$second
+      ADD 2 --$$remainder
+      COPYTO 2 --$$remainder
+      -- read quotient
+      COPYFROM 3 --$$quotient
+    -- write
+    OUTBOX
+
+  condition00:
+  JUMP loop00
+break00:
+
+-- zero
+DEFINE LABEL 9
+eJztzyEOgzAUxvFWcYQeATmJQi4oJJmZJJlBIEgw+IkKxARicgKPaYLEkKA2
+tStwhLlu3b+7whQvaX9pXvs1LxdCSFEq+dnvgRSudi8prHWrVJytr3YV3/vt
+6rqPwFp37uLn0XnaY5RikP1MKvpG08cuDm/YjfQxSjHIsC7ISSrsc/JUg31O
+Xl1gUqFqsM/5py7ISypUDRpN7uGK4Q2NJv98QaPJM5o8o3nfjX7+CeeB+9GC
+8+DnXnAeeB8tfv7Rzz/hVlv9s96vGG1o;
+
+-- first
+DEFINE LABEL 0
+eJztzyEOwjAUxvFO7Qg7whRBLVPIBYXGVFNTgVhSg0MgEBMTE5NzXIBkcmYJ
+CmZ6BLjBcIXyhyug9pLtl+6976XbCCECsY2C9/saBsLX/BkI5/yzjTi7bxUP
+8ZkvHr57C53z52oxzrwqwz5RmTddYZ9YicuceVQZ9sn5iHGDVeu1kryV9K2k
+byV9o9kb7fC+R6PZu8zRaPJGkzea/LpmPm5wPOGhJLeuycUNjifyh/KXx7hB
+1XFf1bGnar//2WF6wXD4fWev6tgbDphe2DfVVP+oF+dKbpA+;
+
+-- second
+DEFINE LABEL 1
+eJzt0KFvg0AUx/FD3X8w3GRRZBKFJKeQpKaS5ExFBQmmvgLRZBWISgQeQ1I5
+cwlqU6SyrpUo5thu39sfsWQvgU8uj/fLPV6FEJ7Y+d73+116wtbLpyeWxT47
+n/Pi6ngXP98f77b7IZfFntfP48YarHAO8fCkCvp9RR/nMGjo1xf6GKxQJ8xH
+KdYxOTLDOiZHJxilKDOsY/J1Ql6Uosyw3JKrCmxzcv09tjk5bU6Ov8dyy7wq
+8HBifn3GvmI+aLCv3N4N9hU5QeP2P7n9z2g6t+8F9RuajrxoQNO5vQc0HXnR
+gKZzew/uvtMcok7Q7X0jr3ygmnC8kqsmHK/kqgnbm/uPj998/K+/WV/ZNZzm;
+
+-- $remainder as $rem
+DEFINE LABEL 2
+eJzt0CFuwzAUxnEH+Qg5QuBQFVQYFQVOIYOWQgYKKk2axgMCCgICAgPMTSIV
+mlga2kx2hR5hzJv3f2U7Qp+U/PRk+z3pe1VKFepYFr//D12oXA/fhUopf8eS
+Pkmdr+rv/vmaTz91Srnvm77JzvuvJ3qsW9SPGHaHE+c477eRHuv21lcr7zDs
+5gv3sW+wbm+9jllr2HM4YfmG1rDv5RmtYY81zLeGOcPE/W7BbeR+teI28m6Y
+sFuwWnEbmTdMzOsWrFYMjrnzRXLyktO75OMkH486YnCSi0cdMTj29V7yipKX
+k1w86oj3utd/9QN6LIPu;
+
+-- $quotient as $quot
+DEFINE LABEL 3
+eJzt0SFuwzAUxnEH+Qi+QY2qomoosNoJwgIrlQQUVDIJG7C0goIAHyAgUmFJ
+pVyg0tBqEhUWrTtBxrx5f+cS056U/PRi57Py8iqEyMRWZT/3d5mJWIuvTIQQ
+r62iD6kOD/G7//CIq1cZQuwvy80qOs6Hkh5djpsV6tnzjnUc5+c9Pbp86nXL
+e6hnrmc/Xpbo8qmXPjqUnNOtURacYyqUBfmmQlmQbyocSvK6NZpqknxTmc+o
+qsm3DaqafNugqsm3DaqafNvgxwu55z3aJn3fMc3vlObVkud61G2aU4+6Jc/1
+OB7TPE4oPf9FevKe3tIcPA437O7T8zQXT153T3O5kfdff7O+AakWlL0+;
+
+-- $accumulator as $acc
+DEFINE LABEL 4
+eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
+wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
+u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
+LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
+fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;
