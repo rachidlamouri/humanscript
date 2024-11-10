@@ -5,7 +5,7 @@
 # number of matching items on
 # the FLOOR.
 
-floor size 20 reserve 15
+floor size 20 reserve 0-14
 
 let zero at floor[14]
 let tmp

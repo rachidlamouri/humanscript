@@ -5,7 +5,7 @@
 # put the result in the OUTBOX.
 # Repeat!
 
-floor size 15 reserve 10
+floor size 15 reserve 0-9
 
 let tmp
 let zero at floor[14]

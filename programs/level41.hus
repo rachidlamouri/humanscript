@@ -7,7 +7,7 @@
 # put the results in the OUTBOX.
 # Repeat for each string!
 
-floor size 25 reserve 15
+floor size 25 reserve 0-14
 
 let zero at floor[24]
 let tmp

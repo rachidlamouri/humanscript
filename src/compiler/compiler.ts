@@ -91,10 +91,10 @@ type Language = {
 
   floorInit: FloorInitNode;
   floorReservation: FloorRange[];
-  floorReservationValue: FloorRange[];
-  floorRangeList: FloorRange[];
+  floorReservationList: FloorRange[];
+  floorReservationValue: FloorRange;
   floorRange: FloorRange;
-  zeroStartFloorRange: FloorRange;
+  floorIndex: FloorRange;
 
   statementList: Statement[];
   recursiveStatementList: NestedStatementNodeList;
@@ -198,29 +198,30 @@ const language = createLanguage<Language>(parserDebugger, {
       // -
       P.string('reserve'),
       P.whitespace,
-      l.floorReservationValue,
+      l.floorReservationList,
     ).map((result) => {
       return result[2];
     });
   },
-  floorReservationValue: (l) => {
-    return P.alt<Language['floorReservationValue']>(
-      l.floorRangeList,
-      l.zeroStartFloorRange.map((range) => [range]),
-    );
-  },
-  floorRangeList: (l) => {
-    return P.alt<Language['floorRangeList']>(
+  floorReservationList: (l) => {
+    return P.alt<Language['floorReservationList']>(
       P.seq(
-        l.floorRange,
+        l.floorReservationValue,
         P.optWhitespace,
         P.string(','),
         P.optWhitespace,
-        l.floorRangeList,
+        l.floorReservationList,
       ).map((result) => {
         return [result[0], ...result[4]];
       }),
-      l.floorRange.map((range) => [range]),
+      l.floorReservationValue.map((range) => [range]),
+    );
+  },
+  floorReservationValue: (l) => {
+    return P.alt<Language['floorReservationValue']>(
+      // -
+      l.floorRange,
+      l.floorIndex,
     );
   },
   floorRange: (l) => {
@@ -234,9 +235,9 @@ const language = createLanguage<Language>(parserDebugger, {
       return [result[0], result[4]];
     });
   },
-  zeroStartFloorRange: (l) => {
+  floorIndex: (l) => {
     return l.positiveInteger.map((index) => {
-      return [0, index - 1];
+      return [index, index];
     });
   },
 

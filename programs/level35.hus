@@ -5,7 +5,7 @@
 # you've seen the same value
 # before. Discard any duplicates.
 
-floor size 15 reserve 10
+floor size 15 reserve 0-9
 
 let start at floor[0]
 let zero at floor[14]

@@ -4,7 +4,7 @@
 # INBOX to the OUTBOX, except
 # for vowels.
 
-floor size 10 reserve 6
+floor size 10 reserve 0-5
 
 let a at floor[0]
 let e at floor[1]

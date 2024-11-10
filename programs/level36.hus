@@ -7,7 +7,7 @@
 # and send only that word to the
 # OUTBOX.
 
-floor size 25 reserve 18
+floor size 25 reserve 0-17
 let zero at floor[23]
 let ten at floor[24]
 
