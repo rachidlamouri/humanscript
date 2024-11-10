@@ -10,7 +10,7 @@ floor size 10
 let a
 let b
 let c
-let tmp at floor[5]
+let tmp at 5
 
 while {
   ## init

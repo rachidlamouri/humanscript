@@ -7,8 +7,8 @@
 
 floor size 15 reserve 0-9
 
-let start at floor[0]
-let zero at floor[14]
+let start at 0
+let zero at 14
 
 let tmp
 let index

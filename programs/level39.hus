@@ -13,8 +13,8 @@
 
 floor size 16 reserve 3-3
 
-let zero at floor[14]
-let four at floor[15]
+let zero at 14
+let four at 15
 
 let tmp
 let column

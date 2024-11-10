@@ -18,7 +18,7 @@ let multiplicand labeled plicand
 let multiplier labeled plier
 
 # unused
-let zero at floor[9]
+let zero at 9
 
 while {
   multiplicand = inbox

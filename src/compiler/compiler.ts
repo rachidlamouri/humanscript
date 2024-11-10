@@ -339,12 +339,9 @@ const language = createLanguage<Language>(parserDebugger, {
       //-
       P.string('at'),
       P.whitespace,
-      P.string('floor'),
-      P.string('['),
       l.positiveInteger,
-      P.string(']'),
     ).map((result) => {
-      return result[4];
+      return result[2];
     });
   },
 

@@ -13,7 +13,7 @@
 
 floor size 6
 
-let zero at floor[5]
+let zero at 5
 let sum
 let tmp
 

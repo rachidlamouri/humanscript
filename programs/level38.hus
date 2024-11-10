@@ -7,9 +7,9 @@
 
 floor size 12 reserve 5-5
 
-let zero at floor[9]
-let ten at floor[10]
-let hundred labeled hundie at floor[11]
+let zero at 9
+let ten at 10
+let hundred labeled hundie at 11
 
 let hundos
 let tens
