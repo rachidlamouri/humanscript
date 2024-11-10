@@ -334,9 +334,9 @@ const language = createLanguage<Language>(parserDebugger, {
       // -
       P.string('labeled'),
       P.whitespace,
-      l.word,
+      l.identifier,
     ).map((result) => {
-      return result[2];
+      return result[2].name;
     });
   },
   directFloorSlot: (l) => {
@@ -444,12 +444,12 @@ const language = createLanguage<Language>(parserDebugger, {
   block: (l) => {
     return P.seq(
       P.string('{'),
-      P.whitespace,
-      l.statementList,
-      P.whitespace,
+      P.optWhitespace,
+      ul.opt(l.statementList),
+      P.optWhitespace,
       P.string('}'),
     ).map((result) => {
-      return new BlockNode(result[2]);
+      return new BlockNode(result[2] ?? []);
     });
   },
 

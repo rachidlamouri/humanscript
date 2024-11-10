@@ -1,0 +1,60 @@
+# Sorting Floor
+#
+# For each zero terminated string
+# in the INBOX, SORT the
+# contents of the string,
+# smallest first, biggest last, and
+# put the results in the OUTBOX.
+# Repeat for each string!
+
+floor size 25 reserve 15
+
+let zero at floor[24]
+let tmp
+let index
+let length
+let iterator1 labeled iter1
+let iterator2 labeled iter2
+
+## start
+length = zero
+
+while {
+  ## init
+  index = zero
+  tmp = inbox
+
+  ## find idx
+  while (tmp !=0 && index < length && tmp >= floor[index]) {
+    index += 1
+  }
+
+  if (tmp == 0) {
+    ## outbox
+    floor[length] = tmp
+
+    index = zero
+    while (index < length) {
+      outbox = floor[index]
+      index += 1
+    }
+
+    ## reset
+    length = zero
+  } else {
+    ## shift
+    iterator1 = length
+    while (iterator1 > index) {
+      iterator2 = iterator1
+      iterator1 -= 1
+
+      floor[iterator2] = floor[iterator1]
+    }
+
+    ## write
+    floor[index] = tmp
+
+    ## inc len
+    length += 1
+  }
+}

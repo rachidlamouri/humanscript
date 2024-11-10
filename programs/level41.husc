@@ -1,0 +1,326 @@
+-- # Sorting Floor
+-- #
+-- # For each zero terminated string
+-- # in the INBOX, SORT the
+-- # contents of the string,
+-- # smallest first, biggest last, and
+-- # put the results in the OUTBOX.
+-- # Repeat for each string!
+
+-- FloorInitNode
+  -- $accumulator -> floor[20]
+  -- $iterator -> null
+
+-- LetStatementNode
+  -- zero -> floor[24]
+
+-- LetStatementNode
+  -- tmp -> floor[15]
+
+-- LetStatementNode
+  -- index -> floor[16]
+
+-- LetStatementNode
+  -- length -> floor[17]
+
+-- LetStatementNode
+  -- iterator1 -> floor[18]
+
+-- LetStatementNode
+  -- iterator2 -> floor[19]
+
+COMMENT 0 -- ## start
+
+-- AssignmentStatementNode
+  -- read
+  COPYFROM 24 --$zero
+  -- write
+  COPYTO 17 --$length
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  COMMENT 1 -- ## init
+
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 24 --$zero
+    -- write
+    COPYTO 16 --$index
+
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 15 --$tmp
+
+  COMMENT 2 -- ## find idx
+
+  -- WhileStatementNode
+  JUMP condition01
+  loop01:
+    -- IncrementAssignmentExpressionNode
+    BUMPUP 16 --$index
+
+    condition01:
+    -- NotEqualsConditionNode
+    COPYFROM 15 --$tmp
+    -- compare 0
+    JUMPZ break01
+    JUMP condition01sub00
+    condition01sub00:
+    -- LessThanConditionNode
+    COPYFROM 17 --$length
+    COPYTO 20 --$$accumulator
+    COPYFROM 16 --$index
+    SUB 20 --$$accumulator
+    JUMPN condition01sub01
+    JUMP break01
+    condition01sub01:
+    -- GreaterThanOrEqualToConditionNode
+    COPYFROM 15 --$tmp
+    COPYTO 20 --$$accumulator
+    COPYFROM [16] --$floor[$index]
+    SUB 20 --$$accumulator
+    JUMPN loop01
+    JUMPZ loop01
+    JUMP break01
+  break01:
+
+  -- IfStatementNode
+  -- start02
+    -- condition02
+      -- EqualsConditionNode
+      COPYFROM 15 --$tmp
+      -- compare 0
+      JUMPZ if02
+      JUMP else02
+    if02:
+      -- block
+      COMMENT 3 -- ## outbox
+
+      -- AssignmentStatementNode
+        -- read
+        COPYFROM 15 --$tmp
+        -- write
+        COPYTO [17] --$length
+
+      -- AssignmentStatementNode
+        -- read
+        COPYFROM 24 --$zero
+        -- write
+        COPYTO 16 --$index
+
+      -- WhileStatementNode
+      JUMP condition03
+      loop03:
+        -- AssignmentStatementNode
+          -- read
+          COPYFROM [16] --$floor[$index]
+          -- write
+          OUTBOX
+
+        -- IncrementAssignmentExpressionNode
+        BUMPUP 16 --$index
+
+        condition03:
+        -- LessThanConditionNode
+        COPYFROM 17 --$length
+        COPYTO 20 --$$accumulator
+        COPYFROM 16 --$index
+        SUB 20 --$$accumulator
+        JUMPN loop03
+        JUMP break03
+      break03:
+
+      COMMENT 4 -- ## reset
+
+      -- AssignmentStatementNode
+        -- read
+        COPYFROM 24 --$zero
+        -- write
+        COPYTO 17 --$length
+      JUMP end02
+    else02:
+      -- block
+      COMMENT 5 -- ## shift
+
+      -- AssignmentStatementNode
+        -- read
+        COPYFROM 17 --$length
+        -- write
+        COPYTO 18 --$iterator1
+
+      -- WhileStatementNode
+      JUMP condition04
+      loop04:
+        -- AssignmentStatementNode
+          -- read
+          COPYFROM 18 --$iterator1
+          -- write
+          COPYTO 19 --$iterator2
+
+        -- DecrementAssignmentExpressionNode
+        BUMPDN 18 --$iterator1
+
+        -- AssignmentStatementNode
+          -- read
+          COPYFROM [18] --$floor[$iterator1]
+          -- write
+          COPYTO [19] --$iterator2
+
+        condition04:
+        -- GreaterThanConditionNode
+        COPYFROM 18 --$iterator1
+        COPYTO 20 --$$accumulator
+        COPYFROM 16 --$index
+        SUB 20 --$$accumulator
+        JUMPN loop04
+        JUMP break04
+      break04:
+
+      COMMENT 6 -- ## write
+
+      -- AssignmentStatementNode
+        -- read
+        COPYFROM 15 --$tmp
+        -- write
+        COPYTO [16] --$index
+
+      COMMENT 7 -- ## inc len
+
+      -- IncrementAssignmentExpressionNode
+      BUMPUP 17 --$length
+  end02:
+
+  condition00:
+  JUMP loop00
+break00:
+
+-- start
+DEFINE COMMENT 0
+eJztkCGPwjAYhjuFQx4OySTqgppcqtCYySUzE4iG/YAKBAJxogKJWIKcWTKJ
+qQW1n1D+wZ0r13uKvx/Am6xP2q/fk33dCSESsZ0lv+ttkoiQ5U8ivA/fdsbe
+xxwf4u/+8RGq94n3Yb//GIvAzRymC9hPpaLeH6jDdJGeqZuBOtzMocmqHOKx
+n3hMBqscrtavc7wmw7tawyrH15b4mhpKhbct6W9qKBUcC3xSwbHAJxVsS7xN
+DaWCTuPdf8X3OEGn8fYH6DRep/E5Tb/t+D/b0fd94b7t4pxDnP/6Osdjuzjv
+FZoB3zvv/CdPZAx8Fw++;
+
+-- init
+DEFINE COMMENT 1
+eJztjSEOwjAYhVtVh52rZIqgeoSGBE9qKpfUTEyQ7BCISQ6A2BGWcIFaUL3C
+bgCuUD64BNlL2i9/3+v790IIKbpKvu+bkqJo+5Qi53K6ijl/Nczikx/m4t5V
+zmWeVsHC6QTrCzxfC51OvrBew8cGOr07FkYDneZ/NNBpeqKBTtMXDQyWvcGS
+D5ZcsPjJ4yfPPnVgT/JwbGDf/t7pSZ6evoVjQ9+iRf+oF12wTK4+;
+
+-- find idx
+DEFINE COMMENT 2
+eJztkKFuwzAQQB0UFriwwgVNQ5G/wAoanErCTQoKIpWUGQwMlEzKBwSUl0QK
+LIlktCErcMgdDNpYNu+5HzFpJyVP1t09++5FCJGIbZ78/F/TRIS4/0rEsoRv
+m3NeYhwu4rf+cAnZt3RZwvnp5vMucL2CfaZVYHEL+8zVsGqoh+sV7LP+GRYd
+bIfAsaR/LMmPJfmxJK8VXvkA00eoFV5XQ63odzXUCo+roVb4XA29YQ5vuN8b
+vFWDL99Db+Bug9cbuNvg9QZWDd58f/XDoot76ugrOuqLjry0vENa6qTlHe0Q
+5zpDaeF4wiNt3NcJn7SwHeLezld/nHuK883QTfiqGR7f41wfcY9TnGuOe5zw
+VDP8j78V36j+nsI+;
+
+-- outbox
+DEFINE COMMENT 3
+eJzt0C9vg0AYgPFDnUO2bnJVyxRBTTYoNKaSBFNRQcIHOIFAdEkFonKCBFlD
+gsRgWwyZnLryCZhjuz23D7Fkl9BfXv48ydtXIYQjDmvn+/cqHWHO86cjlsVc
+hzXzYs/xLn7eP97N05tcFjPnq3FnjB6wcYPUuHnExm0KZmzczRsz5quy5Xvs
+PTp+iL1Hxw+x9+j4IfYeHT/E8oVOskU/xCpOtkh33NGrYsz2GKS/9+lXMd0g
+xWxPT6v5CelqRVcru3eB+Qm1ohedUSt60Rm1otsUmJ/s/3GhW7Y41/SSDuea
+XtLhXNNLOuwvdMoW5UAnm1AOdv8Jx3e79wfKwe49oRzoZBP+n799vgAw55vw;
+
+-- reset
+DEFINE COMMENT 4
+eJzt0KGOg0AQxvFF1SGv7mQrqwgKSVBoDLLJGkQFCecRCEQFYgWyokklZhNk
+DbZVPAJ9g57bu73/1t4TdBL4ZWHmS3a+hBCeOKy93/dt5Qlbu29PGGOfw5qz
+cXV8iL/+48P+va+MsWftz7k1+8TtBrWflNbmA7WvW9yeUI1WFdEvY5wC+sMU
+p4A5FaGMMUxxCshTEXkyxjDF857cqsCkxDkn/7wnpyowKcmb89c8VgXqlvmm
+w6UmJ+txqd09W2w6zHpcanf/lrymw6zHaZAxkv+8uD0MqEaU19d3t4eBXHl1
++xjJe9e7/qsfzjKElw++;
+
+-- shift
+DEFINE COMMENT 5
+eJztkCEOwjAYhTuFQzKHXBVBNSgkmULP1JOQCsSSGhwCgUAgJibnuMASLlAL
+qkeAGwxXKN84Ao6XdF+69/6XtmshRCI2afL+XgeJiJo+ExFCXJuUfeh1fIhP
+/viI7m0QQtzvR15HFmMoM9gO8xK/PeBDmckGv7rgw2IMnVotID1O0eMU89Uc
+rhbQKfpmS+gUPbMl9Jo+r8l7Tc5r/LzsJpHpFlpD/r6D1nAOazhHXsJ0C62h
+1xp6renvUzNf1MzvT+SLGsoGdufv//6danq6M5QNfX/99Qu9ANEsbHs+;
+
+-- write
+DEFINE COMMENT 6
+eJztkKEOwjAURTs1N0kdkqkFiaokKCSZQS7BIBCTcxOICWTF5MSSyZkm/MAs
+KD4B/mC4QjnlD5DcZDt5fX0n29sLIQJxkMH7fQkD4TJ/BsJa9xwktfU5PcTn
+/unhutfQWleb6LZ1HBNoolVODU1kKsd0CscEmihuOIdjAo8TfXaMZ1ArvIs1
+DDdQK/y7JdQKr1Z4tGK+zXZLSL/N6LcZfVnQlwXeVY5PFvBe+v+ovud4ZIHH
+VPBe+u9u/D46mNbMDT1Ma+bjxu+jg0Pv91Tjixt8YweHHv7zzy/zApRJctA+;
+
+-- inc len
+DEFINE COMMENT 7
+eJztzyFuwzAYhmEHmZWaGS6oGopygmiosDIJDy0YNBsIGCgIMAgMywUqGZZE
+GlpDcoT1Bh7z5r0GO0R/yXlkxf8nfVYIUYiTKn6/n7IQaZ6/CxFjOifFPeY5
+38Xf+/M9/b3JGNP9susavLxjOaHzSaO3Nlk+Ydij0S+vyaVCo9lfKjSanKVC
+o8lbKqwP5Mgjdg05W4tdQ07XsL+1WB/Yl0dUNuyRHsqSpyw5ypKjLPtfb7nX
+mHtN2A+8DzP2Q+4xYjlhmLEfcq+RvHLCMKPzudcV6w90nny5ovPkyRWdJ1eu
+6Hzuu+JjHvN/fgAlDIFl;
+
+-- zero
+DEFINE LABEL 24
+eJztzyEOgzAUxvFWcYQeATmJQi4oJJmZJJlBIEgw+IkKxARicgKPaYLEkKA2
+tStwhLlu3b+7whQvaX9pXvs1LxdCSFEq+dnvgRSudi8prHWrVJytr3YV3/vt
+6rqPwFp37uLn0XnaY5RikP1MKvpG08cuDm/YjfQxSjHIsC7ISSrsc/JUg31O
+Xl1gUqFqsM/5py7ISypUDRpN7uGK4Q2NJv98QaPJM5o8o3nfjX7+CeeB+9GC
+8+DnXnAeeB8tfv7Rzz/hVlv9s96vGG1o;
+
+-- tmp
+DEFINE LABEL 15
+eJztzSEOwjAYhuFW7Qg7QiWSE5AqJG6SBItogsFVTExMTOwAFSSTM0t2gVnA
+7AgdJxiuUF64A2Jf0j752+ZrJoSQ4pjK935NpIhZPaUIIa5jyhy+KSfxeV9O
+8faWhBDnZHfY4JhF11ttmHHM8LL/nXcFKsc5jlndR7WhJz2jt9gVqA093mJe
+oTb0eot5hdrQ7y3mFWrDf95iXuHc8M/QonL01z0qR2/do3L0zQ0OLSpHn3LJ
+HU8PsWTJn+UFfRRj8A++;
+
+-- index
+DEFINE LABEL 16
+eJzt0CFuwzAYQGEH+Qg5QlA1NPUEVtBgFWJuUlAQqaTMIGCgIMAgMCwXmGQ4
+MmmoDfER3BtkzKv7sgOM95ecT5aTF8mtEKIQh7K4Py+yEHlefgqRUl6Hkn1a
+53wTj/fPt3x6lSnl/derUfjxjtWIzmeNCjq7fUO5Q6PqNhs0GsX3QaNRdIJG
+o+gFjdEuG+T/0dKtW3rlCaPF455utHjc040W65ZuefrrYzPQrUbsenrLhF1P
+rxmwGnGZsOvpNwO9asRlQufXe5nRebpyXu/lk872G52nJ2d0no6c8TnP+c/8
+AqRSgSU+;
+
+-- length
+DEFINE LABEL 17
+eJzt0CFuwzAUxnEH+QhlgyuaiqKgwMgoOMSwkslAQaQcoKAgoJMKAgILKg2G
+RAosCd1MrMGhNifoWDbv7x5i0iwlPzl5/qz3XoQQkdgsop/3m4yEX6uvSMyz
+fzYL9nNY+6v4rd9f/d93Oc9+XzzcntBk6DSqEvsal0fv8rEZvE1KnclwjKlP
+chxjzjUpmgyTHMeYvCYlz2SY5Og0uac1Vs/oNPmqRKfJUyU6Ta4q0WnyVIl9
+Tc7uEPps8bIN/bZ42Ya+W+xr8nYHLNq75BattNRVE3U4dsx17Ljn9hrm02Ez
+oDnfv4f5dOSbc5jTwD3SkictedJyTtrQ/weePlFazlcTSktONeH/+tvrG+jq
+muI+;
+
+-- iterator1 as iter1
+DEFINE LABEL 18
+eJzt0CEOwjAYhuFO9Qg9whRBViHJFHKpmVwyJGJybnJiElGJIEFiliAxJFWA
+2RHGDcAVyrsdAcefbE+69vuSbi2EiMRGRZ/3VUYizPwVCe/Ds1Gs/TjtQ3zP
+t4+we5Peh/V2USyxazDe4fYUlCn7Mu2zoF4lJWvsM9zn03d6ZErPPsc+o09V
+9Aw1JiW5rsGkJK8qHGrsGkxK+lRF31Bj16Cx9D4PeDmisfTHOzSWPmPpM5a8
+ds9ZsDhzb+0mx/s78tqR1458cZ7y43+743/+88t5AwtPbqU+;
+
+-- iterator2 as iter2
+DEFINE LABEL 19
+eJzt0KEOgkAcgPEj3SPcI5CcyfEEjkRkFjqFYGCj0AgXDIYLBKPNF3AjWtxI
+SuER4A20nR6fvIGR/wa/HXDfgEwI4Ym98r7nh/SEm/XbE9a6Y69Y298cRzE9
+fxzd3ae01q3vm3SL1wP6Z6wbZxBxP4j6xJluw5w1yhj7ZL5OJ4jo9AnKmF6Y
+01ElFhn7hgqLjP1hjqrEocIioxfm9FSJQ4Xa0PXP+LqgNvR3J9SGnjb0tGF/
+enutpvdvsW74ftnN0gtaOumNTt3QqZu58/t/LcoOl1nmn/MBsTJzPg++;
+
+-- $accumulator as $acc
+DEFINE LABEL 20
+eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
+wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
+u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
+LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
+fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;
