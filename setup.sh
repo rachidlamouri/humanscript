@@ -1,5 +1,5 @@
 #!bash
 
-nvm use
+nvm install
 
 npm ci
