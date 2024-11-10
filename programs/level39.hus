@@ -24,11 +24,8 @@ while {
   ## init
   tmp = inbox
 
-  ## column
-  column = tmp % four
-
-  ## row
-  row = tmp ~/ four
+  ## div
+  row, column = tmp ~/ four
 
   ## out
   outbox = column

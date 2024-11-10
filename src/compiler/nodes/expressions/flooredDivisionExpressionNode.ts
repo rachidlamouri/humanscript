@@ -2,8 +2,12 @@ import { CompilerContext, RegisterKey } from '../../compilerContext';
 import { Compiled } from '../../compiled';
 import { Assembly } from '../../assembly';
 import { DivisionExpressionNode } from './divisionExpressionNode';
+import { DualResultExpression } from './dualResultExpression';
 
-export class FlooredDivisionExpressionNode extends DivisionExpressionNode {
+export class FlooredDivisionExpressionNode
+  extends DivisionExpressionNode
+  implements DualResultExpression
+{
   compileExpression(context: CompilerContext): Compiled {
     const result: Compiled = [];
     result.push(...super.compileExpression(context));
@@ -12,5 +16,13 @@ export class FlooredDivisionExpressionNode extends DivisionExpressionNode {
     context.decrementDepth();
 
     return result;
+  }
+
+  compiledSecondRead(context: CompilerContext): Compiled {
+    return [
+      // -
+      Assembly.DEBUG(context, 'read remainder'),
+      Assembly.COPYFROM(context, RegisterKey.Remainder),
+    ];
   }
 }

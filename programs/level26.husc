@@ -28,6 +28,8 @@
 -- WhileStatementNode
 JUMP condition00
 loop00:
+  COMMENT 0 -- ## init
+
   -- AssignmentStatementNode
     -- read
     INBOX
@@ -39,6 +41,8 @@ loop00:
     INBOX
     -- write
     COPYTO 1 --$second
+
+  COMMENT 1 -- ## div
 
   -- AssignmentStatementNode
     -- read
@@ -89,6 +93,20 @@ loop00:
   condition00:
   JUMP loop00
 break00:
+
+-- init
+DEFINE COMMENT 0
+eJztjSEOwjAYhVtVh52rZIqgeoSGBE9qKpfUTEyQ7BCISQ6A2BGWcIFaUL3C
+bgCuUD64BNlL2i9/3+v790IIKbpKvu+bkqJo+5Qi53K6ijl/Nczikx/m4t5V
+zmWeVsHC6QTrCzxfC51OvrBew8cGOr07FkYDneZ/NNBpeqKBTtMXDQyWvcGS
+D5ZcsPjJ4yfPPnVgT/JwbGDf/t7pSZ6evoVjQ9+iRf+oF12wTK4+;
+
+-- div
+DEFINE COMMENT 1
+eJxzYWBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfx1dW+60LodFcIfT0GRLeLuZeA6HA5CK2uBqG3823vhvAh9HY+9cUQPoRu
+F5u+C6IPQqurQejjphDzj5tC9B03hag/bgqRT3eF2Ls8BUKnu0LsW54CodNd
+IfqWp0Boc1+I/usxEJo9FGLOKBgFIwkAABOmQ7Q+;
 
 -- zero
 DEFINE LABEL 9

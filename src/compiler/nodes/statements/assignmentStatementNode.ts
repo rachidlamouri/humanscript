@@ -6,6 +6,7 @@ import { assertIsNode, Node } from '../node';
 import { Statement } from './statement';
 import { Assembly } from '../../assembly';
 import { Readable } from '../references/readable';
+import { DualResultExpression } from '../expressions/dualResultExpression';
 
 export class AssignmentStatementNode extends Node implements Statement {
   constructor(
@@ -45,5 +46,29 @@ export class ReadableAssignmentExpressionNode
 {
   compileRead(context: CompilerContext): Compiled {
     return this.compileStatement(context);
+  }
+}
+
+export class DualAssignmentStatementNode extends AssignmentStatementNode {
+  constructor(
+    public firstWriteable: WriteableReference,
+    public secondWriteable: WriteableReference,
+    public dualReadable: DualResultExpression,
+  ) {
+    super(firstWriteable, dualReadable);
+  }
+
+  compileStatement(context: CompilerContext): Compiled {
+    const result: Compiled = [];
+
+    result.push(...super.compileStatement(context));
+    context.incrementDepth();
+    result.push(Assembly.DEBUG(context, 'second read'));
+    result.push(...this.dualReadable.compiledSecondRead(context));
+    result.push(Assembly.DEBUG(context, 'second write'));
+    result.push(...this.secondWriteable.compileWrite(context));
+    context.decrementDepth();
+
+    return result;
   }
 }

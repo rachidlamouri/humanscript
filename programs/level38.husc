@@ -52,7 +52,7 @@ loop00:
 
   COMMENT 1 -- ## hundos
 
-  -- AssignmentStatementNode
+  -- DualAssignmentStatementNode
     -- read
     -- FlooredDivisionExpressionNode
       -- set the remainder
@@ -97,12 +97,17 @@ loop00:
       COPYFROM 7 --$$quotient
     -- write
     COPYTO 0 --$hundos
+    -- second read
+    -- read remainder
+    COPYFROM 6 --$$remainder
+    -- second write
+    COPYTO 4 --$tmp
 
-  COMMENT 2 -- ## remain
+  COMMENT 2 -- ## rest
 
-  -- AssignmentStatementNode
+  -- DualAssignmentStatementNode
     -- read
-    -- ModuloExpressionNode
+    -- FlooredDivisionExpressionNode
       -- set the remainder
       COPYFROM 4 --$tmp
       COPYTO 6 --$$remainder
@@ -118,7 +123,7 @@ loop00:
         -- AssignmentStatementNode
           -- read
           -- SubtractionExpressionNode
-          COPYFROM 11 --$hundred
+          COPYFROM 10 --$ten
           COPYTO 8 --$$accumulator
           COPYFROM 6 --$$remainder
           SUB 8 --$$accumulator
@@ -138,54 +143,6 @@ loop00:
       -- adjust quotient
       BUMPDN 7 --$$quotient
       -- adjust remainder
-      COPYFROM 11 --$hundred
-      ADD 6 --$$remainder
-      COPYTO 6 --$$remainder
-      -- read remainder
-      COPYFROM 6 --$$remainder
-    -- write
-    COPYTO 4 --$tmp
-
-  COMMENT 3 -- ## tens
-
-  -- AssignmentStatementNode
-    -- read
-    -- FlooredDivisionExpressionNode
-      -- set the remainder
-      COPYFROM 4 --$tmp
-      COPYTO 6 --$$remainder
-      -- zero the floored quotient
-      COPYFROM 4 --$tmp
-      COPYTO 7 --$$quotient
-      SUB 7 --$$quotient
-      COPYTO 7 --$$quotient
-      -- divide
-      -- WhileStatementNode
-      JUMP condition03
-      loop03:
-        -- AssignmentStatementNode
-          -- read
-          -- SubtractionExpressionNode
-          COPYFROM 10 --$ten
-          COPYTO 8 --$$accumulator
-          COPYFROM 6 --$$remainder
-          SUB 8 --$$accumulator
-          -- write
-          COPYTO 6 --$$remainder
-
-        -- IncrementAssignmentStatementNode
-        BUMPUP 7 --$$quotient
-
-        condition03:
-        -- GreaterThanOrEqualToConditionNode
-        COPYFROM 6 --$$remainder
-        -- compare 0
-        JUMPN break03
-        JUMP loop03
-      break03:
-      -- adjust quotient
-      BUMPDN 7 --$$quotient
-      -- adjust remainder
       COPYFROM 10 --$ten
       ADD 6 --$$remainder
       COPYTO 6 --$$remainder
@@ -193,112 +150,69 @@ loop00:
       COPYFROM 7 --$$quotient
     -- write
     COPYTO 1 --$tens
-
-  COMMENT 4 -- ## ones
-
-  -- AssignmentStatementNode
-    -- read
-    -- ModuloExpressionNode
-      -- set the remainder
-      COPYFROM 4 --$tmp
-      COPYTO 6 --$$remainder
-      -- zero the floored quotient
-      COPYFROM 4 --$tmp
-      COPYTO 7 --$$quotient
-      SUB 7 --$$quotient
-      COPYTO 7 --$$quotient
-      -- divide
-      -- WhileStatementNode
-      JUMP condition04
-      loop04:
-        -- AssignmentStatementNode
-          -- read
-          -- SubtractionExpressionNode
-          COPYFROM 10 --$ten
-          COPYTO 8 --$$accumulator
-          COPYFROM 6 --$$remainder
-          SUB 8 --$$accumulator
-          -- write
-          COPYTO 6 --$$remainder
-
-        -- IncrementAssignmentStatementNode
-        BUMPUP 7 --$$quotient
-
-        condition04:
-        -- GreaterThanOrEqualToConditionNode
-        COPYFROM 6 --$$remainder
-        -- compare 0
-        JUMPN break04
-        JUMP loop04
-      break04:
-      -- adjust quotient
-      BUMPDN 7 --$$quotient
-      -- adjust remainder
-      COPYFROM 10 --$ten
-      ADD 6 --$$remainder
-      COPYTO 6 --$$remainder
-      -- read remainder
-      COPYFROM 6 --$$remainder
-    -- write
+    -- second read
+    -- read remainder
+    COPYFROM 6 --$$remainder
+    -- second write
     COPYTO 2 --$ones
 
-  COMMENT 5 -- ## hotbox
+  COMMENT 3 -- ## hotbox
 
-  COMMENT 6 -- ## 100s
+  COMMENT 4 -- ## 100s
 
   -- IfStatementNode
-  -- start05
-    -- condition05
+  -- start03
+    -- condition03
       -- NotEqualsConditionNode
       COPYFROM 0 --$hundos
       -- compare 0
-      JUMPZ else05
-      JUMP if05
-    if05:
+      JUMPZ else03
+      JUMP if03
+    if03:
       -- block
       -- AssignmentStatementNode
         -- read
         COPYFROM 0 --$hundos
         -- write
         OUTBOX
-      JUMP end05
-    else05:
+      JUMP end03
+    else03:
       -- block
-  end05:
+  end03:
 
-  COMMENT 7 -- ## 10s
+  COMMENT 5 -- ## 10s
 
   -- IfStatementNode
-  -- start06
-    -- condition06
+  -- start04
+    -- condition04
       -- OrConditionNode
         -- left
         -- NotEqualsConditionNode
         COPYFROM 0 --$hundos
         -- compare 0
-        JUMPZ condition06sub00
-        JUMP if06
-      condition06sub00:
+        JUMPZ condition04sub00
+        JUMP if04
+      condition04sub00:
         -- right
         -- NotEqualsConditionNode
         COPYFROM 1 --$tens
         -- compare 0
-        JUMPZ else06
-        JUMP if06
+        JUMPZ else04
+        JUMP if04
       -- /OrConditionNode
-    if06:
+    if04:
       -- block
       -- AssignmentStatementNode
         -- read
         COPYFROM 1 --$tens
         -- write
         OUTBOX
-      JUMP end06
-    else06:
+      JUMP end04
+    else04:
       -- block
-  end06:
+  end04:
 
-  COMMENT 8 -- ## 1s
+  COMMENT 6 -- ## 1s
 
   -- AssignmentStatementNode
     -- read
@@ -327,33 +241,16 @@ Ly0w19MjskOu/Q4VvXKPucbz1u+h8bylm2u/R0W33N/6fpcD3brHqaWnBpxa
 emrAqaWnBjQHOnXv9zj5PUa/xxXDo9/hRKcZcXOlEx5v32Mz4v/5m+cbWK6h
 kQ++;
 
--- remain
+-- rest
 DEFINE COMMENT 2
-eJzt0KFvhDAUx/GicMjVTa5yiqCQ5BQaU7kEgzhxCQaPQNySEwhkxXkMySSm
-ydQ20/Af3J8wx9b79p9YspfAJw2P99LfqxAiEkcZ/b4/4kj4ev6OxL775yg5
-76HON3HvP9/818943/15SZz2Vo+onnBJDidv/4BLsgyoDI5v3jGnvy7QpvRn
-JdqU/8Yc6wKzEm3KvDFnXl1gVqLTzL2+YNvg4YROs6dtUHboNPPbBmWHTrOv
-bVB26DT72gZlh/2lLu75TKgMe/sLe6oJlQk5DexRJuQ1MF8Z7C/MrSZUBu3M
-fDuHXGb67RxyWdmbvWP8FXJfw303rNdwzy3kvYb7bVivIdcN/+tv1w/vUpnZ;
-
--- tens
-DEFINE COMMENT 3
-eJztzyESgkAYhuEl2YzSiBpNDInIbCJTNjpSDISd8QAEAoFAIBANHoEZL0DV
-tEeQI9hW11euYOKbgWf+Zf9vhqMQwhOF733e95UnXPYvT1jrnsJntr80k/je
-byb39bGy1s3VJk/QKOewlpoZswB32/l8qHF34RyzoLs5u5iePMExZC9KcQzZ
-72LME4xSHEP6upi+PMEoRaPovR7wfEKj6JcajaJPajSKXqnRKPqkxqGmp2ox
-6/FZ0jfUv/9uMevpeZbzPlYtLlnyj7wBCUdrSA++;
-
--- ones
-DEFINE COMMENT 4
-eJzt0CEOwjAUgOFO4SbBIZlENVVIUjU9M7mAmUAs2QEQFROICcQkYkdowgVq
-Qe0I4wi4QvnHFVC8ZPvysvUX3QkhInFYRO/3bRaJMOtnJLwPz2HB7qc5PcTn
-/9MjfL3PvA+7mQ95MFuijXUVTFZoY9uwo42TCzua+fnKeXSSznmD+y06SU+l
-6CQ9laKT9FSKTtJTKfYFnbrEIaejKxxyOn2BdYm6wiGn2xf06hJ1hbaha9rp
-Pjocj9M9NHRMi1lHbzx+z6Np8T//+cW8AGz2bSM+;
+eJztzyEOg0AURdFB4ZDFVRZZRVBIgkJjEBUkGASChAVUIBAIBAJZwRIm6Qaw
+rWIJZQl1004vrKGGl8DJwJ+X/IsQwhCFbXzfD9MQOue3IZTST2FzVmvaRfzm
+20X/fZpK6bO05kQbH9E5obTCUlsfUFqyQeeG/V3b+8xnAU4u816Ek8u93scs
+QC/CyaWv9+nLAvQiHFN6qxzDEueE/jGlp8oxLOmbk+0+VjnKJguQntd13a9Z
+9+0wHrbv694NvfGAdUffnj3/zAcY+WaQ;
 
 -- hotbox
-DEFINE COMMENT 5
+DEFINE COMMENT 3
 eJzt0CFvg0AYgOFDnUOubnJVyxRBVTYodE0lyZmKChJ+wAkEySoqEJUTJMga
 EiQGu2HI5NSVX8Ac2+29/YllX0KfHJA3fH0WQnjiuPK+f1+lJ+w8fXpiWex1
 XHFe3Jxu4uf9080+fZPLYs+Nr7Y47jFKsSms+R3u7rHx1y/W9QM2ftlyxnJD
@@ -362,7 +259,7 @@ R22xD+iFMfYBnTDGPqATxlhu6KgtVgnfVyX0xj2dKsHsgFH6e59uldCLUswO
 TU912F/d/9miHOhkE8rB7T/h+O72/kA5uL0nlAOdbML/+RvzBdgImwk+;
 
 -- 100s
-DEFINE COMMENT 6
+DEFINE COMMENT 4
 eJzt0CFuhEAUxvFBravsuFrUpIqgkASFxowkwSBWkGBGNqlArFiBQCI4Asle
 ANuqucLeYOqmnf5nT9G+BH55YXjz5b0JIRJxlsnP++OUiFCvX4nwPjxnSe9j
 Xe7i9/zlHr5+nrwP/fuzU8H9qSvpH1qN1YD7hOnK+flGj80LHhnz5gK7Ep1i
@@ -371,7 +268,7 @@ bl6jU8zvSsxrdIr75gLzGp3i/iPDvEanyJPXeGTkmAvsStxacow9VgNaTR5p
 LJiucf/T4/+4/wX/62/VNyHnh0U+;
 
 -- 10s
-DEFINE COMMENT 7
+DEFINE COMMENT 5
 eJztziEOgzAYhuFWzU0ONzvVTJEqJEFVz5ApkhoEgoQjTEwgOcAERyDZBbCb
 4grcoHPdunfcYYIvoU/+tHztWQghRRXJz/rYSBFyfEnhffiqiNn/0s7ie76d
 w+5z432YLzungsPWpsyLU45ZjcMVDzfOd3dmPO1xjOnrErQpOkWvNugU/TZF
@@ -379,7 +276,7 @@ bdAp7usS1Aad4v4xRm3QKd6jDY4x7+gStCn2Bf1NiVmNU05/X9DXlJjV9E35
 8j82Ja5Z8w95Ay7AYdU+;
 
 -- 1s
-DEFINE COMMENT 8
+DEFINE COMMENT 6
 eJyzYGBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
 /wfx28W+64Lo7XzprhA+jL4eA6HdSyD09m4Irb4Yon76LggfQofLQejjphB9
 020hdLorhP6uCzHnuCnEnOm2EDrdFWLed12Yfgg93RZCj4JRMApwAwA9hz2C;
