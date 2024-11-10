@@ -58,6 +58,7 @@ import {
   MultiplicativeExpressionNode,
   MultiplicativeExpressionNodeConstructor,
 } from './nodes/expressions/multiplicativeExpressionNode';
+import { FloorReferenceNode } from './nodes/references/floorReferenceNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -87,7 +88,6 @@ type Language = {
 
   labelDefinition: string | null;
   directFloorSlot: FloorIndex;
-  indirectFloorSlot: IndirectFloorSlotNode;
 
   conditionExpression: Condition;
   conditionList: Condition;
@@ -115,7 +115,10 @@ type Language = {
 
   inbox: InboxNode;
   outbox: OutboxNode;
+
+  floorReference: IdentifierNode | IndirectFloorSlotNode;
   identifier: IdentifierNode;
+  indirectFloorSlot: IndirectFloorSlotNode;
 
   word: string;
   positiveInteger: number;
@@ -541,21 +544,19 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.alt<Language['readableReference']>(
       // -
       l.inbox,
-      l.indirectFloorSlot,
-      l.identifier,
+      l.floorReference,
     );
   },
   writeableReference: (l) => {
     return P.alt<Language['writeableReference']>(
       // -
       l.outbox,
-      l.indirectFloorSlot,
-      l.identifier,
+      l.floorReference,
     );
   },
   readableAssignmentExpression: (l) => {
     return P.seq(
-      l.identifier,
+      l.floorReference,
       P.whitespace,
       P.string('='),
       P.whitespace,
@@ -598,6 +599,14 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.string('outbox').map(() => {
       return new OutboxNode();
     });
+  },
+
+  floorReference: (l) => {
+    return P.alt<FloorReferenceNode>(
+      // -
+      l.indirectFloorSlot,
+      l.identifier,
+    );
   },
   identifier: () => {
     return P.regex(/[a-z][a-z0-9]*/).map((result) => {
