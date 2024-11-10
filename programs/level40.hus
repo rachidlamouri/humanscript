@@ -1,0 +1,45 @@
+# Prime Factory
+#
+# For each thing in the INBOX,
+# send its PRIME FACTORS to the
+# OUTBOX in order from
+# smallest to largest.
+
+floor size 25 reserve 4-4
+
+let zero at floor[24]
+let one at floor[23]
+let two at floor[22]
+
+let original labeled origi
+let factor
+let divisor
+let tmp
+
+## init
+one = zero
+one += 1
+two = one
+two += 1
+
+while {
+  ## loop
+  original = inbox
+  factor = original
+  divisor = two
+
+  while (factor > one) {
+    ## mod x
+    tmp = factor % divisor
+    ## div x?
+    if (tmp == 0) {
+      ## is div
+      outbox = divisor
+      ## factor
+      factor = factor ~/ divisor
+    } else {
+      ## not div
+      divisor += 1
+    }
+  }
+}

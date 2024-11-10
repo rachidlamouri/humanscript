@@ -1,0 +1,340 @@
+-- # Alphabetizer
+-- #
+-- # The INBOX contains exactly
+-- # two words. Determine which
+-- # word comes first, if you were
+-- # to order them alphabetically,
+-- # and send only that word to the
+-- # OUTBOX.
+
+-- FloorInitNode
+  -- $accumulator -> floor[22]
+  -- $iterator -> null
+
+-- LetStatementNode
+  -- zero -> floor[23]
+
+-- LetStatementNode
+  -- ten -> floor[24]
+
+-- LetStatementNode
+  -- tmp -> floor[18]
+
+-- LetStatementNode
+  -- iterout -> floor[19]
+
+-- LetStatementNode
+  -- iter1 -> floor[20]
+
+-- LetStatementNode
+  -- iter2 -> floor[21]
+
+-- AssignmentStatementNode
+  -- read
+  COPYFROM 23 --$zero
+  -- write
+  COPYTO 20 --$iter1
+
+-- AssignmentStatementNode
+  -- read
+  COPYFROM 24 --$ten
+  -- write
+  COPYTO 21 --$iter2
+
+COMMENT 0 -- ## word1
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 18 --$tmp
+    -- write
+    COPYTO [20] --$iter1
+
+  -- IncrementAssignmentExpressionNode
+  BUMPUP 20 --$iter1
+
+  condition00:
+  -- NotEqualsConditionNode
+  -- ReadableAssignmentExpressionNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 18 --$tmp
+  -- compare 0
+  JUMPZ break00
+  JUMP loop00
+break00:
+
+-- AssignmentStatementNode
+  -- read
+  COPYFROM 18 --$tmp
+  -- write
+  COPYTO [20] --$iter1
+
+COMMENT 1 -- ## word2
+
+-- WhileStatementNode
+JUMP condition01
+loop01:
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 18 --$tmp
+    -- write
+    COPYTO [21] --$iter2
+
+  -- IncrementAssignmentExpressionNode
+  BUMPUP 21 --$iter2
+
+  condition01:
+  -- NotEqualsConditionNode
+  -- ReadableAssignmentExpressionNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 18 --$tmp
+  -- compare 0
+  JUMPZ break01
+  JUMP loop01
+break01:
+
+-- AssignmentStatementNode
+  -- read
+  COPYFROM 18 --$tmp
+  -- write
+  COPYTO [21] --$iter2
+
+COMMENT 2 -- ## find
+
+-- AssignmentStatementNode
+  -- read
+  COPYFROM 23 --$zero
+  -- write
+  COPYTO 20 --$iter1
+
+-- AssignmentStatementNode
+  -- read
+  COPYFROM 24 --$ten
+  -- write
+  COPYTO 21 --$iter2
+
+-- WhileStatementNode
+JUMP condition02
+loop02:
+  -- IncrementAssignmentExpressionNode
+  BUMPUP 20 --$iter1
+
+  -- IncrementAssignmentExpressionNode
+  BUMPUP 21 --$iter2
+
+  condition02:
+  -- AndConditionNode
+    -- left
+    -- AndConditionNode
+      -- left
+      -- NotEqualsConditionNode
+      COPYFROM [20] --$floor[$iter1]
+      -- compare 0
+      JUMPZ break02
+      JUMP condition02sub01
+    condition02sub01:
+      -- right
+      -- NotEqualsConditionNode
+      COPYFROM [21] --$floor[$iter2]
+      -- compare 0
+      JUMPZ break02
+      JUMP condition02sub00
+    -- /AndConditionNode
+  condition02sub00:
+    -- right
+    -- EqualsConditionNode
+    COPYFROM [21] --$floor[$iter2]
+    COPYTO 22 --$$accumulator
+    COPYFROM [20] --$floor[$iter1]
+    SUB 22 --$$accumulator
+    JUMPZ loop02
+    JUMP break02
+  -- /AndConditionNode
+break02:
+
+-- IfStatementNode
+-- start03
+  -- condition03
+    -- OrConditionNode
+      -- left
+      -- EqualsConditionNode
+      COPYFROM [20] --$floor[$iter1]
+      -- compare 0
+      JUMPZ if03
+      JUMP condition03sub00
+    condition03sub00:
+      -- right
+      -- AndConditionNode
+        -- left
+        -- NotEqualsConditionNode
+        COPYFROM [21] --$floor[$iter2]
+        -- compare 0
+        JUMPZ else03
+        JUMP condition03rightsub01
+      condition03rightsub01:
+        -- right
+        -- LessThanConditionNode
+        COPYFROM [21] --$floor[$iter2]
+        COPYTO 22 --$$accumulator
+        COPYFROM [20] --$floor[$iter1]
+        SUB 22 --$$accumulator
+        JUMPN if03
+        JUMP else03
+      -- /AndConditionNode
+    -- /OrConditionNode
+  if03:
+    -- block
+    COMMENT 3 -- ## out1
+
+    -- AssignmentStatementNode
+      -- read
+      COPYFROM 23 --$zero
+      -- write
+      COPYTO 19 --$iterout
+    JUMP end03
+  else03:
+    -- block
+    COMMENT 4 -- ## out2
+
+    -- AssignmentStatementNode
+      -- read
+      COPYFROM 24 --$ten
+      -- write
+      COPYTO 19 --$iterout
+end03:
+
+COMMENT 5 -- ## outbox
+
+-- WhileStatementNode
+JUMP condition04
+loop04:
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM [19] --$floor[$iterout]
+    -- write
+    OUTBOX
+
+  -- IncrementAssignmentExpressionNode
+  BUMPUP 19 --$iterout
+
+  condition04:
+  -- NotEqualsConditionNode
+  COPYFROM [19] --$floor[$iterout]
+  -- compare 0
+  JUMPZ break04
+  JUMP loop04
+break04:
+
+-- word1
+DEFINE COMMENT 0
+eJztkKFuwzAURR1kFriwwRlFg0WBUVFhFFJoKaSgoNKkabwgoKDAoNDAvMSS
+4Uhph/YL/YOUefOOw/YJvVJy9Jy8Yz+/CyEKsa2K3/dVFiLl9V6IGNOzrahj
+zuEm/v4/3NLXLxljqn35vU6caujL5Y4a+tKPif0znGroS2VZh1MN908mJKoX
+OLR4FytoGryyg6bBJztoGjyyg0OLZ7GCTuNZ7mD1AZ3G97aBTuNzGo/T+Vx2
+quHQQvr3R/r6E1Q2zz/iUTbPPeJTNs97xNufZj80gX0uZ/YxYWa+h5DnD3nu
+gO9ynvvz/X3CRx75Lz8kHX/8;
+
+-- word2
+DEFINE COMMENT 1
+eJztkCFvg0AYhg91Djnc5E6RSRSSVFUSzCQJZqKiycwyW4GoqDhReeI85hIk
+hqSqVfsL/QfM3XZ7jn/RN4EnH3DPx/d9CSESscuSv/tVJiLk9ScR3odrl1H7
+mONd/H9/vIe3N+l9qF36/Ra45NClmz01dKnrA5tnuOTQpcrwHC45PDzpMVC9
+wK7CW2yhLvHKGuoSn6yhLvHIGnYVnmILbYtns4fZJ7Qtvo93aFt8tsVj2/hf
+ZslhV0HOH06ca85QmTh/j0eZOHePT5k47wlvc179UI/06SY4D/QrLivp201x
+DyP+ecA7D6sn7nGKe7jARx4J+QVQ+IP/;
+
+-- find
+DEFINE COMMENT 2
+eJztzyEOwjAYhuFOzU0yh2SKoBZO0EwhyUyDrZmYWDIzV4FATHIADrGEC8yC
+6hG6G4ArlBfugNiXtE+av/2WHYQQkajT6L3f4kiEbJ6R8D6sOuXsv+kn8bnf
+T2F6j70P5+PisQ6WSxwSLYPZCofEKiwa7mO5xCEZTphd8HwNjjnvx5z5mDMf
+c+Za0rvdYbxHLem1CrXkvVWoJT1WoZb0WYXO8B/O8H1n6C0a+tIOncG2otcZ
+bCt6ncGioTftfv04Z84/5AVSYmIR;
+
+-- out1
+DEFINE COMMENT 3
+eJzt0KEOgkAcx/Ej0YjQjJqciV0yMtJli8mxWQgGNh+AQLhAMPAABh7hNl/g
+qiYfQd9A2+n5hWew8Nvgsz/w/23HTggRiEMSfO/XMBA+q3cgnPPXIWF2Q9qn
++H3fPv3bW+icn5v4vvVuZmiivPIu5mgio5nRRIszMzZxd2EfbUqPVGhTeqRC
+m9IjFdqUHqmwW9Ozz1Aq7It9hvTet/T1BR5LzKvxOf19QW9e4bGkz+jX0vuo
+6TV6dPgPeji/Hs6t2X/U4z42J5wy5R/5AEgSZew+;
+
+-- out2
+DEFINE COMMENT 4
+eJzt0K8OgkAcwPEj2YjYjJKciV0yOtJlCpFpMRDYfAACgWAgEIgGHuE2X4Cq
+iUeAN9B2en7hFUz+Nvjs+POF3UEI4Yh06XzO94Uj7GxfjjDGHumStZnmMorv
+85fR3n0sjLHrwutja7RC7YaZ1V+jdnXJGrXrX1lj4dU33scuoCMVdgEdqbAL
+6EiFXUBHKqx3dI57lArb5LhHun1Mr03wfMIwm6/TbxO6YYbnEz1dPjff/69w
+yOlHzSzfKappH0p6Q05nyOcOFtW0Dw3+5z+/mDerYmnR;
+
+-- outbox
+DEFINE COMMENT 5
+eJzt0C9vg0AYgPFDnUO2bnJVyxRBTTYoNKaSBFNRQcIHOIFAdEkFonKCBFlD
+gsRgWwyZnLryCZhjuz23D7Fkl9BfXv48ydtXIYQjDmvn+/cqHWHO86cjlsVc
+hzXzYs/xLn7eP97N05tcFjPnq3FnjB6wcYPUuHnExm0KZmzczRsz5quy5Xvs
+PTp+iL1Hxw+x9+j4IfYeHT/E8oVOskU/xCpOtkh33NGrYsz2GKS/9+lXMd0g
+xWxPT6v5CelqRVcru3eB+Qm1ohedUSt60Rm1otsUmJ/s/3GhW7Y41/SSDuea
+XtLhXNNLOuwvdMoW5UAnm1AOdv8Jx3e79wfKwe49oRzoZBP+n799vgAw55vw;
+
+-- zero
+DEFINE LABEL 23
+eJztzyEOgzAUxvFWcYQeATmJQi4oJJmZJJlBIEgw+IkKxARicgKPaYLEkKA2
+tStwhLlu3b+7whQvaX9pXvs1LxdCSFEq+dnvgRSudi8prHWrVJytr3YV3/vt
+6rqPwFp37uLn0XnaY5RikP1MKvpG08cuDm/YjfQxSjHIsC7ISSrsc/JUg31O
+Xl1gUqFqsM/5py7ISypUDRpN7uGK4Q2NJv98QaPJM5o8o3nfjX7+CeeB+9GC
+8+DnXnAeeB8tfv7Rzz/hVlv9s96vGG1o;
+
+-- ten
+DEFINE LABEL 24
+eJztzC8OwjAchuFW7Qg9QiWnIHgS3OQSDGKCBDM3MVExMdEDVCxBYpr0AlhQ
+O0J3A3CF8sIhSPYl7ZNf/3xbIYQUtZLv/VZIkbN6SpFSXrViTt/0s/i87+d8
+ey9SyvNU7tc4ldlitzky41jh6fA79wa14xzHyoZsbOnxBlXDv25A1fA/tugN
+dgOqhr7Y0ucNdgNqR+/jjNcLake/DagdfTagdvTagNrRZwMuWfKPeQFqiV4y;
+
+-- tmp
+DEFINE LABEL 18
+eJztzSEOwjAYhuFW7Qg7QiWSE5AqJG6SBItogsFVTExMTOwAFSSTM0t2gVnA
+7AgdJxiuUF64A2Jf0j752+ZrJoSQ4pjK935NpIhZPaUIIa5jyhy+KSfxeV9O
+8faWhBDnZHfY4JhF11ttmHHM8LL/nXcFKsc5jlndR7WhJz2jt9gVqA093mJe
+oTb0eot5hdrQ7y3mFWrDf95iXuHc8M/QonL01z0qR2/do3L0zQ0OLSpHn3LJ
+HU8PsWTJn+UFfRRj8A++;
+
+-- iterout
+DEFINE LABEL 19
+eJztkSFvg0AYhg91bhY3CaqZavgFBIUkGPwZREWTM3MTiIkmQyAqEUv4A02Q
+M02mNgx6akVWsSq22/P1RyzZlxxPvrv7nuQ9npRSntr43s/3TXvK1d2Xp5bF
+rY1Pv0jtTur3/u7kTt/1srj+cGNieHiEYQub3jEMOA+DsXDMb5MtPZxX8Li+
+7uMJAzzHNZxX+KIUj86giZkbC2hi5qMU6gyOBTQxvijFpzM4FtCWeP17+PkA
+bYk/2UJb4rMlPlsyn++5H7awqiVnB6uaubmDVS35Opjv5d1a2PSSd4BNj0cP
+sOkl5wCbHo8eoHmRd3uVvIPknPgvdsL7/CG5Jsl5hv7lui95J7z+BSZnfP/1
+N+sbtZSX9Q++;
+
+-- iter1
+DEFINE LABEL 20
+eJzt0CEOwjAYhuFO9Qg9whRBViHJFHKpmVwyJGJybnJiElGJIEFiliAxJFWA
+2RHGDcAVyrsdAcefbE+69vuSbi2EiMRGRZ/3VUYizPwVCe/Ds1Gs/TjtQ3zP
+t4+we5Peh/V2USyxazDe4fYUlCn7Mu2zoF4lJWvsM9zn03d6ZErPPsc+o09V
+9Aw1JiW5rsGkJK8qHGrsGkxK+lRF31Bj16Cx9D4PeDmisfTHOzSWPmPpM5a8
+ds9ZsDhzb+0mx/s78tqR1458cZ7y43+743/+88t5AwtPbqU+;
+
+-- iter2
+DEFINE LABEL 21
+eJzt0KEOgkAcgPEj3SPcI5CcyfEEjkRkFjqFYGCj0AgXDIYLBKPNF3AjWtxI
+SuER4A20nR6fvIGR/wa/HXDfgEwI4Ym98r7nh/SEm/XbE9a6Y69Y298cRzE9
+fxzd3ae01q3vm3SL1wP6Z6wbZxBxP4j6xJluw5w1yhj7ZL5OJ4jo9AnKmF6Y
+01ElFhn7hgqLjP1hjqrEocIioxfm9FSJQ4Xa0PXP+LqgNvR3J9SGnjb0tGF/
+enutpvdvsW74ftnN0gtaOumNTt3QqZu58/t/LcoOl1nmn/MBsTJzPg++;
+
+-- $accumulator as $acc
+DEFINE LABEL 22
+eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
+wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
+u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
+LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
+fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;

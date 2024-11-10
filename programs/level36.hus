@@ -1,0 +1,56 @@
+# Alphabetizer
+#
+# The INBOX contains exactly
+# two words. Determine which
+# word comes first, if you were
+# to order them alphabetically,
+# and send only that word to the
+# OUTBOX.
+
+floor size 25 reserve 18
+let zero at floor[23]
+let ten at floor[24]
+
+let tmp
+let iterout
+let iter1
+let iter2
+
+iter1 = zero
+iter2 = ten
+
+## word1
+while (tmp = inbox != 0) {
+  floor[iter1] = tmp
+  iter1 += 1
+}
+floor[iter1] = tmp
+
+## word2
+while (tmp = inbox != 0) {
+  floor[iter2] = tmp
+  iter2 += 1
+}
+floor[iter2] = tmp
+
+## find
+iter1 = zero
+iter2 = ten
+while (floor[iter1] != 0 && floor[iter2] != 0 && floor[iter1] == floor[iter2])   {
+  iter1 += 1
+  iter2 += 1
+}
+
+if (floor[iter1] == 0 || floor[iter2] != 0 && floor[iter1] < floor[iter2]) {
+  ## out1
+  iterout = zero
+} else {
+  ## out2
+  iterout = ten
+}
+
+## outbox
+while (floor[iterout] != 0) {
+  outbox = floor[iterout]
+  iterout += 1
+}

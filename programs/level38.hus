@@ -1,0 +1,51 @@
+# Digit Exploder
+#
+# Grab each number from the
+# INBOX, and send its digits to
+# the OUTBOX. For example,
+# 123 becomes 1, 2, 3.
+
+floor size 12 reserve 5-5
+
+let zero at floor[9]
+let ten at floor[10]
+let hundred labeled hundie at floor[11]
+
+let hundos
+let tens
+let ones
+let original labeled origi
+let tmp
+
+while {
+  ## init
+  original = inbox
+  tmp = original
+
+  ## hundos
+  hundos = tmp ~/ hundred
+
+  ## remain
+  tmp = tmp % hundred
+
+  ## tens
+  tens = tmp ~/ ten
+
+  ## ones
+  ones = tmp % ten
+
+  ## hotbox
+
+  ## 100s
+  if (hundos != 0) {
+    outbox = hundos
+  }
+
+  ## 10s
+  if (hundos != 0 || tens != 0) {
+    outbox = tens
+  }
+
+  ## 1s
+  outbox = ones
+}

@@ -1,0 +1,355 @@
+-- # Prime Factory
+-- #
+-- # For each thing in the INBOX,
+-- # send its PRIME FACTORS to the
+-- # OUTBOX in order from
+-- # smallest to largest.
+
+-- FloorInitNode
+  -- $accumulator -> floor[7]
+  -- $iterator -> null
+
+-- LetStatementNode
+  -- zero -> floor[24]
+
+-- LetStatementNode
+  -- one -> floor[23]
+
+-- LetStatementNode
+  -- two -> floor[22]
+
+-- LetStatementNode
+  -- original -> floor[0]
+
+-- LetStatementNode
+  -- factor -> floor[1]
+
+-- LetStatementNode
+  -- divisor -> floor[2]
+
+-- LetStatementNode
+  -- tmp -> floor[3]
+
+COMMENT 0 -- ## init
+
+-- AssignmentStatementNode
+  -- read
+  COPYFROM 24 --$zero
+  -- write
+  COPYTO 23 --$one
+
+-- IncrementAssignmentExpressionNode
+BUMPUP 23 --$one
+
+-- AssignmentStatementNode
+  -- read
+  COPYFROM 23 --$one
+  -- write
+  COPYTO 22 --$two
+
+-- IncrementAssignmentExpressionNode
+BUMPUP 22 --$two
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  COMMENT 1 -- ## loop
+
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$original
+
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 0 --$original
+    -- write
+    COPYTO 1 --$factor
+
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 22 --$two
+    -- write
+    COPYTO 2 --$divisor
+
+  -- WhileStatementNode
+  JUMP condition01
+  loop01:
+    COMMENT 2 -- ## mod x
+
+    -- AssignmentStatementNode
+      -- read
+      -- ModuloExpressionNode
+        -- set the remainder
+        COPYFROM 1 --$factor
+        COPYTO 5 --$$remainder
+        -- zero the floored quotient
+        COPYFROM 1 --$factor
+        COPYTO 6 --$$quotient
+        SUB 6 --$$quotient
+        COPYTO 6 --$$quotient
+        -- divide
+        -- WhileStatementNode
+        JUMP condition02
+        loop02:
+          -- AssignmentStatementNode
+            -- read
+            -- SubtractionExpressionNode
+            COPYFROM 2 --$divisor
+            COPYTO 7 --$$accumulator
+            COPYFROM 5 --$$remainder
+            SUB 7 --$$accumulator
+            -- write
+            COPYTO 5 --$$remainder
+
+          -- IncrementAssignmentStatementNode
+          BUMPUP 6 --$$quotient
+
+          condition02:
+          -- GreaterThanOrEqualToConditionNode
+          COPYFROM 5 --$$remainder
+          -- compare 0
+          JUMPN break02
+          JUMP loop02
+        break02:
+        -- adjust quotient
+        BUMPDN 6 --$$quotient
+        -- adjust remainder
+        COPYFROM 2 --$divisor
+        ADD 5 --$$remainder
+        COPYTO 5 --$$remainder
+        -- read remainder
+        COPYFROM 5 --$$remainder
+      -- write
+      COPYTO 3 --$tmp
+
+    COMMENT 3 -- ## div x?
+
+    -- IfStatementNode
+    -- start03
+      -- condition03
+        -- EqualsConditionNode
+        COPYFROM 3 --$tmp
+        -- compare 0
+        JUMPZ if03
+        JUMP else03
+      if03:
+        -- block
+        COMMENT 4 -- ## is div
+
+        -- AssignmentStatementNode
+          -- read
+          COPYFROM 2 --$divisor
+          -- write
+          OUTBOX
+
+        COMMENT 5 -- ## factor
+
+        -- AssignmentStatementNode
+          -- read
+          -- FlooredDivisionExpressionNode
+            -- set the remainder
+            COPYFROM 1 --$factor
+            COPYTO 5 --$$remainder
+            -- zero the floored quotient
+            COPYFROM 1 --$factor
+            COPYTO 6 --$$quotient
+            SUB 6 --$$quotient
+            COPYTO 6 --$$quotient
+            -- divide
+            -- WhileStatementNode
+            JUMP condition04
+            loop04:
+              -- AssignmentStatementNode
+                -- read
+                -- SubtractionExpressionNode
+                COPYFROM 2 --$divisor
+                COPYTO 7 --$$accumulator
+                COPYFROM 5 --$$remainder
+                SUB 7 --$$accumulator
+                -- write
+                COPYTO 5 --$$remainder
+
+              -- IncrementAssignmentStatementNode
+              BUMPUP 6 --$$quotient
+
+              condition04:
+              -- GreaterThanOrEqualToConditionNode
+              COPYFROM 5 --$$remainder
+              -- compare 0
+              JUMPN break04
+              JUMP loop04
+            break04:
+            -- adjust quotient
+            BUMPDN 6 --$$quotient
+            -- adjust remainder
+            COPYFROM 2 --$divisor
+            ADD 5 --$$remainder
+            COPYTO 5 --$$remainder
+            -- read quotient
+            COPYFROM 6 --$$quotient
+          -- write
+          COPYTO 1 --$factor
+        JUMP end03
+      else03:
+        -- block
+        COMMENT 6 -- ## not div
+
+        -- IncrementAssignmentExpressionNode
+        BUMPUP 2 --$divisor
+    end03:
+
+    condition01:
+    -- GreaterThanConditionNode
+    COPYFROM 1 --$factor
+    COPYTO 7 --$$accumulator
+    COPYFROM 23 --$one
+    SUB 7 --$$accumulator
+    JUMPN loop01
+    JUMP break01
+  break01:
+
+  condition00:
+  JUMP loop00
+break00:
+
+-- init
+DEFINE COMMENT 0
+eJztjSEOwjAYhVtVh52rZIqgeoSGBE9qKpfUTEyQ7BCISQ6A2BGWcIFaUL3C
+bgCuUD64BNlL2i9/3+v790IIKbpKvu+bkqJo+5Qi53K6ijl/Nczikx/m4t5V
+zmWeVsHC6QTrCzxfC51OvrBew8cGOr07FkYDneZ/NNBpeqKBTtMXDQyWvcGS
+D5ZcsPjJ4yfPPnVgT/JwbGDf/t7pSZ6evoVjQ9+iRf+oF12wTK4+;
+
+-- loop
+DEFINE COMMENT 1
+eJztzyEOgzAYhuGi6ibHDUCRKYJCLlVIHJkimUU0mcEhJhCTHGCCI5DsAtht
+hiPATsBct+7lEBN8Sfuk6d8v6UEI4YjCdb77XTrCZvd2hDF2FS5ns+Qyid/8
+ZbK3D2mMPXebOcDjHocMlcauRv9qPW+bm3UOmOtD9D3mmxh9j3dNjL7H+ybG
+OaCnD1Gm9AwZRgk9bY5RQk+bY5TQ0+YoU3qGDN2SnrFCpZf/1Kj08q8alabH
+LXGsUGn6lJZPPL3EmjV/kg8izGBo;
+
+-- mod x
+DEFINE COMMENT 2
+eJzt0KGOwjAcgPFO1VVeHfKmmpOoyWUKuWCQS2YQhCzBzCMQyIlJBMnJmSa8
+wCwoXmFv0HM9yldeAM0/2X5pt3zLuhVCJGKjk8f9KhMR5ucvEd6Ha6NZ+zjH
+STzfP07h6U16H9ZW3VfB/RcuZ5h+o1VFwz46g1bZA/voDFqVnthHZ9Cq7sI+
+OoN1znfmC+wy+rLELqMrS+wyerLEOqczX6BuncE6R7q7Nb2iQd3iuaKrWzxX
+dHWLuzXdonn143/0dMchnltPbxwwPcVz+Y3n1NMbh3g+PZ1xwM985p35B6BG
+ct0+;
+
+-- div x?
+DEFINE COMMENT 3
+eJztkK0OwjAURjs1h9wcclMEtfAECwpJZpBLipzgDSYmEAjExCRiCXJmySSm
+FtQeYXuD4QrllEfA8SXtyc3td3+6F0I4IvOd9313HWG0fDpCa3Myn1hbnUbx
+eX8aTfbham3iMJgWUMaw3xkW3vpgmMxhGMB21h6JYTsLL8Sw8MoOHwwDqCLq
+qwifinivIvIypm+dQhnTr06hjPHVKVxt8Pc76G6pM+T4kwoOud2jsvMf8Rdn
+OOT4kwoOuZ2/snM3/E/ZwenKHvL2JX3Kjvqqsfs1+P/665d6AR/6bVs+;
+
+-- is div
+DEFINE COMMENT 4
+eJztzyEOwjAUxvFOzWHrJplqUDsC4QQLZgKxBFOBIKmZR0xMIBBIxJJdoAkX
+mAW1K3CD4grlv50Bs5dsvzSv72veTggRiYOMvv9HHIlQq3ckvA/fQXL2YzUv
+8bvfvEL3GXsfznaxX6OtMb3h5R5Ml0MRdAr7DLfJ5kifOaewz5jfJtM8OoVG
+O4W8azR5Q0FeW6LRGOfkGo1xTr7ROBTktuWUj7IiX1bMyYr7sqJv63GvDm3N
+e65DW497dXg6M5/exv2u5Mw11z/rA3NLZfo+;
+
+-- factor
+DEFINE COMMENT 5
+eJzt0CFvg0AYxvFDnUOurnJVy1SDQhIUGoNscqaigqQfYKLJEBUViMoJEmQN
+CRKD3c6Qyal1n4C5227/d19i2ZvAL8C9T/LwqJQK1G4RfN+fdaD83H8Gyjl/
+7RY8O5njVf2cP1791xftnH8+3Mx33nyJXWgS7+oWu3AqMC05j/kSu7CrcPWE
+de+tY/ZNglFGTh2zZxKMMhzX5EQZjmvyogzrmFyTYJRhsyF3v8WpIC8tcSrI
+mwpy0hKbDfv7LXaV9K3IeX+QfpX0Pknv8+976V2Rl5/xcCJvvEjfHudWeg84
+t+ybAeeWfTPgeJH/2KO25DRv0vcDtZWer6gtedqSoy37//M35wtPF5CF;
+
+-- not div
+DEFINE COMMENT 6
+eJztkKFuwzAURR0UZriywRVNQ5FRYRQUXFIYKaSgIFL4SMBAQUFAYUAk/4Al
+/0CkoLUkGhxrvsBj2bzjfsX2pPjo2X4nun4VQkTisIp+1vc4Er5eviKxLP47
+rOiXUMeb+L1/vPnTS7wsvjdy2nk2D3D7CI3MKs/1EzTSvNFDI9cdPTSytfSw
+3eApUzgkeFQOhwSPyuGQ4FE5bDd4yhT2RZlCfNMOT1/Aeg+z6r6Pty/wZRWs
+9/icds8Qr9Mh/znk7qDTsDnhcxo2J3xOw+055O/u/vAOFn9rmWttyGc5VyP/
+rWeoxpBnDu81MlfPML4y33/C6QPPf/3N+gbUfYsi;
+
+-- zero
+DEFINE LABEL 24
+eJztzyEOgzAUxvFWcYQeATmJQi4oJJmZJJlBIEgw+IkKxARicgKPaYLEkKA2
+tStwhLlu3b+7whQvaX9pXvs1LxdCSFEq+dnvgRSudi8prHWrVJytr3YV3/vt
+6rqPwFp37uLn0XnaY5RikP1MKvpG08cuDm/YjfQxSjHIsC7ISSrsc/JUg31O
+Xl1gUqFqsM/5py7ISypUDRpN7uGK4Q2NJv98QaPJM5o8o3nfjX7+CeeB+9GC
+8+DnXnAeeB8tfv7Rzz/hVlv9s96vGG1o;
+
+-- one
+DEFINE LABEL 23
+eJztzCEOwjAUgOFW9Qg9QiXHwJPMTSIREySYOkTFxERFD1BBMjmzpBeYBbUj
+sBsMVyg/lyDZS7ovL13/gxBCikbLz/eupCize0mRczmNZs+/6Rbx/b9byu1D
+5Vz2uZ7r4u2Iqtqfi5cTqmps2VFVJrLjXIfEe9SWzvOKY4va0nMetaXnPGpL
+z3nUlp7zuPZ0pgFNpBMSmkhn7XEaMCQ0ke7a05sGDAm32eYf5w3Nxl4P;
+
+-- two
+DEFINE LABEL 22
+eJztzC8OwjAchuFW7Qg7QiWSE5AqEgxukgQ7UYmbqJiYqNgBKkgmZ5b0AlhQ
+O8J2g+EK5YVDkOxL2ie//vkOQggpyly+93smRcrmKUWMaZU5c/ymmcXnfTOn
+20cWY5qz43mHY5Hc7rVhxrHA6+l3PtSoPOc4Fm1IakOPdagN/6xDbfg/VWgd
+akPPVKF1mF/oHWpcOnpvPSpPbxtQefragMrT0wZcOnpuPa5Z8895AZ5LV7o+;
+
+-- original as origi
+DEFINE LABEL 0
+eJztjyEOwjAUhlu1I+wIk8ieoEFN4hC4mYqJJTU4xARiYqIHmENiSHoBkirA
+cATgBOAK5RtnwOxP2i8v770v7UoIIUWdy899yqRImb2kiDGdOqeOY7q7+M53
+99Q9ZzGmWpXXZWK2gJWeN4nXJaz0YUsNK10M1FCVzrMPrcGTr+FtA63BN2+g
+NfiswWMN+21faUi/7em3Pf3nDt9xD52HxYDXeVgM7DsPnzs8xz10/ke8zmcX
+5uyDOagC71EBjwrjvwN7U6b8M29Hsmv5;
+
+-- factor
+DEFINE LABEL 1
+eJzt0CFvg0AYxvFD3TcAN1lUM4mqJCjkpWaSBFNRQYKpJ1lFBQJRicBjmiBr
+SFCbuiDnOjnVObbb/92XWPYm8Atw75M8PCulPLUPvO/7i/aUm8dPTy2Lu/YB
+z4vM6aZ+zp9u7uurXhb3vH24r53hCis/j533NVa+fcKk4DyGK6z8yxHDFpvB
+mcfsRylqQ04esxelqA02G3K0wWZDnjaYx+RGKWqD5Y7cpMAuIy84YJeR12Xk
+BAcsd+wnBVa19K3JuRylXy29z9K7/X0vvWvywha3Z/KaQfpeceyl94Rjz340
+4dizH03YDPIfr2hncsp36fuBdpaeb2hn8uxMjp3Z/5+/OV/oa4z3;
+
+-- divisor
+DEFINE LABEL 2
+eJztkCFvhEAQhRfFP7h1J4silauQzSnkBXOyCQZxogkG2QSBOHECgUScx5Ag
+z5CgWrVZWXeVVdRtu/22v6KdBL5MZt4bHs9CiEAcZfD9fgkD4er+MxDWuuco
+6a2v00387J9ubvoaWuv6NV5jmD9AfXDMtrsnx+gOrjGsN2NDD+tN1NPDbNtO
+6OAawzbBv03QtQn7bcJcpdwtC6hS7pUFVCm6soDhHv3lEeoDPrLijqzYkxVz
+WTGvzz5fB6Mejo3Pd0aXdTDq0Y/Nrx5mnc81oc+vcB789y5wHvBRC5wH/NTi
+80/45Feojf8P73D3AbXB7/IGtcFPG5/foP+vv1VfUc+P9g++;
+
+-- tmp
+DEFINE LABEL 3
+eJztzSEOwjAYhuFW7Qg7QiWSE5AqJG6SBItogsFVTExMTOwAFSSTM0t2gVnA
+7AgdJxiuUF64A2Jf0j752+ZrJoSQ4pjK935NpIhZPaUIIa5jyhy+KSfxeV9O
+8faWhBDnZHfY4JhF11ttmHHM8LL/nXcFKsc5jlndR7WhJz2jt9gVqA093mJe
+oTb0eot5hdrQ7y3mFWrDf95iXuHc8M/QonL01z0qR2/do3L0zQ0OLSpHn3LJ
+HU8PsWTJn+UFfRRj8A++;
+
+-- $remainder as $rem
+DEFINE LABEL 5
+eJzt0CFuwzAUxnEH+Qg5QuBQFVQYFQVOIYOWQgYKKk2axgMCCgICAgPMTSIV
+mlga2kx2hR5hzJv3f2U7Qp+U/PRk+z3pe1VKFepYFr//D12oXA/fhUopf8eS
+Pkmdr+rv/vmaTz91Srnvm77JzvuvJ3qsW9SPGHaHE+c477eRHuv21lcr7zDs
+5gv3sW+wbm+9jllr2HM4YfmG1rDv5RmtYY81zLeGOcPE/W7BbeR+teI28m6Y
+sFuwWnEbmTdMzOsWrFYMjrnzRXLyktO75OMkH486YnCSi0cdMTj29V7yipKX
+k1w86oj3utd/9QN6LIPu;
+
+-- $quotient as $quot
+DEFINE LABEL 6
+eJzt0SFuwzAUxnEH+Qi+QY2qomoosNoJwgIrlQQUVDIJG7C0goIAHyAgUmFJ
+pVyg0tBqEhUWrTtBxrx5f+cS056U/PRi57Py8iqEyMRWZT/3d5mJWIuvTIQQ
+r62iD6kOD/G7//CIq1cZQuwvy80qOs6Hkh5djpsV6tnzjnUc5+c9Pbp86nXL
+e6hnrmc/Xpbo8qmXPjqUnNOtURacYyqUBfmmQlmQbyocSvK6NZpqknxTmc+o
+qsm3DaqafNugqsm3DaqafNvgxwu55z3aJn3fMc3vlObVkud61G2aU4+6Jc/1
+OB7TPE4oPf9FevKe3tIcPA437O7T8zQXT153T3O5kfdff7O+AakWlL0+;
+
+-- $accumulator as $acc
+DEFINE LABEL 7
+eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
+wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
+u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
+LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
+fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;
