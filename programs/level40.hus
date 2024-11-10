@@ -5,7 +5,7 @@
 # OUTBOX in order from
 # smallest to largest.
 
-floor size 25 reserve 4-4
+floor size 25
 
 let zero at floor[24]
 let one at floor[23]
@@ -14,7 +14,8 @@ let two at floor[22]
 let original labeled origi
 let factor
 let divisor
-let tmp
+let quotient labeled quot
+let remainder labeled rem
 
 ## init
 one = zero
@@ -28,18 +29,26 @@ while {
   factor = original
   divisor = two
 
+  ## factor
   while (factor > one) {
-    ## mod x
-    tmp = factor % divisor
-    ## div x?
-    if (tmp == 0) {
-      ## is div
+    ## div x
+    quotient, remainder = factor ~/ divisor
+
+    ## is div?
+    if (remainder == 0) {
+      ## is div!
       outbox = divisor
-      ## factor
-      factor = factor ~/ divisor
+      factor = quotient
     } else {
       ## not div
-      divisor += 1
+      if (divisor == two) {
+        ## bump 1
+        divisor += 1
+      } else {
+        ## bump 2
+        divisor += 1
+        divisor += 1
+      }
     }
   }
 }

@@ -15,8 +15,10 @@ let first
 let second
 
 while {
+  ## init
   first = inbox
   second = inbox
 
+  ## div
   outbox = first % second
 }

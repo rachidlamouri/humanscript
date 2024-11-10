@@ -41,11 +41,11 @@ loop00:
     -- write
     COPYTO 0 --$tmp
 
-  COMMENT 1 -- ## column
+  COMMENT 1 -- ## div
 
-  -- AssignmentStatementNode
+  -- DualAssignmentStatementNode
     -- read
-    -- ModuloExpressionNode
+    -- FlooredDivisionExpressionNode
       -- set the remainder
       COPYFROM 0 --$tmp
       COPYTO 4 --$$remainder
@@ -84,60 +84,17 @@ loop00:
       COPYFROM 15 --$four
       ADD 4 --$$remainder
       COPYTO 4 --$$remainder
-      -- read remainder
-      COPYFROM 4 --$$remainder
-    -- write
-    COPYTO 1 --$column
-
-  COMMENT 2 -- ## row
-
-  -- AssignmentStatementNode
-    -- read
-    -- FlooredDivisionExpressionNode
-      -- set the remainder
-      COPYFROM 0 --$tmp
-      COPYTO 4 --$$remainder
-      -- zero the floored quotient
-      COPYFROM 0 --$tmp
-      COPYTO 5 --$$quotient
-      SUB 5 --$$quotient
-      COPYTO 5 --$$quotient
-      -- divide
-      -- WhileStatementNode
-      JUMP condition02
-      loop02:
-        -- AssignmentStatementNode
-          -- read
-          -- SubtractionExpressionNode
-          COPYFROM 15 --$four
-          COPYTO 6 --$$accumulator
-          COPYFROM 4 --$$remainder
-          SUB 6 --$$accumulator
-          -- write
-          COPYTO 4 --$$remainder
-
-        -- IncrementAssignmentStatementNode
-        BUMPUP 5 --$$quotient
-
-        condition02:
-        -- GreaterThanOrEqualToConditionNode
-        COPYFROM 4 --$$remainder
-        -- compare 0
-        JUMPN break02
-        JUMP loop02
-      break02:
-      -- adjust quotient
-      BUMPDN 5 --$$quotient
-      -- adjust remainder
-      COPYFROM 15 --$four
-      ADD 4 --$$remainder
-      COPYTO 4 --$$remainder
       -- read quotient
       COPYFROM 5 --$$quotient
     -- write
     COPYTO 2 --$row
+    -- second read
+    -- read remainder
+    COPYFROM 4 --$$remainder
+    -- second write
+    COPYTO 1 --$column
 
-  COMMENT 3 -- ## out
+  COMMENT 2 -- ## out
 
   -- AssignmentStatementNode
     -- read
@@ -162,25 +119,15 @@ bgCuUD64BNlL2i9/3+v790IIKbpKvu+bkqJo+5Qi53K6ijl/Nczikx/m4t5V
 zmWeVsHC6QTrCzxfC51OvrBew8cGOr07FkYDneZ/NNBpeqKBTtMXDQyWvcGS
 D5ZcsPjJ4yfPPnVgT/JwbGDf/t7pSZ6evoVjQ9+iRf+oF12wTK4+;
 
--- column
+-- div
 DEFINE COMMENT 1
-eJzt0K9uhEAQx/FF4U4errKopoqgTpJVaAyyCfbEyrqKEyuuDoE8QYKsIeEF
-SFa1NaQS1XuDraPdfuclmnQT+IQ/85vMPCulInVMop/7axypcO6/IrVt4Tom
-PG9yzlf1+//5Gr6+xdsWnk/7pQ5WNzjutAmmtzjuRovphfd42rcTddgeqG8K
-nDPq8xLnjJy8xDkjJy+xPZDTFLjU/g6bAsldavKWmpylpr5/oE4bmcOiNjKH
-RW1kHovaUD9aTB7J+XzC0cqcHXnpBf0gc77I/jry/YDthFVHHz9gO2HV0c8P
-Mv+EVUc/P8heJ8wdfeJ32cMH5o4+/Sr7duT3q+zbyX5W2bcjr1/x//zt8w3A
-rp5c;
-
--- row
-DEFINE COMMENT 2
-eJztzCEOwjAYhuFWzU1Sh2QStUxNLjNMYypJZiYmlszUIxCTOwCCIzThArWg
-eoUdAVcoL6cg+5L2SdP//w5CCCl6JT/3I5EiZv+SIoR4esU7/DIt4js/LfH3
-mYQQ3zb1OnrcYrZDm9ZD9LxBm9oLZlec79G5ZL6t0OXMFw26nL2iQZezXzQ4
-l/S0FXpNjzLoNT3KoNf0jB0qg17TN3aoDN5O9NYDrlnzT3kD3vNPPg++;
+eJxzYWBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfx1dW+60LodFcIfT0GRLeLuZeA6HA5CK2uBqG3823vhvAh9HY+9cUQPoRu
+F5u+C6IPQqurQejjphDzj5tC9B03hag/bgqRT3eF2Ls8BUKnu0LsW54CodNd
+IfqWp0Boc1+I/usxEJo9FGLOKBgFIwkAABOmQ7Q+;
 
 -- out
-DEFINE COMMENT 3
+DEFINE COMMENT 2
 eJztzCEOgzAUgOFW4ZDgJoecaqomCaqzM0gSDAJBwhEQE0gOMMERmuwCtZvi
 Chxhrlv3b5dYeEn58gr8JyGEFG0q3897JEWYw1MK78NpU3b/nXEVn+/HNbx9
 RN6HfUiWMnjeoY2LLpjt0cb2wo42zq7sOCTTjf/RKTraoFN0tEGn6GiDTtHR

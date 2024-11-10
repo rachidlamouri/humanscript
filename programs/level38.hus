@@ -23,16 +23,10 @@ while {
   tmp = original
 
   ## hundos
-  hundos = tmp ~/ hundred
+  hundos, tmp = tmp ~/ hundred
 
-  ## remain
-  tmp = tmp % hundred
-
-  ## tens
-  tens = tmp ~/ ten
-
-  ## ones
-  ones = tmp % ten
+  ## rest
+  tens, ones = tmp ~/ ten
 
   ## hotbox
 

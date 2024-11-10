@@ -1,6 +1,7 @@
 import P from 'parsimmon';
 import {
   AssignmentStatementNode,
+  DualAssignmentStatementNode,
   ReadableAssignmentExpressionNode,
 } from './nodes/statements/assignmentStatementNode';
 import { createLanguage, parserDebugger, ul } from '../utils/parserUtils';
@@ -123,6 +124,9 @@ type Language = {
   rightComparable: RightComparable;
 
   assignmentStatement: AssignmentStatementNode;
+  singleAssignmentStatement: AssignmentStatementNode;
+  dualAssignmentStatement: DualAssignmentStatementNode;
+  singleAssignmentExpression: [WriteableReference, ReadableExpression];
   readableExpression: ReadableExpression;
   readableAssignmentExpression: ReadableAssignmentExpressionNode;
   swapStatement: SwapStatementNode;
@@ -531,6 +535,45 @@ const language = createLanguage<Language>(parserDebugger, {
   },
 
   assignmentStatement: (l) => {
+    return P.alt<Language['assignmentStatement']>(
+      l.dualAssignmentStatement,
+      l.singleAssignmentStatement,
+    );
+  },
+  singleAssignmentStatement: (l) => {
+    return l.singleAssignmentExpression.map((result) => {
+      const writeable = result[0];
+      const readable = result[1];
+      return new AssignmentStatementNode(writeable, readable);
+    });
+  },
+  dualAssignmentStatement: (l) => {
+    return P.seq(
+      // -
+      l.writeableReference,
+      P.optWhitespace,
+      P.string(','),
+      P.optWhitespace,
+      l.singleAssignmentExpression,
+    ).map((result) => {
+      const firstWriteable = result[0];
+      const secondWriteable = result[4][0];
+      const readable = result[4][1];
+
+      if (readable instanceof FlooredDivisionExpressionNode) {
+        return new DualAssignmentStatementNode(
+          firstWriteable,
+          secondWriteable,
+          readable,
+        );
+      }
+
+      throw new Error(
+        `Dual assignment is only allowed with floor division "~/". Attempted to dual read from a "${readable.constructor.name}"`,
+      );
+    });
+  },
+  singleAssignmentExpression: (l) => {
     return P.seq(
       // -
       l.writeableReference,
@@ -538,11 +581,7 @@ const language = createLanguage<Language>(parserDebugger, {
       P.string('='),
       P.whitespace,
       l.readableExpression,
-    ).map((result) => {
-      const writeable = result[0];
-      const readable = result[4];
-      return new AssignmentStatementNode(writeable, readable);
-    });
+    ).map((result) => [result[0], result[4]]);
   },
   readableExpression: (l) => {
     return P.alt<Language['readableExpression']>(
