@@ -17,17 +17,17 @@
 
 floor size 15
 
-let n at floor[0]
-let k at floor[1]
-let a at floor[2]
-let e at floor[3]
-let r at floor[4]
-let d at floor[5]
-let o at floor[6]
-let l at floor[7]
-let y at floor[8]
-let j at floor[9]
-let eight at floor[12]
+let n at 0
+let k at 1
+let a at 2
+let e at 3
+let r at 4
+let d at 5
+let o at 6
+let l at 7
+let y at 8
+let j at 9
+let eight at 12
 
 let tmp
 

@@ -9,7 +9,7 @@
 
 floor size 25 reserve 0-14
 
-let zero at floor[24]
+let zero at 24
 let tmp
 let index
 let length

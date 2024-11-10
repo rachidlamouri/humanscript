@@ -8,7 +8,7 @@
 floor size 15 reserve 0-9
 
 let tmp
-let zero at floor[14]
+let zero at 14
 let index
 
 while {

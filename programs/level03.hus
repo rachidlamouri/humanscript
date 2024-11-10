@@ -14,9 +14,9 @@
 
 floor size 6
 
-let b at floor[4]
-let u at floor[0]
-let g at floor[3]
+let b at 4
+let u at 0
+let g at 3
 
 outbox = b
 outbox = u

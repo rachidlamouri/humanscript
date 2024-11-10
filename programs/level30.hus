@@ -11,30 +11,30 @@
 
 floor size 25
 
-let g at floor[0]
-let e0 at floor[1]
-let t00 at floor[2]
-let z000 at floor[3]
-let t01 at floor[4]
-let h at floor[5]
-let z001 at floor[6]
-let t10 at floor[7]
-let a00 at floor[8]
-let r at floor[9]
-let z010 at floor[10]
-let a01 at floor[11]
-let w at floor[12]
-let a10 at floor[13]
-let k at floor[14]
-let e1 at floor[15]
-let z011 at floor[16]
-let i at floor[17]
-let s at floor[18]
-let z100 at floor[19]
-let x00 at floor[20]
-let x01 at floor[21]
-let x10 at floor[22]
-let z101 at floor[23]
+let g at 0
+let e0 at 1
+let t00 at 2
+let z000 at 3
+let t01 at 4
+let h at 5
+let z001 at 6
+let t10 at 7
+let a00 at 8
+let r at 9
+let z010 at 10
+let a01 at 11
+let w at 12
+let a10 at 13
+let k at 14
+let e1 at 15
+let z011 at 16
+let i at 17
+let s at 18
+let z100 at 19
+let x00 at 20
+let x01 at 21
+let x10 at 22
+let z101 at 23
 
 let tmp
 

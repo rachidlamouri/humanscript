@@ -14,7 +14,7 @@
 
 floor size 10
 
-let zero at floor[9]
+let zero at 9
 
 let first
 let second

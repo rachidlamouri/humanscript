@@ -22,7 +22,7 @@ FLOOR_INDEX     : POS_INT
 LET             : let ID OPT_LABEL OPT_FLOOR_SLOT
 OPT_LABEL       : labeled WORD | ε
 OPT_FLOOR_SLOT  : DIR_FLOOR_SLOT | ε
-DIR_FLOOR_SLOT  : at floor [ POS_INT ]
+DIR_FLOOR_SLOT  : at POS_INT
 
 # control
 WHILE           : while OPT_COND_EXP BLOCK

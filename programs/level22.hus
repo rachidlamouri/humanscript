@@ -14,8 +14,8 @@
 
 floor size 10 reserve 3-4
 
-let zero at floor[9]
-let one at floor[8]
+let zero at 9
+let one at 8
 
 let first
 let second

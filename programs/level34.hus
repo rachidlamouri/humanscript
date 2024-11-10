@@ -6,12 +6,12 @@
 
 floor size 10 reserve 0-5
 
-let a at floor[0]
-let e at floor[1]
-let i at floor[2]
-let o at floor[3]
-let u at floor[4]
-let zero at floor[5]
+let a at 0
+let e at 1
+let i at 2
+let o at 3
+let u at 4
+let zero at 5
 
 let tmp
 

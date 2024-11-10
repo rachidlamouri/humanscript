@@ -7,9 +7,9 @@
 
 floor size 25
 
-let zero at floor[24]
-let one at floor[23]
-let two at floor[22]
+let zero at 24
+let one at 23
+let two at 22
 
 let original labeled origi
 let factor

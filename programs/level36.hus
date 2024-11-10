@@ -8,8 +8,8 @@
 # OUTBOX.
 
 floor size 25 reserve 0-17
-let zero at floor[23]
-let ten at floor[24]
+let zero at 23
+let ten at 24
 
 let tmp
 let iterout
