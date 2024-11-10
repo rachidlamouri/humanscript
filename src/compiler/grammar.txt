@@ -17,7 +17,7 @@ IF              : if CONDITION_EXP BLOCK OPT_ELSE
 ASSIGN          : WRITE_REF = READ_EXP
 INC_ASSIGN      : WRITE_REF += 1
 DEC_ASSIGN      : WRITE_REF -= 1
-
+SWAP            : FLOOR_REF <-> FLOOR_REF
 OPT_LABEL       : labeled WORD | ε
 OPT_FLOOR_SLOT  : DIR_FLOOR_SLOT | ε
 DIR_FLOOR_SLOT  : at floor [ POS_INT ]

@@ -1,0 +1,233 @@
+-- # Three Sort
+-- #
+-- # For each THREE THINGS in the
+-- # INBOX, send them to the
+-- # OUTBOX in order from
+-- # smallest to largest.
+
+-- FloorInitNode
+  -- $accumulator -> floor[3]
+  -- $iterator -> null
+
+-- LetStatementNode
+  -- a -> floor[0]
+
+-- LetStatementNode
+  -- b -> floor[1]
+
+-- LetStatementNode
+  -- c -> floor[2]
+
+-- LetStatementNode
+  -- tmp -> floor[5]
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  COMMENT 0 -- ## init
+
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$a
+
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 1 --$b
+
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 2 --$c
+
+  COMMENT 1 -- ## sort
+
+  -- WhileStatementNode
+  JUMP condition01
+  loop01:
+    COMMENT 2 -- ## chk a b
+
+    -- IfStatementNode
+    -- start02
+      -- condition02
+        -- GreaterThanConditionNode
+        COPYFROM 0 --$a
+        COPYTO 3 --$$accumulator
+        COPYFROM 1 --$b
+        SUB 3 --$$accumulator
+        JUMPN if02
+        JUMP else02
+      if02:
+        -- block
+        COMMENT 3 -- ## swp a b
+
+        COPYFROM 0 --$a
+        COPYTO 3 --$$accumulator
+        COPYFROM 1 --$b
+        COPYTO 0 --$a
+        COPYFROM 3 --$$accumulator
+        COPYTO 1 --$b
+        JUMP end02
+      else02:
+        -- block
+    end02:
+
+    COMMENT 4 -- ## chk b c
+
+    -- IfStatementNode
+    -- start03
+      -- condition03
+        -- GreaterThanConditionNode
+        COPYFROM 1 --$b
+        COPYTO 3 --$$accumulator
+        COPYFROM 2 --$c
+        SUB 3 --$$accumulator
+        JUMPN if03
+        JUMP else03
+      if03:
+        -- block
+        COMMENT 5 -- ## swp b c
+
+        COPYFROM 1 --$b
+        COPYTO 3 --$$accumulator
+        COPYFROM 2 --$c
+        COPYTO 1 --$b
+        COPYFROM 3 --$$accumulator
+        COPYTO 2 --$c
+        JUMP end03
+      else03:
+        -- block
+    end03:
+
+    condition01:
+    -- OrConditionNode
+      -- left
+      -- GreaterThanConditionNode
+      COPYFROM 0 --$a
+      COPYTO 3 --$$accumulator
+      COPYFROM 1 --$b
+      SUB 3 --$$accumulator
+      JUMPN loop01
+      JUMP condition01sub00
+    condition01sub00:
+      -- right
+      -- GreaterThanConditionNode
+      COPYFROM 1 --$b
+      COPYTO 3 --$$accumulator
+      COPYFROM 2 --$c
+      SUB 3 --$$accumulator
+      JUMPN loop01
+      JUMP break01
+    -- /OrConditionNode
+  break01:
+
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 0 --$a
+    -- write
+    OUTBOX
+
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 1 --$b
+    -- write
+    OUTBOX
+
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 2 --$c
+    -- write
+    OUTBOX
+
+  condition00:
+  JUMP loop00
+break00:
+
+-- init
+DEFINE COMMENT 0
+eJztjSEOwjAYhVtVh52rZIqgeoSGBE9qKpfUTEyQ7BCISQ6A2BGWcIFaUL3C
+bgCuUD64BNlL2i9/3+v790IIKbpKvu+bkqJo+5Qi53K6ijl/Nczikx/m4t5V
+zmWeVsHC6QTrCzxfC51OvrBew8cGOr07FkYDneZ/NNBpeqKBTtMXDQyWvcGS
+D5ZcsPjJ4yfPPnVgT/JwbGDf/t7pSZ6evoVjQ9+iRf+oF12wTK4+;
+
+-- sort
+DEFINE COMMENT 1
+eJztjyEOgzAYRluFmxxuEuQUQSEJCo2pXIKZQJDsABMIBAKBQE7sCE12Aeym
+eoRxhLlu3WN3mOBL2pf26/+SKiGEFJUvP/vdk8Jl/5LCWrcqn7Nd0s3i+76b
+XfvwrHXnZmuUY7GDYQD1JqvpdUsPwyC80A83eljs4JAwX6ZwivDEOZwiPHEO
+pwhfnMMhwVOm0Cg8pyPMamgUvusBGoXPKDxGMa/bMoXMPc+81+3yvx4W4+8e
+j27xFCNsenxr1vxT3lBBYSU+;
+
+-- chk a b
+DEFINE COMMENT 2
+eJzt0CFuwzAUxnEHhRW2bLBB05BlNFgZFZcYVioZKLC0GyxgoKCgIDAgki8Q
+aRewZLSWWIVlvYHHsnl/32J7UvKTk/h78XsTQlRiv6h+7p91JXI9fVVimvK1
+X7CeSh3u4vf7wz2/PdfTlNftPJrs5gHHmbbZZonjbHzHpuc5tvPTB/vQy90K
+yfGS/V6y//SMuxV6SY5ao5fkqDVGkx6RXG0xGvK1xWjoM2zx9QWjoY+2GA19
+tMVo6KNtOUdHftNjcmUuXZlHj8lheyQ3OWyP5CaHm47cpsfkyvkC51KBPirQ
+RwVy60v5/yuqQP5wQxXIH25lfoHc+lLmdsX/+hv1DaHwjmI+;
+
+-- swp a b
+DEFINE COMMENT 3
+eJztkKFuwzAURR1kNriwwgZNQ9HQYBRUGIUURgopKIgUUr5JA4UFhQGWAkMq
+7QdMO5OosKz5gox5c8/7imlPco6sFx/73XelVKS2cfT7PetIhXr+jpT3YW1j
+9l5qf1P3//e30P3S3of92+O4DiwXMFnC00Pe0D990IfJMunoHz7pw3IBbcp5
+XUCb4tEFtCmeOoO6gDbFW2dQF/DwivdlBdsN3ryBpsIb76Cp8MU7aCo87Qbm
+DTQVPlNpB9vpPl9XZ4FzD+0guXT4517mGGB5lPcPktMRvx1g0nHP3Es+A9Ru
+foLco53k5vCOF5nnKvk5/O0kuTmZa5K8HN7xInNd4X/97foBjxaOrg++;
+
+-- chk b c
+DEFINE COMMENT 4
+eJzt0KGOwjAcx/FOzSHBnWTqcqqpOkmq0JhKEswJRJNz2AoEogKBnCDhBZbw
+Ak2mANMgcbzBzvWu9+1j8E+2T7q1v3/z3wghKrGeVH/vS12JXB8/lUgpP+sJ
+61Rq9xT/+3fP/Pdap5TXbhxNdvGG3UjbbDPFbtRtsWn5jm68P3MOg1zNkJwg
+OR8k5/efuJphkOSoOQZJjppjNMM7kqstRkO+thgNfY5L/P7CaOijLUZDH20x
+Gvpoi87Tz3n6OE++8+QtDmUuLTpP7nBC58kdTmU+vszngE2L9a3c+46qL/d/
+oOrJUz05xwfWtzKXO77qVbl+Ac97hcY+;
+
+-- swp b c
+DEFINE COMMENT 5
+eJzt0KFvg0AUx/FDnZscrrKnlikyNUlQlQQzeQmmooIEUzE3MVFZcRJxSWVN
+k/0DZzcMqawrfwFzbNfv+y+2l8Anlwc/Hu9VKZWoTZr83j91omI9fidqnuO1
+STnPUruruj2/u8bul57neH67H16i1QLNEk93RUP/9E4fzdJ09Pcf9LFaYMh4
+X5cYMnJ0iSEjp85RlxgycuscdYn7Z3KfVtiuyS0a9JbcdIvekpdu0Vty2jUW
+DXpLnre6x3a8/YebHrDOUfbjyDcdTgesnMx/lD058sMRK8d3TIfTAYezzH+R
+ffXktaPsq5f99DL/iMNZ5r7gf/3t+gHESYWz;
+
+-- a
+DEFINE LABEL 0
+eJzTYmBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxnzenu4Lo7d0Qun3y9RiIuHsJRBxCt0+G0OI127shfAgtXqO+GMKH0M+b
+p++C6IPQ7ZMh9CgYBaOA+gAAhYczjw++;
+
+-- b
+DEFINE LABEL 1
+eJzTYmBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxxWu+60LodFcIfT0GQruXgOjnzRB6ezeEFq/Z3g2i2ydDaPEa9cUQPoQW
+r5m+C6IPQm/vhtCjYBSMAuoDAN50MOw+;
+
+-- c
+DEFINE LABEL 2
+eJxTYmBgYGQoEGcEkhfYGRlAQP8HI8P//yBcIA7h/4eC/hcMYPX9L0CyF9n/
+/wfxnzdfjwHR27shtHiNewmIbp8MocVrtndDaPXFEHEI/bx5+i6IPgg9CkbB
+KKA/AAAwVSqt;
+
+-- tmp
+DEFINE LABEL 5
+eJztzSEOwjAYhuFW7Qg7QiWSE5AqJG6SBItogsFVTExMTOwAFSSTM0t2gVnA
+7AgdJxiuUF64A2Jf0j752+ZrJoSQ4pjK935NpIhZPaUIIa5jyhy+KSfxeV9O
+8faWhBDnZHfY4JhF11ttmHHM8LL/nXcFKsc5jlndR7WhJz2jt9gVqA093mJe
+oTb0eot5hdrQ7y3mFWrDf95iXuHc8M/QonL01z0qR2/do3L0zQ0OLSpHn3LJ
+HU8PsWTJn+UFfRRj8A++;
+
+-- $accumulator as $acc
+DEFINE LABEL 3
+eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
+wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
+u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
+LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
+fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;

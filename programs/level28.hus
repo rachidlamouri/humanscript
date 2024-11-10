@@ -1,0 +1,39 @@
+# Three Sort
+#
+# For each THREE THINGS in the
+# INBOX, send them to the
+# OUTBOX in order from
+# smallest to largest.
+
+floor size 10
+
+let a
+let b
+let c
+let tmp at floor[5]
+
+while {
+  ## init
+  a = inbox
+  b = inbox
+  c = inbox
+
+  ## sort
+  while (a > b || b > c) {
+    ## chk a b
+    if (a > b) {
+      ## swp a b
+      a <-> b
+    }
+
+    ## chk b c
+    if (b > c) {
+      ## swp b c
+      b <-> c
+    }
+  }
+
+  outbox = a
+  outbox = b
+  outbox = c
+}

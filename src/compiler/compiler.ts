@@ -64,6 +64,7 @@ import {
 } from './nodes/expressions/multiplicativeExpressionNode';
 import { FloorReferenceNode } from './nodes/references/floorReferenceNode';
 import { OrConditionNode } from './nodes/conditions/orConditionNode';
+import { SwapStatementNode } from './nodes/statements/swapStatementNode';
 
 type NestedStatementNodeList = [Statement, unknown];
 
@@ -108,6 +109,7 @@ type Language = {
   assignmentStatement: AssignmentStatementNode;
   incrementAssignmentStatement: IncrementAssignmentStatementNode;
   decrementAssignmentStatement: DecrementAssignmentStatementNode;
+  swapStatement: SwapStatementNode;
 
   labelDefinition: string | null;
   directFloorSlot: FloorIndex;
@@ -286,6 +288,7 @@ const language = createLanguage<Language>(parserDebugger, {
       l.assignmentStatement,
       l.incrementAssignmentStatement,
       l.decrementAssignmentStatement,
+      l.swapStatement,
       l.floorInit,
     );
   },
@@ -356,6 +359,17 @@ const language = createLanguage<Language>(parserDebugger, {
   },
   decrementAssignmentStatement: (l) => {
     return l.decrementAssignmentExpression;
+  },
+  swapStatement: (l) => {
+    return P.seq(
+      l.floorReference,
+      P.optWhitespace,
+      P.string('<->'),
+      P.optWhitespace,
+      l.floorReference,
+    ).map((result) => {
+      return new SwapStatementNode(result[0], result[4]);
+    });
   },
 
   labelDefinition: (l) => {
