@@ -1,0 +1,177 @@
+-- # Exclusive Lounge
+-- #
+-- #
+-- # For each TWO things in the
+-- # INBOX:
+-- #
+-- # Send a O to the OUTBOX if they
+-- # have the same sign. (Both
+-- # positive or both negative.)
+-- #
+-- # Send a 1 to the OUTBOX if
+-- # their signs are different.
+-- # Repeat until the INBOX is
+-- # empty.
+
+-- FloorInitNode
+  -- $accumulator -> null
+  -- $iterator -> null
+
+-- LetStatementNode
+  -- zero -> floor[4]
+
+-- LetStatementNode
+  -- one -> floor[5]
+
+-- LetStatementNode
+  -- first -> floor[0]
+
+-- LetStatementNode
+  -- second -> floor[1]
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  COMMENT 0 -- ## init
+
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$first
+
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 1 --$second
+
+  COMMENT 1 -- ## same?
+
+  -- IfStatementNode
+  -- start01
+    -- condition01
+      -- OrConditionNode
+        -- left
+        -- AndConditionNode
+          -- left
+          -- LessThanConditionNode
+          COPYFROM 0 --$first
+          -- compare 0
+          JUMPN condition01leftsub01
+          JUMP condition01sub00
+        condition01leftsub01:
+          -- right
+          -- LessThanConditionNode
+          COPYFROM 1 --$second
+          -- compare 0
+          JUMPN if01
+          JUMP condition01sub00
+        -- /AndConditionNode
+      condition01sub00:
+        -- right
+        -- AndConditionNode
+          -- left
+          -- GreaterThanOrEqualToConditionNode
+          COPYFROM 0 --$first
+          -- compare 0
+          JUMPN else01
+          JUMP condition01rightsub01
+        condition01rightsub01:
+          -- right
+          -- GreaterThanOrEqualToConditionNode
+          COPYFROM 1 --$second
+          -- compare 0
+          JUMPN else01
+          JUMP if01
+        -- /AndConditionNode
+      -- /OrConditionNode
+    if01:
+      -- block
+      COMMENT 2 -- ## same
+
+      -- AssignmentStatementNode
+        -- read
+        COPYFROM 4 --$zero
+        -- write
+        OUTBOX
+      JUMP end01
+    else01:
+      -- block
+      COMMENT 3 -- ## diff
+
+      -- AssignmentStatementNode
+        -- read
+        COPYFROM 5 --$one
+        -- write
+        OUTBOX
+  end01:
+
+  condition00:
+  JUMP loop00
+break00:
+
+-- init
+DEFINE COMMENT 0
+eJztjSEOwjAYhVtVh52rZIqgeoSGBE9qKpfUTEyQ7BCISQ6A2BGWcIFaUL3C
+bgCuUD64BNlL2i9/3+v790IIKbpKvu+bkqJo+5Qi53K6ijl/Nczikx/m4t5V
+zmWeVsHC6QTrCzxfC51OvrBew8cGOr07FkYDneZ/NNBpeqKBTtMXDQyWvcGS
+D5ZcsPjJ4yfPPnVgT/JwbGDf/t7pSZ6evoVjQ9+iRf+oF12wTK4+;
+
+-- same?
+DEFINE COMMENT 1
+eJzt0KFuwzAQxnEHlRXOrLBB01BlFBgVBZcYTjIxKKhkEryAgIIAg8CA8ZFI
+gSWRijbkV+gbbCyb+/eeYjsp+cm65Dv5XoQQmTjK7Of9vspErKevTCxLfI6S
+85LqfBP378+32P1YLUs8Nw9BRw8bzLc4rvcn+mNLH/NtPtD3E308bNAXpoya
+ElVFni/IMyWqCucduarCeUe+qtAX5JoSVYVBk/v6jM7i/oRBk+8syhqDZo6z
+KGsMmnnOoqwxaOY5i7JO9+7S3vq0r5b8fMCxJbfp0v76tL8Bx5b8pkv76zEf
+0h6nz8f7vS84v6V9Xn9lrrkwz0/k+on//+tv1DewG4qY;
+
+-- same
+DEFINE COMMENT 2
+eJzt0CFuwzAUxnEHlRXOrLCGQ5VRYFRkXGJYKcQgIJpJeEBAQUBAYECPEKkX
+KN2Qr9AjjLn1/j7ADtAnxT9Zz/qe8r6EEIVoZPE6vzeFSPX5W4gY09dI7jHX
+5SH+3l8eqfuziTHd+49gk6cdqj2u22NLfx3oo9qrhf50o4+nHU5lXSXrCrUh
+byrJqyvUBu8HcrXB+4F8bXAqya0r1AaDJfd6Ru/w2GKw5HuHssNgmeMdyg6D
+ZZ53KDsMlnneoezyf495b3Pe10C+WnAdyO3HvL8572/BdSC/H/P+ZlQLvutd
+/6kn98t4pw++;
+
+-- diff
+DEFINE COMMENT 3
+eJztjiEOgzAUhluFQ4KbBLVMEU7QoJBkhszWVCBIanATiAnkDrBDkOwC2E1x
+hHGDzXXrvh1igj9pv7y89768gxBCiiaWn/8WSOGze0nhnH9NTO1+GRbxnR8W
+370Hzvk6TZ5bqBWca88+KlrP/QamCRzD8UQNxzC9UMM+Ol/Zg2kCpwz/lLE3
+ZcxPGf285I6ggloxP9dQK+7SijvyEgYV1AqvVni1wlu0+OIOWoPvcYTW4LUG
+T9HCuIPW4LUGrzV416z5h7wBCfpYZg++;
+
+-- zero
+DEFINE LABEL 4
+eJztzyEOgzAUxvFWcYQeATmJQi4oJJmZJJlBIEgw+IkKxARicgKPaYLEkKA2
+tStwhLlu3b+7whQvaX9pXvs1LxdCSFEq+dnvgRSudi8prHWrVJytr3YV3/vt
+6rqPwFp37uLn0XnaY5RikP1MKvpG08cuDm/YjfQxSjHIsC7ISSrsc/JUg31O
+Xl1gUqFqsM/5py7ISypUDRpN7uGK4Q2NJv98QaPJM5o8o3nfjX7+CeeB+9GC
+8+DnXnAeeB8tfv7Rzz/hVlv9s96vGG1o;
+
+-- one
+DEFINE LABEL 5
+eJztzCEOwjAUgOFW9Qg9QiXHwJPMTSIREySYOkTFxERFD1BBMjmzpBeYBbUj
+sBsMVyg/lyDZS7ovL13/gxBCikbLz/eupCize0mRczmNZs+/6Rbx/b9byu1D
+5Vz2uZ7r4u2Iqtqfi5cTqmps2VFVJrLjXIfEe9SWzvOKY4va0nMetaXnPGpL
+z3nUlp7zuPZ0pgFNpBMSmkhn7XEaMCQ0ke7a05sGDAm32eYf5w3Nxl4P;
+
+-- first
+DEFINE LABEL 0
+eJztzyEOwjAUxvFO7Qg7whRBLVPIBYXGVFNTgVhSg0MgEBMTE5NzXIBkcmYJ
+CmZ6BLjBcIXyhyug9pLtl+6976XbCCECsY2C9/saBsLX/BkI5/yzjTi7bxUP
+8ZkvHr57C53z52oxzrwqwz5RmTddYZ9YicuceVQZ9sn5iHGDVeu1kryV9K2k
+byV9o9kb7fC+R6PZu8zRaPJGkzea/LpmPm5wPOGhJLeuycUNjifyh/KXx7hB
+1XFf1bGnar//2WF6wXD4fWev6tgbDphe2DfVVP+oF+dKbpA+;
+
+-- second
+DEFINE LABEL 1
+eJzt0KFvg0AUx/FD3X8w3GRRZBKFJKeQpKaS5ExFBQmmvgLRZBWISgQeQ1I5
+cwlqU6SyrpUo5thu39sfsWQvgU8uj/fLPV6FEJ7Y+d73+116wtbLpyeWxT47
+n/Pi6ngXP98f77b7IZfFntfP48YarHAO8fCkCvp9RR/nMGjo1xf6GKxQJ8xH
+KdYxOTLDOiZHJxilKDOsY/J1Ql6Uosyw3JKrCmxzcv09tjk5bU6Ov8dyy7wq
+8HBifn3GvmI+aLCv3N4N9hU5QeP2P7n9z2g6t+8F9RuajrxoQNO5vQc0HXnR
+gKZzew/uvtMcok7Q7X0jr3ygmnC8kqsmHK/kqgnbm/uPj998/K+/WV/ZNZzm;

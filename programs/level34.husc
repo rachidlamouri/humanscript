@@ -41,45 +41,61 @@ loop00:
   -- IfStatementNode
   -- start01
     -- condition01
-      -- NotEqualsConditionNode
-      COPYFROM 0 --$a
-      COPYTO 7 --$$accumulator
-      COPYFROM 6 --$tmp
-      SUB 7 --$$accumulator
-      JUMPZ else01
-      JUMP condition01sub00
+      -- AndConditionNode
+        -- left
+        -- AndConditionNode
+          -- left
+          -- AndConditionNode
+            -- left
+            -- AndConditionNode
+              -- left
+              -- NotEqualsConditionNode
+              COPYFROM 0 --$a
+              COPYTO 7 --$$accumulator
+              COPYFROM 6 --$tmp
+              SUB 7 --$$accumulator
+              JUMPZ else01
+              JUMP condition01sub03
+            condition01sub03:
+              -- right
+              -- NotEqualsConditionNode
+              COPYFROM 1 --$e
+              COPYTO 7 --$$accumulator
+              COPYFROM 6 --$tmp
+              SUB 7 --$$accumulator
+              JUMPZ else01
+              JUMP condition01sub02
+            -- /AndConditionNode
+          condition01sub02:
+            -- right
+            -- NotEqualsConditionNode
+            COPYFROM 2 --$i
+            COPYTO 7 --$$accumulator
+            COPYFROM 6 --$tmp
+            SUB 7 --$$accumulator
+            JUMPZ else01
+            JUMP condition01sub01
+          -- /AndConditionNode
+        condition01sub01:
+          -- right
+          -- NotEqualsConditionNode
+          COPYFROM 3 --$o
+          COPYTO 7 --$$accumulator
+          COPYFROM 6 --$tmp
+          SUB 7 --$$accumulator
+          JUMPZ else01
+          JUMP condition01sub00
+        -- /AndConditionNode
       condition01sub00:
-      -- NotEqualsConditionNode
-      COPYFROM 1 --$e
-      COPYTO 7 --$$accumulator
-      COPYFROM 6 --$tmp
-      SUB 7 --$$accumulator
-      JUMPZ else01
-      JUMP condition01sub01
-      condition01sub01:
-      -- NotEqualsConditionNode
-      COPYFROM 2 --$i
-      COPYTO 7 --$$accumulator
-      COPYFROM 6 --$tmp
-      SUB 7 --$$accumulator
-      JUMPZ else01
-      JUMP condition01sub02
-      condition01sub02:
-      -- NotEqualsConditionNode
-      COPYFROM 3 --$o
-      COPYTO 7 --$$accumulator
-      COPYFROM 6 --$tmp
-      SUB 7 --$$accumulator
-      JUMPZ else01
-      JUMP condition01sub03
-      condition01sub03:
-      -- NotEqualsConditionNode
-      COPYFROM 4 --$u
-      COPYTO 7 --$$accumulator
-      COPYFROM 6 --$tmp
-      SUB 7 --$$accumulator
-      JUMPZ else01
-      JUMP if01
+        -- right
+        -- NotEqualsConditionNode
+        COPYFROM 4 --$u
+        COPYTO 7 --$$accumulator
+        COPYFROM 6 --$tmp
+        SUB 7 --$$accumulator
+        JUMPZ else01
+        JUMP if01
+      -- /AndConditionNode
     if01:
       -- block
       -- AssignmentStatementNode

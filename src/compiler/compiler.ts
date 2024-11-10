@@ -4,7 +4,7 @@ import {
   ReadableAssignmentExpressionNode,
 } from './nodes/statements/assignmentStatementNode';
 import { createLanguage, parserDebugger, ul } from '../utils/parserUtils';
-import { assertIsArray } from '../utils/assertIsArray';
+import { assertIsArray, isArray } from '../utils/assertIsArray';
 import { assertIsStatement, Statement } from './nodes/statements/statement';
 import { WhileStatementNode } from './nodes/statements/whileStatementNode';
 import { LetStatementNode } from './nodes/statements/letStatementNode';
@@ -26,7 +26,11 @@ import { AssemblyCommentDefinitionNode } from './nodes/statements/assembly-comme
 import { Node } from './nodes/node';
 import { EqualsConditionNode } from './nodes/conditions/equalsConditionNode';
 import { NotEqualsConditionNode } from './nodes/conditions/notEqualsConditionNode';
-import { Condition } from './nodes/conditions/condition';
+import {
+  CompoundConditionConstructor,
+  Condition,
+  isCondition,
+} from './nodes/conditions/condition';
 import {
   BinaryComparisonConstructor,
   LeftComparable,
@@ -59,8 +63,27 @@ import {
   MultiplicativeExpressionNodeConstructor,
 } from './nodes/expressions/multiplicativeExpressionNode';
 import { FloorReferenceNode } from './nodes/references/floorReferenceNode';
+import { OrConditionNode } from './nodes/conditions/orConditionNode';
 
 type NestedStatementNodeList = [Statement, unknown];
+
+type NestedConditionResult = [CompoundConditionConstructor, Condition, unknown];
+
+function assertIsNestedConditionResult(
+  value: unknown,
+): asserts value is NestedConditionResult | null {
+  if (
+    value === null ||
+    (isArray(value) &&
+      value.length === 3 &&
+      typeof value[0] === 'function' &&
+      isCondition(value[1]))
+  ) {
+    return;
+  }
+
+  throw new Error('Unknown nested condition result');
+}
 
 type Language = {
   program: BlockNode;
@@ -90,9 +113,12 @@ type Language = {
   directFloorSlot: FloorIndex;
 
   conditionExpression: Condition;
-  conditionList: Condition;
-  conditionListPrime: Condition | null;
-  condition: Condition;
+  conditionExpression1: Condition;
+  conditionExpression1Prime: NestedConditionResult | null;
+  conditionExpression2: Condition;
+  conditionExpression2Prime: NestedConditionResult | null;
+  conditionExpression3: Condition;
+
   block: BlockNode;
 
   readableExpression: ReadableExpression;
@@ -371,38 +397,43 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.seq(
       P.string('('),
       P.optWhitespace,
-      l.conditionList,
+      l.conditionExpression1,
       P.optWhitespace,
       P.string(')'),
     ).map((result) => {
       return result[2];
     });
   },
-  conditionList: (l) => {
+  conditionExpression1: (l) => {
     return P.seq(
-      //-
-      l.condition,
-      l.conditionListPrime,
+      // -
+      l.conditionExpression2,
+      l.conditionExpression1Prime,
     ).map((result) => {
-      const left = result[0];
-      const right = result[1];
+      let nextLeft = result[0];
+      let nextNestedRight = result[1];
+      while (nextNestedRight !== null) {
+        const [Constructor, nextRight, nested] = nextNestedRight;
 
-      if (right === null) {
-        return left;
+        assertIsNestedConditionResult(nested);
+
+        nextLeft = new Constructor(nextLeft, nextRight);
+        nextNestedRight = nested;
       }
 
-      return new AndConditionNode(left, right);
+      return nextLeft;
     });
   },
-  conditionListPrime: (l) => {
+  conditionExpression1Prime: (l) => {
     return ul
-      .sopt(
+      .opt(
         P.seq(
           // -
-          P.string('&&'),
-          P.whitespace,
-          l.condition,
-          l.conditionListPrime,
+          P.optWhitespace,
+          P.string('||'),
+          P.optWhitespace,
+          l.conditionExpression2,
+          l.conditionExpression1Prime,
         ),
       )
       .map((result) => {
@@ -410,17 +441,56 @@ const language = createLanguage<Language>(parserDebugger, {
           return null;
         }
 
-        const left = result[2];
         const right = result[3];
+        const nestedRight = result[4];
 
-        if (right === null) {
-          return left;
-        }
-
-        return new AndConditionNode(left, right);
+        return [OrConditionNode, right, nestedRight];
       });
   },
-  condition: (l) => {
+  conditionExpression2: (l) => {
+    return P.seq(
+      // -
+      l.conditionExpression3,
+      l.conditionExpression2Prime,
+    ).map((result) => {
+      let nextLeft = result[0];
+      let nextNestedRight = result[1];
+      while (nextNestedRight !== null) {
+        const [Constructor, nextRight, nested] = nextNestedRight;
+
+        assertIsNestedConditionResult(nested);
+
+        nextLeft = new Constructor(nextLeft, nextRight);
+        nextNestedRight = nested;
+      }
+
+      return nextLeft;
+    });
+  },
+  conditionExpression2Prime: (l) => {
+    return ul
+      .opt(
+        P.seq(
+          // -
+          P.optWhitespace,
+          P.string('&&'),
+          P.optWhitespace,
+          l.conditionExpression3,
+          l.conditionExpression2Prime,
+        ),
+      )
+      .map((result) => {
+        if (result === null) {
+          return null;
+        }
+
+        const right = result[3];
+        const nestedRight = result[4];
+
+        return [AndConditionNode, right, nestedRight];
+      });
+  },
+  conditionExpression3: (l) => {
     return P.seq(
       l.leftComparable,
       P.optWhitespace,
@@ -444,6 +514,7 @@ const language = createLanguage<Language>(parserDebugger, {
       return condition;
     });
   },
+
   block: (l) => {
     return P.seq(
       P.string('{'),

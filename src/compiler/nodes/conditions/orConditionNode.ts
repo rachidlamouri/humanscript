@@ -4,7 +4,7 @@ import { CompilerContext } from '../../compilerContext';
 import { assertIsNode, Node } from '../node';
 import { Condition, ConditionContext } from './condition';
 
-export class AndConditionNode extends Node implements Condition {
+export class OrConditionNode extends Node implements Condition {
   constructor(
     public left: Condition,
     public right: Condition,
@@ -30,9 +30,9 @@ export class AndConditionNode extends Node implements Condition {
     result.push(Assembly.DEBUG(context, 'left'));
     result.push(
       ...this.left.compileCondition(context, {
-        trueAnchorId: fallthroughAnchorId,
-        falseAnchorId,
-        anchorIdSuffix,
+        trueAnchorId,
+        falseAnchorId: fallthroughAnchorId,
+        anchorIdSuffix: anchorIdSuffix + 'left',
         anchorDepth: anchorDepth + 1,
       }),
     );
@@ -44,7 +44,7 @@ export class AndConditionNode extends Node implements Condition {
       ...this.right.compileCondition(context, {
         trueAnchorId,
         falseAnchorId,
-        anchorIdSuffix,
+        anchorIdSuffix: anchorIdSuffix + 'right',
         anchorDepth: anchorDepth + 1,
       }),
     );

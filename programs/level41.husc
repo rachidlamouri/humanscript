@@ -63,28 +63,36 @@ loop00:
     BUMPUP 16 --$index
 
     condition01:
-    -- NotEqualsConditionNode
-    COPYFROM 15 --$tmp
-    -- compare 0
-    JUMPZ break01
-    JUMP condition01sub00
+    -- AndConditionNode
+      -- left
+      -- AndConditionNode
+        -- left
+        -- NotEqualsConditionNode
+        COPYFROM 15 --$tmp
+        -- compare 0
+        JUMPZ break01
+        JUMP condition01sub01
+      condition01sub01:
+        -- right
+        -- LessThanConditionNode
+        COPYFROM 17 --$length
+        COPYTO 20 --$$accumulator
+        COPYFROM 16 --$index
+        SUB 20 --$$accumulator
+        JUMPN condition01sub00
+        JUMP break01
+      -- /AndConditionNode
     condition01sub00:
-    -- LessThanConditionNode
-    COPYFROM 17 --$length
-    COPYTO 20 --$$accumulator
-    COPYFROM 16 --$index
-    SUB 20 --$$accumulator
-    JUMPN condition01sub01
-    JUMP break01
-    condition01sub01:
-    -- GreaterThanOrEqualToConditionNode
-    COPYFROM 15 --$tmp
-    COPYTO 20 --$$accumulator
-    COPYFROM [16] --$floor[$index]
-    SUB 20 --$$accumulator
-    JUMPN loop01
-    JUMPZ loop01
-    JUMP break01
+      -- right
+      -- GreaterThanOrEqualToConditionNode
+      COPYFROM 15 --$tmp
+      COPYTO 20 --$$accumulator
+      COPYFROM [16] --$floor[$index]
+      SUB 20 --$$accumulator
+      JUMPN loop01
+      JUMPZ loop01
+      JUMP break01
+    -- /AndConditionNode
   break01:
 
   -- IfStatementNode

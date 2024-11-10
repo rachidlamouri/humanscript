@@ -1,0 +1,37 @@
+# Exclusive Lounge
+#
+#
+# For each TWO things in the
+# INBOX:
+#
+# Send a O to the OUTBOX if they
+# have the same sign. (Both
+# positive or both negative.)
+#
+# Send a 1 to the OUTBOX if
+# their signs are different.
+# Repeat until the INBOX is
+# empty.
+
+floor size 6
+
+let zero at floor[4]
+let one at floor[5]
+
+let first
+let second
+
+while {
+  ## init
+  first = inbox
+  second = inbox
+
+  ## same?
+  if (first < 0 && second < 0 || first >= 0 && second >= 0) {
+    ## same
+    outbox = zero
+  } else {
+    ## diff
+    outbox = one
+  }
+}
