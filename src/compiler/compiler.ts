@@ -89,6 +89,13 @@ function assertIsNestedConditionResult(
 type Language = {
   program: BlockNode;
 
+  statementList: Statement[];
+  recursiveStatementList: NestedStatementNodeList;
+  statement: Statement;
+
+  assemblyComment: AssemblyCommentReferenceNode;
+  humanscriptComment: HumanscriptCommentNode;
+
   floorInit: FloorInitNode;
   floorReservation: FloorRange[];
   floorReservationList: FloorRange[];
@@ -96,23 +103,14 @@ type Language = {
   floorRange: FloorRange;
   floorIndex: FloorRange;
 
-  statementList: Statement[];
-  recursiveStatementList: NestedStatementNodeList;
-
-  statement: Statement;
-  assemblyComment: AssemblyCommentReferenceNode;
-  humanscriptComment: HumanscriptCommentNode;
   letStatement: LetStatementNode;
+  labelDefinition: string | null;
+  directFloorSlot: FloorIndex;
+
   whileStatement: WhileStatementNode;
   ifStatement: IfStatementNode;
   elseStatement: BlockNode;
-  assignmentStatement: AssignmentStatementNode;
-  incrementAssignmentStatement: IncrementAssignmentStatementNode;
-  decrementAssignmentStatement: DecrementAssignmentStatementNode;
-  swapStatement: SwapStatementNode;
-
-  labelDefinition: string | null;
-  directFloorSlot: FloorIndex;
+  block: BlockNode;
 
   conditionExpression: Condition;
   conditionExpression1: Condition;
@@ -121,9 +119,19 @@ type Language = {
   conditionExpression2Prime: NestedConditionResult | null;
   conditionExpression3: Condition;
 
-  block: BlockNode;
+  leftComparable: LeftComparable;
+  rightComparable: RightComparable;
 
+  assignmentStatement: AssignmentStatementNode;
   readableExpression: ReadableExpression;
+  readableAssignmentExpression: ReadableAssignmentExpressionNode;
+  swapStatement: SwapStatementNode;
+
+  incrementAssignmentStatement: IncrementAssignmentStatementNode;
+  incrementAssignmentExpression: IncrementAssignmentExpressionNode;
+  decrementAssignmentStatement: DecrementAssignmentStatementNode;
+  decrementAssignmentExpression: DecrementAssignmentExpressionNode;
+
   mathExpression:
     | AdditiveExpressionNode
     | MultiplicativeExpressionNode
@@ -132,15 +140,8 @@ type Language = {
   multiplicativeExpression: MultiplicativeExpressionNode;
   negationExpression: NegationExpressionNode;
 
-  leftComparable: LeftComparable;
-  rightComparable: RightComparable;
-
   readableReference: ReadableReference;
   writeableReference: WriteableReference;
-  readableAssignmentExpression: ReadableAssignmentExpressionNode;
-  incrementAssignmentExpression: IncrementAssignmentExpressionNode;
-  decrementAssignmentExpression: DecrementAssignmentExpressionNode;
-
   inbox: InboxNode;
   outbox: OutboxNode;
 
@@ -148,6 +149,7 @@ type Language = {
   identifier: IdentifierNode;
   indirectFloorSlot: IndirectFloorSlotNode;
 
+  zeroLiteral: ZeroLiteralNode;
   word: string;
   positiveInteger: number;
 };
@@ -177,6 +179,71 @@ const language = createLanguage<Language>(parserDebugger, {
         });
 
       return new BlockNode(finalStatements);
+    });
+  },
+
+  statementList: (l) => {
+    return l.recursiveStatementList.map((result) => {
+      const statementList: Statement[] = [];
+      let nextResult: unknown = result;
+
+      do {
+        assertIsArray(nextResult);
+
+        const [statement] = nextResult;
+        assertIsStatement(statement);
+
+        statementList.push(statement);
+        nextResult = nextResult[1];
+      } while (nextResult !== null);
+
+      return statementList;
+    });
+  },
+  recursiveStatementList: (l) => {
+    return P.alt<Language['recursiveStatementList']>(
+      // -
+      P.seq(
+        // -
+        l.statement,
+        P.whitespace,
+        l.recursiveStatementList,
+      ).map((result) => {
+        const statement = result[0];
+        const statementList = result[2];
+        return [statement, statementList];
+      }),
+      l.statement.map((result) => {
+        return [result, null];
+      }),
+    );
+  },
+  statement: (l) => {
+    return P.alt<Language['statement']>(
+      // -
+      l.assemblyComment,
+      l.humanscriptComment,
+      l.letStatement,
+      l.whileStatement,
+      l.ifStatement,
+      l.assignmentStatement,
+      l.incrementAssignmentStatement,
+      l.decrementAssignmentStatement,
+      l.swapStatement,
+      l.floorInit,
+    );
+  },
+
+  assemblyComment: () => {
+    return P.regex(/##[^\n]*/).map((comment) => {
+      const text = comment.slice(2).trim();
+      return new AssemblyCommentReferenceNode(text);
+    });
+  },
+  humanscriptComment: () => {
+    return P.regex(/#[^\n]*/).map((comment) => {
+      const text = comment.slice(1).trim();
+      return new HumanscriptCommentNode(text);
     });
   },
 
@@ -241,58 +308,6 @@ const language = createLanguage<Language>(parserDebugger, {
     });
   },
 
-  statementList: (l) => {
-    return l.recursiveStatementList.map((result) => {
-      const statementList: Statement[] = [];
-      let nextResult: unknown = result;
-
-      do {
-        assertIsArray(nextResult);
-
-        const [statement] = nextResult;
-        assertIsStatement(statement);
-
-        statementList.push(statement);
-        nextResult = nextResult[1];
-      } while (nextResult !== null);
-
-      return statementList;
-    });
-  },
-  recursiveStatementList: (l) => {
-    return P.alt<Language['recursiveStatementList']>(
-      // -
-      P.seq(
-        // -
-        l.statement,
-        P.whitespace,
-        l.recursiveStatementList,
-      ).map((result) => {
-        const statement = result[0];
-        const statementList = result[2];
-        return [statement, statementList];
-      }),
-      l.statement.map((result) => {
-        return [result, null];
-      }),
-    );
-  },
-
-  statement: (l) => {
-    return P.alt<Language['statement']>(
-      // -
-      l.assemblyComment,
-      l.humanscriptComment,
-      l.letStatement,
-      l.whileStatement,
-      l.ifStatement,
-      l.assignmentStatement,
-      l.incrementAssignmentStatement,
-      l.decrementAssignmentStatement,
-      l.swapStatement,
-      l.floorInit,
-    );
-  },
   letStatement: (l) => {
     return P.seq(
       // -
@@ -305,6 +320,30 @@ const language = createLanguage<Language>(parserDebugger, {
       return new LetStatementNode(result[2], result[3], result[4]);
     });
   },
+  labelDefinition: (l) => {
+    return P.seq(
+      // -
+      P.string('labeled'),
+      P.whitespace,
+      l.word,
+    ).map((result) => {
+      return result[2];
+    });
+  },
+  directFloorSlot: (l) => {
+    return P.seq(
+      //-
+      P.string('at'),
+      P.whitespace,
+      P.string('floor'),
+      P.string('['),
+      l.positiveInteger,
+      P.string(']'),
+    ).map((result) => {
+      return result[4];
+    });
+  },
+
   whileStatement: (l) => {
     return P.seq(
       // -
@@ -341,70 +380,15 @@ const language = createLanguage<Language>(parserDebugger, {
       return result[2];
     });
   },
-  assignmentStatement: (l) => {
+  block: (l) => {
     return P.seq(
-      // -
-      l.writeableReference,
-      P.whitespace,
-      P.string('='),
-      P.whitespace,
-      l.readableExpression,
-    ).map((result) => {
-      const writeable = result[0];
-      const readable = result[4];
-      return new AssignmentStatementNode(writeable, readable);
-    });
-  },
-  incrementAssignmentStatement: (l) => {
-    return l.incrementAssignmentExpression;
-  },
-  decrementAssignmentStatement: (l) => {
-    return l.decrementAssignmentExpression;
-  },
-  swapStatement: (l) => {
-    return P.seq(
-      l.floorReference,
+      P.string('{'),
       P.optWhitespace,
-      P.string('<->'),
+      ul.opt(l.statementList),
       P.optWhitespace,
-      l.floorReference,
+      P.string('}'),
     ).map((result) => {
-      return new SwapStatementNode(result[0], result[4]);
-    });
-  },
-
-  labelDefinition: (l) => {
-    return P.seq(
-      // -
-      P.string('labeled'),
-      P.whitespace,
-      l.word,
-    ).map((result) => {
-      return result[2];
-    });
-  },
-  directFloorSlot: (l) => {
-    return P.seq(
-      //-
-      P.string('at'),
-      P.whitespace,
-      P.string('floor'),
-      P.string('['),
-      l.positiveInteger,
-      P.string(']'),
-    ).map((result) => {
-      return result[4];
-    });
-  },
-  indirectFloorSlot: (l) => {
-    return P.seq(
-      //-
-      P.string('floor'),
-      P.string('['),
-      l.word,
-      P.string(']'),
-    ).map((result) => {
-      return new IndirectFloorSlotNode(result[2]);
+      return new BlockNode(result[2] ?? []);
     });
   },
 
@@ -530,18 +514,36 @@ const language = createLanguage<Language>(parserDebugger, {
     });
   },
 
-  block: (l) => {
-    return P.seq(
-      P.string('{'),
-      P.optWhitespace,
-      ul.opt(l.statementList),
-      P.optWhitespace,
-      P.string('}'),
-    ).map((result) => {
-      return new BlockNode(result[2] ?? []);
-    });
+  leftComparable: (l) => {
+    return P.alt<LeftComparable>(
+      l.incrementAssignmentExpression,
+      l.decrementAssignmentExpression,
+      l.readableAssignmentExpression,
+      l.readableReference,
+    );
+  },
+  rightComparable: (l) => {
+    return P.alt<RightComparable>(
+      // -
+      l.zeroLiteral,
+      l.readableReference,
+    );
   },
 
+  assignmentStatement: (l) => {
+    return P.seq(
+      // -
+      l.writeableReference,
+      P.whitespace,
+      P.string('='),
+      P.whitespace,
+      l.readableExpression,
+    ).map((result) => {
+      const writeable = result[0];
+      const readable = result[4];
+      return new AssignmentStatementNode(writeable, readable);
+    });
+  },
   readableExpression: (l) => {
     return P.alt<Language['readableExpression']>(
       // -
@@ -549,6 +551,60 @@ const language = createLanguage<Language>(parserDebugger, {
       l.readableReference,
     );
   },
+  readableAssignmentExpression: (l) => {
+    return P.seq(
+      l.floorReference,
+      P.whitespace,
+      P.string('='),
+      P.whitespace,
+      l.readableReference,
+    ).map((result) => {
+      return new ReadableAssignmentExpressionNode(result[0], result[4]);
+    });
+  },
+  swapStatement: (l) => {
+    return P.seq(
+      l.floorReference,
+      P.optWhitespace,
+      P.string('<->'),
+      P.optWhitespace,
+      l.floorReference,
+    ).map((result) => {
+      return new SwapStatementNode(result[0], result[4]);
+    });
+  },
+
+  incrementAssignmentStatement: (l) => {
+    return l.incrementAssignmentExpression;
+  },
+  incrementAssignmentExpression: (l) => {
+    return P.seq(
+      // -
+      l.identifier,
+      P.whitespace,
+      P.string('+='),
+      P.whitespace,
+      P.string('1'),
+    ).map((result) => {
+      return new IncrementAssignmentExpressionNode(result[0]);
+    });
+  },
+  decrementAssignmentStatement: (l) => {
+    return l.decrementAssignmentExpression;
+  },
+  decrementAssignmentExpression: (l) => {
+    return P.seq(
+      // -
+      l.identifier,
+      P.whitespace,
+      P.string('-='),
+      P.whitespace,
+      P.string('1'),
+    ).map((result) => {
+      return new DecrementAssignmentExpressionNode(result[0]);
+    });
+  },
+
   mathExpression: (l) => {
     return P.alt<Language['mathExpression']>(
       // -
@@ -609,23 +665,6 @@ const language = createLanguage<Language>(parserDebugger, {
     });
   },
 
-  leftComparable: (l) => {
-    return P.alt<LeftComparable>(
-      l.incrementAssignmentExpression,
-      l.decrementAssignmentExpression,
-      l.readableAssignmentExpression,
-      l.readableReference,
-    );
-  },
-  rightComparable: (l) => {
-    return P.alt<RightComparable>(
-      P.string('0').map(() => {
-        return new ZeroLiteralNode();
-      }),
-      l.readableReference,
-    );
-  },
-
   readableReference: (l) => {
     return P.alt<Language['readableReference']>(
       // -
@@ -640,42 +679,6 @@ const language = createLanguage<Language>(parserDebugger, {
       l.floorReference,
     );
   },
-  readableAssignmentExpression: (l) => {
-    return P.seq(
-      l.floorReference,
-      P.whitespace,
-      P.string('='),
-      P.whitespace,
-      l.readableReference,
-    ).map((result) => {
-      return new ReadableAssignmentExpressionNode(result[0], result[4]);
-    });
-  },
-  incrementAssignmentExpression: (l) => {
-    return P.seq(
-      // -
-      l.identifier,
-      P.whitespace,
-      P.string('+='),
-      P.whitespace,
-      P.string('1'),
-    ).map((result) => {
-      return new IncrementAssignmentExpressionNode(result[0]);
-    });
-  },
-  decrementAssignmentExpression: (l) => {
-    return P.seq(
-      // -
-      l.identifier,
-      P.whitespace,
-      P.string('-='),
-      P.whitespace,
-      P.string('1'),
-    ).map((result) => {
-      return new DecrementAssignmentExpressionNode(result[0]);
-    });
-  },
-
   inbox: () => {
     return P.string('inbox').map(() => {
       return new InboxNode();
@@ -699,7 +702,21 @@ const language = createLanguage<Language>(parserDebugger, {
       return new IdentifierNode(result);
     });
   },
+  indirectFloorSlot: (l) => {
+    return P.seq(
+      //-
+      P.string('floor'),
+      P.string('['),
+      l.word,
+      P.string(']'),
+    ).map((result) => {
+      return new IndirectFloorSlotNode(result[2]);
+    });
+  },
 
+  zeroLiteral: () => {
+    return P.string('0').map(() => new ZeroLiteralNode());
+  },
   word: () => {
     return P.regex(/[a-z][a-z0-9]*/);
   },
@@ -707,20 +724,6 @@ const language = createLanguage<Language>(parserDebugger, {
     return P.regex(/[1-9][0-9]*|0/).map((result) => {
       const value = Number.parseInt(result, 10);
       return value;
-    });
-  },
-
-  assemblyComment: () => {
-    return P.regex(/##[^\n]*/).map((comment) => {
-      const text = comment.slice(2).trim();
-      return new AssemblyCommentReferenceNode(text);
-    });
-  },
-
-  humanscriptComment: () => {
-    return P.regex(/#[^\n]*/).map((comment) => {
-      const text = comment.slice(1).trim();
-      return new HumanscriptCommentNode(text);
     });
   },
 });
