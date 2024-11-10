@@ -1,0 +1,33 @@
+# Tetracontiplier
+#
+# For each thing in the INBOX,
+# multiply it by 40, and put the
+# result in the OUTBOX.
+
+floor size 5
+
+let tmp
+let x8
+let sum
+
+while {
+  tmp = inbox
+
+  # x1
+  sum = tmp
+  # x2
+  sum = sum + sum
+  # x4
+  sum = sum + sum
+  # x8
+  sum = sum + sum
+  x8 = sum
+  # x16
+  sum = sum + sum
+  # x32
+  sum = sum + sum
+  # x40
+  sum = sum + x8
+
+  outbox = sum
+}

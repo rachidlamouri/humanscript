@@ -285,6 +285,15 @@ const CHARACTER_METADATA: Record<string, CharacterMetadata> = {
    X
    XXXX
   `,
+  8: cm`
+    XX
+   X  X
+   X  X
+    XX
+   X  X
+   X  X
+    XX
+  `,
   ' ': {
     points: [],
     letterWidth: 1,

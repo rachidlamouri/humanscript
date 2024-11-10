@@ -1,0 +1,95 @@
+-- # Tripler Room
+-- #
+-- # For each thing in the INBOX,
+-- # TRIPLE it. And OUTBOX the
+-- # result.
+-- #
+-- # Self improvement tip: Where
+-- # are we going with this? Please
+-- # leave the high level decisions
+-- # to management.
+
+-- FloorInitNode
+  -- $accumulator -> floor[2]
+  -- $iterator -> null
+
+-- LetStatementNode
+  -- tmp -> floor[0]
+
+-- LetStatementNode
+  -- sum -> floor[1]
+
+-- WhileStatementNode
+JUMP condition00
+loop00:
+  -- AssignmentStatementNode
+    -- read
+    INBOX
+    -- write
+    COPYTO 0 --$tmp
+
+  -- # x1
+
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 0 --$tmp
+    -- write
+    COPYTO 1 --$sum
+
+  -- # x2
+
+  -- AssignmentStatementNode
+    -- read
+    -- AdditionExpressionNode
+    COPYFROM 1 --$sum
+    COPYTO 2 --$$accumulator
+    COPYFROM 0 --$tmp
+    ADD 2 --$$accumulator
+    -- write
+    COPYTO 1 --$sum
+
+  -- # x3
+
+  -- AssignmentStatementNode
+    -- read
+    -- AdditionExpressionNode
+    COPYFROM 1 --$sum
+    COPYTO 2 --$$accumulator
+    COPYFROM 0 --$tmp
+    ADD 2 --$$accumulator
+    -- write
+    COPYTO 1 --$sum
+
+  -- AssignmentStatementNode
+    -- read
+    COPYFROM 1 --$sum
+    -- write
+    OUTBOX
+
+  condition00:
+  JUMP loop00
+break00:
+
+-- tmp
+DEFINE LABEL 0
+eJztzSEOwjAYhuFW7Qg7QiWSE5AqJG6SBItogsFVTExMTOwAFSSTM0t2gVnA
+7AgdJxiuUF64A2Jf0j752+ZrJoSQ4pjK935NpIhZPaUIIa5jyhy+KSfxeV9O
+8faWhBDnZHfY4JhF11ttmHHM8LL/nXcFKsc5jlndR7WhJz2jt9gVqA093mJe
+oTb0eot5hdrQ7y3mFWrDf95iXuHc8M/QonL01z0qR2/do3L0zQ0OLSpHn3LJ
+HU8PsWTJn+UFfRRj8A++;
+
+-- sum
+DEFINE LABEL 1
+eJztzSEOwjAYhuFO7Qg7wiSSI1QhSRMyuQNMVOKQFZMVlRNLKjFNegEsqB2B
+3aC4Qnk5BGJfsj5p/u77T0KISgxN9TnvdSVKdq9K5Fy+oeGefxlX8X0/rmX6
+qHMu9/q4dMWlw7nH/UFq5sEwx7lvJ+Y2MselQ6n5PxiUmp5gUGp6gkGp6QsG
+mzM9zwsGg8rR106YPN6uqBz9yaONqBx7kkcbUTn2JY82onLsSx5txC1b/jFv
+1vFoQA++;
+
+-- $accumulator as $acc
+DEFINE LABEL 2
+eJzt0CEOwjAUgOFO9Qg9wiQShVymJpcZ/AxiYglmrmICMTFRgZzbBUgmJ1Ew
+wxHKDcAVyl9OgOUl25eX9r3XthJCRKJS0ft/kZHwsXpGwjn/VYrcheju4rO/
+u/vVq3TO5+usTLxlctuSo8zxtkWzSWvWsUxOB3KU+TePB+rQbMzEflxnKPNv
+LhdvWnMO1aDVzE1r5qkGrcb9jnlW437HPKsxremvGrQaiyN94wHbnn6PEdue
+fm1Pn8eIxZH6eAj3mcN7ncP7TNTLBc1EHzNRLxcs53DvM/7jH7/EC/x1dbs+;

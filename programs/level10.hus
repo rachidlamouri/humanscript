@@ -1,0 +1,31 @@
+# Octoplier Suite
+#
+# For each thing in the INBOX,
+# multiply it by 8, and put the
+# result in the OUTBOX.
+#
+# Using a bunch of ADD
+# commands is easy, but
+# WASTEFUL! Can you do it using
+# only 3 ADD commands?
+# Management is watching.
+
+floor size 5
+
+let tmp
+let sum
+
+while {
+  tmp = inbox
+
+  # x1
+  sum = tmp
+  # x2
+  sum = sum + sum
+  # x4
+  sum = sum + sum
+  # x8
+  sum = sum + sum
+
+  outbox = sum
+}
