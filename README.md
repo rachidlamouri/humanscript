@@ -78,6 +78,18 @@ persist the next input value between statements.
 outbox = inbox
 ```
 
+### Humanscript Comments
+
+**note**: These comments are for your `humanscript` code. To use in-game comments see [Hassembly Comments](#hassembly-comments)
+
+You can add comments to your code by preceding a line with a `#`. This is also useful for disabling lines of code while
+iterating on a solution.
+
+```hus
+# this line and the next one are comments!
+# outbox = inbox
+```
+
 ### Infinite While Loops
 
 Level 2 introduces the `JUMP` command. This is utilized in `humanscript` to create infinite loops via a conditionless
@@ -191,6 +203,17 @@ The four registers are as follows
 
 **note**: you cannot (and should not) reference a register in your code (eg. assigning to `$acc`)
 
+### Swap Statements
+
+Once you have access to `COPYTO` you can use the swap operator. It swaps floor cells using `$acc` as temporary storage.
+
+```hus
+let ref1
+let ref2
+
+ref1 <-> ref2
+```
+
 ### If and While Statements With Basic Zero Equality Comparisons
 
 Level 7 brings about `JUMPZ` which enables access to basic logical comparisons between a readable reference and `0`.
@@ -226,16 +249,79 @@ while (value != 0) {
 }
 ```
 
-<!--
-op      zero       ref
-==      JZ /       SUB / JZ /
->       JZ / JN    SUB /    / JN
->=         / JN    SUB / JZ / JN
-<          / JN    SUB /    / JN
-<=      JZ / JN    SUB / JZ / JN
-!=      JZ /       SUB / JZ
+### Subtraction, Negation, and Comparing References
 
--->
+Level 11 adds the `SUB` command which provides access to subtraction, negation and equality comparisons between
+references.
+
+```hus
+# subtraction
+ref3 = ref1 - ref2
+```
+
+```hus
+# negation
+ref2 = -ref1
+```
+
+```hus
+if (ref1 == ref2) {
+  # runs if equal
+}
+
+if (ref1 != ref2) {
+  # runs if not equal
+}
+```
+
+### Hassembly Comments
+
+Level 13 gives access to in-game comments. To make a comment that appears in-game, just use two consecutive number
+signs: `##`.
+
+**note**: Hassembly comments use the same implementation as [floor labels](#floor-labels) and have the same limitations.
+
+```hus
+outbox = inbox
+
+# i don't appear in-game
+
+## i do
+```
+
+![alt text]({1B4C0387-E96E-4724-B6AC-DC88C920100E}.png)
+
+### Advanced Logical Comparisons
+
+Level 14 introduces `JUMPN` which enables the following comparison operators: `<`, `<=`, `>` `>=`. Just like the
+equality operators you can compare two references or a reference to zero, and you can use them in a `while` or `if`
+condition.
+
+```hus
+if (ref1 < ref2) {
+  # ref1 is less than ref2
+}
+
+if (ref1 <= 0) {
+  # ref1 is less than or equal to zero
+}
+
+if (ref1 > 0) {
+  # ref1 is greater than zero
+}
+
+if (ref1 >= ref2) {
+  # ref1 is greater than or equal to ref2
+}
+
+```
+
+### Increment and Decrement Assignment
+
+Level 19 unlocks the `BUMPUP` and `BUMPDN` commands. They have similar syntax in `humanscript`.
+
+> **note**
+> You can only increment or decrement variables potato
 
 ## Limitations
 
