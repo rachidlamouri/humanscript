@@ -1,4 +1,7 @@
-import { encodeAsPixels, PixelImageAlignment } from '../utils/imageUtils';
+import {
+  encodePhraseAsPixels,
+  PixelImageAlignment,
+} from '../utils/image-utils';
 import { CompiledPart } from './compiledPart';
 import {
   CompilerContext,
@@ -52,7 +55,7 @@ export class Assembly {
   }
 
   static DEFINE_COMMENT(context: CompilerContext, index: number, text: string) {
-    const encodedImage = encodeAsPixels(text, PixelImageAlignment.Left);
+    const encodedImage = encodePhraseAsPixels(text, PixelImageAlignment.Left);
     const serializedChunks = formatImage(encodedImage);
 
     return new CompiledPart(
@@ -62,7 +65,7 @@ export class Assembly {
   }
 
   static DEFINE_LABEL(context: CompilerContext, binding: FloorBinding) {
-    const encodedImage = encodeAsPixels(
+    const encodedImage = encodePhraseAsPixels(
       binding.label,
       PixelImageAlignment.Center,
     );

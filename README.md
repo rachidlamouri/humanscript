@@ -8,7 +8,7 @@ in-game "paste" button :tada:.
 
 | Humanscript (write code) | Hassembly (compile and copy) | Game (paste and run) |
 | --- | --- | --- |
-| ![humanscript code example](./readme-images/humanscript-code.png) | ![hassembly code example](./readme-images/hassembly-code.png) | ![game code example](./readme-images/game-code.png)|
+| ![example humanscript code](./readme-images/humanscript-code.png) | ![example hassembly code](./readme-images/hassembly-code.png) | ![example game code](./readme-images/game-code.png)|
 
 > [!Important]
 > This project was built for linux and may not work on windows (try
@@ -160,11 +160,12 @@ outbox = ref
 Floor labels are technically unlocked on level 20, but apparently the game doesn't care if you paste code that has floor
 labels. The compiler will turn your variable names into pixelated floor labels!
 
-![alt text](./readme-images/variable-next.png)
+![example rendered variable name](./readme-images/variable-next.png)
 
-The compiler treats floor labels as a 32 by 10 pixel space. [imageUtils.ts](./src/utils/imageUtils.ts) contains pixel data for some characters
-such as the lowercase alphabet. Because the pixel space is so limited you'll receive a compiler warning that your variable
-label was truncated if it's too long (don't worry, your code will still run!).
+The compiler treats floor labels as a 32 by 10 pixel space.
+[characterEncoding.ts](./src/utils/image-utils/pixel-encoding/characterEncoding.ts) contains pixel data for some
+characters such as the lowercase alphabet. Because the pixel space is so limited you'll receive a compiler warning that
+your variable label was truncated if it's too long (don't worry, your code will still run!).
 
 You can also define a shorter label for variables with the `labeled` keyword.
 
@@ -175,7 +176,7 @@ supercalifragilisticexpialidocious = inbox
 outbox = supercalifragilisticexpialidocious
 ```
 
-![alt text](./readme-images/variable-smol.png)
+![example rendered variable label](./readme-images/variable-smol.png)
 
 ### Addition
 
@@ -311,7 +312,7 @@ outbox = inbox
 ## i do
 ```
 
-![alt text](./readme-images/hassembly-comment.png)
+![example hassembly comment](./readme-images/hassembly-comment.png)
 
 > [!IMPORTANT]
 > Hassembly comments use the same implementation as [floor labels](#floor-labels) and have the same limitations.
@@ -394,7 +395,7 @@ ref3 = ref1 * ref2
 ```
 
 > [!NOTE]
-> Multiplication requires the $acc and $iter registers. See [Registers](#registers) for more details.
+> Multiplication requires the `$acc` and `$iter` registers. See [Registers](#registers) for more details.
 
 #### Floored Division and Modulo
 
@@ -419,7 +420,7 @@ ref3 = ref1 % ref2
 ```
 
 > [!NOTE]
-> All of the division operations require the $quot and $rem registers. See [Registers](#registers) for more details.
+> All of the division operations require the `$quot` and `$rem` registers. See [Registers](#registers) for more details.
 
 ### Indirect Floor Access
 
